@@ -10,9 +10,8 @@ export default function AdminLayout({ onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className={`min-h-screen bg-[#FFFBF9]`}>
-      
-      {/* NAVBAR (fixed) */}
+    <div className="min-h-screen bg-[#FFFBF9]">
+      {/* NAVBAR (fixed height = 64px / 4rem) */}
       <Navbar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
@@ -23,8 +22,7 @@ export default function AdminLayout({ onLogout }) {
 
       {/* PAGE BODY */}
       <div className="flex pt-16 min-h-[calc(100vh-4rem)]">
-
-        {/* SIDEBAR */}
+        {/* SIDEBAR (fixed position) */}
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -34,8 +32,9 @@ export default function AdminLayout({ onLogout }) {
 
         {/* MAIN CONTENT + FOOTER */}
         <div
-          className={`flex flex-col flex-1 transition-all duration-300
-            ${sidebarOpen ? "lg:ml-68" : "lg:ml-20"}
+          className={`
+            flex flex-col flex-1 transition-all duration-300
+            ${sidebarOpen ? "lg:ml-80" : "lg:ml-20"}
           `}
         >
           {/* MAIN CONTENT */}
@@ -46,7 +45,6 @@ export default function AdminLayout({ onLogout }) {
           {/* FOOTER */}
           <Footer darkMode={darkMode} />
         </div>
-
       </div>
     </div>
   );

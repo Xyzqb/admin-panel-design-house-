@@ -6,7 +6,7 @@ const Footer = ({ darkMode }) => (
         : "bg-white border-[#E0D6C8]"
     }`}
   >
-    <div className="px-6 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+    <div className="px-6 md:px-20 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
 
       {/* COPYRIGHT */}
       <p

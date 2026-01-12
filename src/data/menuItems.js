@@ -1,93 +1,89 @@
 import {
-  Home,
+  LayoutDashboard,
   Briefcase,
   Users,
-  MessageSquare,
-  ShoppingCart,
-  Package,
-  BarChart3,
+  BookOpen,
+  Image,
+  Download,
   FileText,
-  Calendar,
-  Inbox,
-  Settings
 } from "lucide-react";
 
 export const menuItems = [
   {
-    id: "dashboard",
-    name: "Dashboard",
-    icon: Home,
-    path: "/",          // ✅
-    submenu: false
+    section: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/dashboard",
+    showHeading: true,
+    submenu: [
+      { name: "Analytics", path: "/dashboard/analytics" },
+      { name: "Projects", path: "/dashboard/overview" },
+    ],
   },
   {
-    id: "services",
-    name: "Services",
+    section: "Services",
     icon: Briefcase,
-    path: "/services",  // ✅
-    submenu: true
+    path: "/services",
+    showHeading: true,
+    submenu: [
+      { name: "Interior", path: "/services/web" },
+      { name: "Merchandising", path: "/services/mobile" },
+      { name: "Kiosk", path: "/services/uiux" },
+      { name: "Exhibition & Events", path: "/services/web" },
+      { name: "Office Interior", path: "/services/mobile" },
+      { name: "Furniture", path: "/services/uiux" },
+    ],
   },
   {
-    id: "clients",
-    name: "Clients",
-    icon: Users,
-    path: "/clients",   // ✅
-    submenu: false
-  },
-  {
-    id: "testimonials",
-    name: "Testimonials",
-    icon: MessageSquare,
-    path: "/testimonials", // ✅
-    submenu: false
-  },
-  {
-    id: "orders",
-    name: "Orders",
-    icon: ShoppingCart,
-    path: "/orders",
-    submenu: false
-  },
-  {
-    id: "products",
-    name: "Products",
-    icon: Package,
-    path: "/products",
-    submenu: false
-  },
-  {
-    id: "analytics",
-    name: "Analytics",
-    icon: BarChart3,
-    path: "/analytics",
-    submenu: false
-  },
-  {
-    id: "reports",
-    name: "Reports",
+    section: "Career",
     icon: FileText,
-    path: "/reports",
-    submenu: false
+    path: "/career",
+    showHeading: false,
+    submenu: [{ name: "Open Positions", path: "/career/jobs" }],
   },
   {
-    id: "calendar",
-    name: "Calendar",
-    icon: Calendar,
-    path: "/calendar",
-    submenu: false
+    section: "Our Clients",
+    icon: Users,
+    path: "/clients",
+    showHeading: false,
+    submenu: [
+      { name: "All Clients", path: "/clients" },
+      { name: "Testimonials", path: "/testimonials" },
+    ],
   },
   {
-    id: "messages",
-    name: "Messages",
-    icon: Inbox,
-    path: "/messages",
-    submenu: false
+    section: "Blog",
+    icon: BookOpen,
+    path: "/blog",
+    showHeading: false,
+    submenu: [
+      { name: "Latest Posts", path: "/blog/latest" },
+      { name: "Categories", path: "/blog/categories" },
+    ],
   },
   {
-    id: "settings",
-    name: "Settings",
-    icon: Settings,
-    path: "/settings",
-    submenu: false
-  }
+    section: "Portfolio",
+    icon: Image,
+    path: "/portfolio",
+    showHeading: true,
+    submenu: [
+      { name: "Interior Portfolio", path: "/services/web" },
+      { name: "Merchandising Portfolio", path: "/services/mobile" },
+      { name: "Kiosk Portfolio", path: "/services/uiux" },
+      { name: "Exhibition & Events Portfolio", path: "/services/web" },
+      { name: "Office Interior Portfolio", path: "/services/mobile" },
+      { name: "Furniture Portfolio", path: "/services/uiux" },
+      { name: "Videos", path: "/services/uiux" },
+    ],
+  },
+  {
+    section: "Downloads",
+    icon: Download,
+    path: "/downloads",
+    showHeading: true,
+    submenu: [
+      { name: "E Brochure", path: "/downloads/resources" },
+      { name: "Newsletter", path: "/downloads/reports" },
+      { name: "Company Profile", path: "/downloads/reports" },
+    ],
+  },
 ];
