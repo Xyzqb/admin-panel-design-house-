@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import * as Icons from "lucide-react";
-import SearchBar from "../components/component/SearchBar";
+import SearchBar from "../components/SearchBar";
 
 
 export default function ClientsPage() {

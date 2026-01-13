@@ -531,18 +531,18 @@ export default function Testimonials() {
                 </div>
             )}
 
-            <div className="max-w-7xl mx-auto w-full mx-10">
+            <div className="max-w-7xl mx-auto">
                 {/* Main Container Box with Enhanced Colors & Animations */}
                 <div className="bg-gradient-to-br from-white to-gray-50 rounded-md shadow-sm border border-gray-200/50 overflow-hidden transform transition-all duration-300">
 
                     {/* Header Section */}
-                    <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50/50">
+                    <div className="p-4 md:p-6 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50/50">
                         <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                                <h1 className="text-2xl font-bold text-blue-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                                     Testimonials Management
                                 </h1>
-                                <p className="text-gray-600 mt-1">Manage customer feedback and reviews</p>
+                                <p className="text-gray-600 mt-1 text-lg">Manage customer feedback and reviews</p>
                             </div>
                             <div className="flex flex-wrap gap-3">
                                 <button
@@ -563,11 +563,11 @@ export default function Testimonials() {
                         </div>
 
                         {/* Stats Grid with Enhanced Colors */}
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                             {stats.map((stat, index) => (
                                 <div
                                     key={index}
-                                    className={`bg-gradient-to-br ${stat.gradient} rounded-xl shadow-lg p-4 border ${stat.borderColor} transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+                                    className={`bg-gradient-to-br ${stat.gradient} rounded-xl shadow-lg p-3 md:p-4 border ${stat.borderColor} transform transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                                     style={{ transitionDelay: `${index * 100}ms` }}
                                 >
                                     <div className="flex justify-between items-start mb-2">
@@ -579,13 +579,13 @@ export default function Testimonials() {
                                         </div>
                                     </div>
                                     <div className="flex items-baseline gap-2">
-                                        <span className={`text-3xl font-bold text-${stat.color}-900`}>{stat.value}</span>
+                                        <span className={`text-2xl md:text-3xl font-bold text-${stat.color}-900`}>{stat.value}</span>
                                         {stat.title === "AVERAGE RATING" && (
                                             <div className="flex ml-2">
                                                 {[...Array(5)].map((_, i) => (
                                                     <Star
                                                         key={i}
-                                                        size={16}
+                                                        size={14}
                                                         className={`text-yellow-400 fill-yellow-400 transition-transform duration-300 hover:scale-125`}
                                                         style={{ transitionDelay: `${i * 50}ms` }}
                                                     />
@@ -593,7 +593,7 @@ export default function Testimonials() {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="text-sm text-gray-600 mt-1">
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">
                                         {stat.subtitle}
                                     </div>
                                 </div>
@@ -602,7 +602,7 @@ export default function Testimonials() {
                     </div>
 
                     {/* Search and Filter Section */}
-                    <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50/80 to-gray-100/50">
+                    <div className="p-4 md:p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50/80 to-gray-100/50">
                         <div className={`flex flex-col lg:flex-row gap-4 transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
                             {/* Search Bar */}
                             <div className="flex-1">
@@ -683,22 +683,22 @@ export default function Testimonials() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex flex-wrap gap-2">
                                     <button
                                         onClick={() => setFilters(prev => ({ ...prev, status: "all", rating: "all", verified: "all" }))}
-                                        className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 font-medium text-sm border border-blue-200 hover:from-blue-100 hover:to-blue-200 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
+                                        className="px-3 md:px-4 py-2 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 text-blue-700 font-medium text-sm border border-blue-200 hover:from-blue-100 hover:to-blue-200 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
                                     >
                                         Total: {testimonials.length}
                                     </button>
                                     <button
                                         onClick={() => setFilters(prev => ({ ...prev, rating: "5" }))}
-                                        className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 font-medium text-sm border border-emerald-200 hover:from-emerald-100 hover:to-emerald-200 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
+                                        className="px-3 md:px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 font-medium text-sm border border-emerald-200 hover:from-emerald-100 hover:to-emerald-200 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
                                     >
                                         5★: {stats[2].value}
                                     </button>
                                     <button
                                         onClick={() => setFilters(prev => ({ ...prev, rating: "4.5+" }))}
-                                        className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 font-medium text-sm border border-amber-200 hover:from-amber-100 hover:to-amber-200 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
+                                        className="px-3 md:px-4 py-2 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100 text-amber-700 font-medium text-sm border border-amber-200 hover:from-amber-100 hover:to-amber-200 transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm"
                                     >
                                         4★+: {stats[3].value}
                                     </button>
@@ -709,8 +709,8 @@ export default function Testimonials() {
 
                     {/* Selection Info */}
                     {selectedTestimonial.length > 0 && (
-                        <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-blue-100/50 border-b border-blue-200 animate-fadeIn">
-                            <div className="flex items-center justify-between">
+                        <div className="px-4 md:px-6 py-4 bg-gradient-to-r from-blue-50 to-blue-100/50 border-b border-blue-200 animate-fadeIn">
+                            <div className="flex items-center justify-between flex-wrap gap-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center animate-pulse">
                                         <Check size={18} className="text-white" />
@@ -739,7 +739,7 @@ export default function Testimonials() {
 
                     {/* Table Section */}
                     <div className="overflow-x-auto">
-                        <table className="w-full">
+                        <table className="w-full min-w-[800px]">
                             <thead className="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b border-gray-200">
                                 <tr>
                                     <th className="w-12 p-4">
@@ -753,22 +753,15 @@ export default function Testimonials() {
                                     <th className="p-4 text-left text-sm font-semibold text-gray-900">
                                         Customer
                                     </th>
-                                    <th
-                                        className="p-4 text-left text-sm font-semibold text-gray-900 cursor-pointer group"
-                                        onClick={() => handleSort('rating')}
-                                    >
+                                    <th className="p-4 text-left text-sm font-semibold text-gray-900">
                                         <div className="flex items-center gap-1">
                                             Rating & Status
-                                            {getSortIcon('rating')}
                                         </div>
                                     </th>
                                     <th className="p-4 text-left text-sm font-semibold text-gray-900">
                                         Feedback
                                     </th>
-                                    <th
-                                        className="p-4 text-left text-sm font-semibold text-gray-900 cursor-pointer group"
-                                        onClick={() => handleSort('date')}
-                                    >
+                                    <th className="p-4 text-left text-sm font-semibold text-gray-900">
                                         <div className="flex items-center gap-1">
                                             Date
                                             {getSortIcon('date')}
@@ -797,12 +790,12 @@ export default function Testimonials() {
                                             </td>
                                             <td className="p-4">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-12 h-12 rounded-full ${testimonial.avatarColor} flex items-center justify-center text-white font-bold shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl`}>
+                                                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full ${testimonial.avatarColor} flex items-center justify-center text-white font-bold shadow-lg transform transition-all duration-300 hover:scale-110 hover:shadow-xl`}>
                                                         {testimonial.initials}
                                                     </div>
                                                     <div>
-                                                        <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                                                        <div className="text-sm text-gray-600">{testimonial.role}</div>
+                                                        <div className="font-semibold text-gray-900 text-sm md:text-base">{testimonial.name}</div>
+                                                        <div className="text-xs md:text-sm text-gray-600">{testimonial.role}</div>
                                                         {testimonial.verified && (
                                                             <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200">
                                                                 <Check size={12} className="text-blue-600" />
@@ -818,13 +811,13 @@ export default function Testimonials() {
                                                         {[...Array(5)].map((_, i) => (
                                                             <Star
                                                                 key={i}
-                                                                size={18}
+                                                                size={16}
                                                                 className={`transition-all duration-300 hover:scale-125 ${i < Math.floor(testimonial.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
                                                                 style={{ transitionDelay: `${i * 50}ms` }}
                                                             />
                                                         ))}
                                                     </div>
-                                                    <span className="font-bold text-gray-900 ml-1">({testimonial.rating})</span>
+                                                    <span className="font-bold text-gray-900 ml-1 text-sm md:text-base">({testimonial.rating})</span>
                                                 </div>
                                                 <span className={`inline-block mt-2 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm transform transition-all duration-300 hover:scale-105
                                                     ${testimonial.status === "Excellent"
@@ -837,13 +830,13 @@ export default function Testimonials() {
                                             </td>
                                             <td className="p-4">
                                                 <div className="max-w-xs">
-                                                    <p className="text-gray-700 text-sm line-clamp-2 leading-relaxed transition-all duration-300 hover:line-clamp-none hover:bg-gray-50 hover:p-2 hover:rounded-lg">
+                                                    <p className="text-gray-700 text-xs md:text-sm line-clamp-2 leading-relaxed transition-all duration-300 hover:line-clamp-none hover:bg-gray-50 hover:p-2 hover:rounded-lg">
                                                         "{testimonial.feedback}"
                                                     </p>
                                                 </div>
                                             </td>
                                             <td className="p-4">
-                                                <div className="flex items-center gap-2 text-gray-600 group">
+                                                <div className="flex items-center gap-2 text-gray-600 group cursor-pointer" onClick={() => handleSort('date')}>
                                                     <div className="p-2 rounded-lg bg-gradient-to-r from-gray-100 to-gray-50 group-hover:from-blue-100 group-hover:to-blue-50 transition-all duration-300">
                                                         <Calendar size={16} className="transition-all duration-300 group-hover:text-blue-600" />
                                                     </div>
@@ -856,17 +849,17 @@ export default function Testimonials() {
                                                 <div className="flex gap-2">
                                                     <button
                                                         onClick={() => setShowViewModal(testimonial)}
-                                                        className="p-2.5 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 text-blue-600 hover:from-blue-100 hover:to-blue-200 hover:text-blue-700 transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm hover:shadow border border-blue-200"
+                                                        className="p-2 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 text-blue-600 hover:from-blue-100 hover:to-blue-200 hover:text-blue-700 transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm hover:shadow border border-blue-200"
                                                         title="View Details"
                                                     >
-                                                        <Eye size={18} />
+                                                        <Eye size={16} />
                                                     </button>
                                                     <button
                                                         onClick={() => handleDeleteSingle(testimonial.id)}
-                                                        className="p-2.5 rounded-xl bg-gradient-to-r from-red-50 to-red-100 text-red-600 hover:from-red-100 hover:to-red-200 hover:text-red-700 transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm hover:shadow border border-red-200"
+                                                        className="p-2 rounded-xl bg-gradient-to-r from-red-50 to-red-100 text-red-600 hover:from-red-100 hover:to-red-200 hover:text-red-700 transition-all duration-300 hover:scale-110 active:scale-95 shadow-sm hover:shadow border border-red-200"
                                                         title="Delete"
                                                     >
-                                                        <Trash2 size={18} />
+                                                        <Trash2 size={16} />
                                                     </button>
                                                 </div>
                                             </td>
@@ -888,7 +881,7 @@ export default function Testimonials() {
                     </div>
 
                     {/* Footer with Pagination */}
-                    <div className="px-6 py-4 border-t border-gray-200 bg-gradient-to-r from-gray-50/50 to-white">
+                    <div className="px-4 md:px-6 py-4 border-t border-gray-200 bg-gradient-to-r from-gray-50/50 to-white">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div className="text-sm text-gray-600">
                                 Showing <span className="font-semibold text-gray-900">
@@ -900,7 +893,7 @@ export default function Testimonials() {
                                 <button
                                     onClick={() => handlePageChange(currentPage - 1)}
                                     disabled={currentPage === 1}
-                                    className="px-4 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow"
+                                    className="px-3 md:px-4 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow"
                                 >
                                     Previous
                                 </button>
@@ -912,7 +905,7 @@ export default function Testimonials() {
                                         <button
                                             key={index}
                                             onClick={() => handlePageChange(page)}
-                                            className={`w-10 h-10 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-110 hover:shadow ${currentPage === page
+                                            className={`w-8 h-8 md:w-10 md:h-10 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-110 hover:shadow ${currentPage === page
                                                 ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
                                                 : 'border border-gray-300 bg-white hover:bg-gray-50'
                                                 }`}
@@ -925,7 +918,7 @@ export default function Testimonials() {
                                 <button
                                     onClick={() => handlePageChange(currentPage + 1)}
                                     disabled={currentPage === totalPages}
-                                    className="px-4 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-sm transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow"
+                                    className="px-3 md:px-4 py-2 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-sm transition-all duration-300 hover:scale-105 active:scale-95 shadow-sm hover:shadow"
                                 >
                                     Next
                                 </button>

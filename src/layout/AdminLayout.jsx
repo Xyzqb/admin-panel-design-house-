@@ -10,7 +10,7 @@ export default function AdminLayout({ onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#FFFBF9]">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 ">
       {/* NAVBAR (fixed height = 64px / 4rem) */}
       <Navbar
         sidebarOpen={sidebarOpen}

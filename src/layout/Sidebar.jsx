@@ -1,7 +1,7 @@
 import { ChevronDown, X, Menu } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { menuItems } from "../../data/menuItems";
+import { menuItems } from "../data/menuItems";
 
 export default function Sidebar({
   sidebarOpen,
@@ -30,16 +30,10 @@ export default function Sidebar({
         ${mobileMenuOpen ? "translate-x-0" : ""}`}
       >
         {/* HEADER */}
-        <div className="p-4 border-b border-[#93C5FD] bg-gradient-to-r from-white to-[#EFF6FF]">
+        {/* <div className="p-4 border-b border-[#93C5FD] bg-gradient-to-r from-white to-[#EFF6FF]">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex justify-center gap-3">
               <img src="/images/logo.png" className="h-14" />
-              {sidebarOpen && (
-                <div>
-                  <h1 className="text-[14px] font-bold">Design House</h1>
-                  <p className="text-[12px] font-bold text-gray-500">Admin Panel</p>
-                </div>
-              )}
             </div>
 
             {sidebarOpen && (
@@ -51,7 +45,27 @@ export default function Sidebar({
               </button>
             )}
           </div>
+        </div> */}
+
+        {/* HEADER */}
+        <div className="relative p-4 border-b border-[#93C5FD] bg-gradient-to-r from-white to-[#EFF6FF]">
+
+          {/* CENTER LOGO */}
+          <div className="flex justify-center">
+            <img src="/images/logo.png" className="h-14" />
+          </div>
+
+          {/* CLOSE BUTTON */}
+          {sidebarOpen && (
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 hidden lg:flex p-1.5 rounded-lg hover:bg-[#EFF6FF]"
+            >
+              <X size={20} />
+            </button>
+          )}
         </div>
+
 
         {/* OPEN BUTTON */}
         {!sidebarOpen && (
@@ -107,10 +121,9 @@ export default function Sidebar({
                         to={sub.path}
                         onClick={() => setMobileMenuOpen(false)}
                         className={({ isActive }) =>
-                          `block px-3 py-1.5 rounded-lg ${
-                            isActive
-                              ? "bg-[#DBEAFE] text-[#2563EB]"
-                              : "hover:bg-[#EFF6FF]"
+                          `block px-3 py-1.5 rounded-lg ${isActive
+                            ? "bg-[#DBEAFE] text-[#2563EB]"
+                            : "hover:bg-[#EFF6FF]"
                           }`
                         }
                       >
