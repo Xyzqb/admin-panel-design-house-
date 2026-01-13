@@ -139,7 +139,7 @@ function LoginPage({ onLogin }) {
                   <button
                     onClick={handleSubmit}
                     disabled={isLoading}
-                    className="w-full bg-orange-500 text-white py-3 sm:py-3.5 rounded-xl font-semibold hover:bg-blue-900 transform transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl text-sm sm:text-base mt-6"
+                    className="w-full bg-orange-500 text-white py-3 sm:py-3.5 rounded-xl font-semibold hover:bg-orange-500 transform transition-all duration-300 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none shadow-lg hover:shadow-xl text-sm sm:text-base mt-6"
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">
