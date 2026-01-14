@@ -64,7 +64,7 @@ export default function Navbar({
 
           {/* PROFILE DROPDOWN */}
           {profileOpen && (
-            <div className="absolute right-0 top-14 w-44 bg-white border border-slate-200 shadow-xl rounded-lg overflow-hidden">
+            <div className="absolute right-0 top-16 w-44 bg-white border border-slate-200 shadow-xl overflow-hidden">
               <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
                 <User size={16} />
                 Profile

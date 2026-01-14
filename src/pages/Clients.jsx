@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import * as Icons from "lucide-react";
-import SearchBar from "../components/SearchBar";
+import SearchBar from "../components/common/SearchBar";
 
 
 export default function ClientsPage() {
@@ -384,7 +384,7 @@ export default function ClientsPage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-4 mx-10">
+    <div className="min-h-screen w-full p-4 md:p-6 ">
       {/* Add Client Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -741,7 +741,7 @@ export default function ClientsPage() {
           <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50/50">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Clients Management
                 </h1>
                 <p className="text-gray-600 mt-1">Manage and track all your client relationships</p>

@@ -34,7 +34,7 @@ export default function AdminLayout({ onLogout }) {
         <div
           className={`
             flex flex-col flex-1 transition-all duration-300
-            ${sidebarOpen ? "lg:ml-80" : "lg:ml-20"}
+            ${sidebarOpen ? "lg:ml-70" : "lg:ml-20"}
           `}
         >
           {/* MAIN CONTENT */}

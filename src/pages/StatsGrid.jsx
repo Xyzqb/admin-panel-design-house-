@@ -22,6 +22,17 @@ const stats = [
     text: "text-blue-600",
   },
   {
+    title: "New Leads",
+    value: "23",
+    desc: "This month",
+    icon: Users,
+    bg: "bg-blue-50",
+    iconBg: "bg-blue-500",
+    text: "text-blue-600",
+  },
+
+  // PURPLE
+  {
     title: "Active Clients",
     value: "42",
     desc: "Ongoing projects",
@@ -30,6 +41,17 @@ const stats = [
     iconBg: "bg-purple-500",
     text: "text-purple-600",
   },
+  {
+    title: "Client Meetings",
+    value: "18",
+    desc: "Scheduled",
+    icon: Calendar,
+    bg: "bg-purple-50",
+    iconBg: "bg-purple-500",
+    text: "text-purple-600",
+  },
+
+  // GREEN
   {
     title: "Design Concepts",
     value: "86",
@@ -40,6 +62,17 @@ const stats = [
     text: "text-green-600",
   },
   {
+    title: "Approved Designs",
+    value: "61",
+    desc: "Client approved",
+    icon: Star,
+    bg: "bg-green-50",
+    iconBg: "bg-green-500",
+    text: "text-green-600",
+  },
+
+  // YELLOW
+  {
     title: "Testimonials",
     value: "64",
     desc: "Happy customers",
@@ -48,6 +81,17 @@ const stats = [
     iconBg: "bg-yellow-500",
     text: "text-yellow-600",
   },
+  {
+    title: "Ratings",
+    value: "4.8",
+    desc: "Average score",
+    icon: Activity,
+    bg: "bg-yellow-50",
+    iconBg: "bg-yellow-500",
+    text: "text-yellow-600",
+  },
+
+  // PINK
   {
     title: "Furniture Orders",
     value: "31",
@@ -58,6 +102,17 @@ const stats = [
     text: "text-pink-600",
   },
   {
+    title: "Installations",
+    value: "12",
+    desc: "This month",
+    icon: ClipboardList,
+    bg: "bg-pink-50",
+    iconBg: "bg-pink-500",
+    text: "text-pink-600",
+  },
+
+  // ORANGE
+  {
     title: "Paint Themes",
     value: "19",
     desc: "Color palettes",
@@ -66,6 +121,17 @@ const stats = [
     iconBg: "bg-orange-500",
     text: "text-orange-600",
   },
+  {
+    title: "Material Samples",
+    value: "47",
+    desc: "Available options",
+    icon: Layers,
+    bg: "bg-orange-50",
+    iconBg: "bg-orange-500",
+    text: "text-orange-600",
+  },
+
+  // INDIGO
   {
     title: "Site Visits",
     value: "14",
@@ -80,6 +146,26 @@ const stats = [
     value: "9",
     desc: "Design approvals",
     icon: ClipboardList,
+    bg: "bg-indigo-50",
+    iconBg: "bg-indigo-500",
+    text: "text-indigo-600",
+  },
+
+  // RED
+  {
+    title: "Delayed Projects",
+    value: "3",
+    desc: "Need attention",
+    icon: Activity,
+    bg: "bg-red-50",
+    iconBg: "bg-red-500",
+    text: "text-red-600",
+  },
+  {
+    title: "Issues Raised",
+    value: "6",
+    desc: "Client concerns",
+    icon: Activity,
     bg: "bg-red-50",
     iconBg: "bg-red-500",
     text: "text-red-600",
@@ -88,7 +174,7 @@ const stats = [
 
 export default function InteriorDashboard() {
   return (
-    <div className="p-4 space-y-8">
+    <div className="p-4 space-y-6">
       {/* HEADER */}
       <div>
         <h1 className="text-3xl font-bold text-gray-800">

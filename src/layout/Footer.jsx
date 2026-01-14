@@ -6,15 +6,15 @@ const Footer = ({ darkMode }) => (
         : "bg-white border-[#E0D6C8]"
     }`}
   >
-    <div className="px-6 md:px-20 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+    <div className="px-6 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
 
       {/* COPYRIGHT */}
       <p
-        className={`text-sm md:text-base font-medium ${
+        className={`text-sm text-orange-500 md:text-base font-bold ${
           darkMode ? "text-gray-400" : "text-gray-700"
         }`}
       >
-        © 2026 <span className="font-semibold">DesignHouse.co.in</span>
+        © 2026 <span className="text-orange-500 font-bold">DesignHouse.co.in</span>
         <span className="ml-1 text-gray-500">
           · All rights reserved
         </span>
@@ -24,7 +24,7 @@ const Footer = ({ darkMode }) => (
       <div className="flex items-center space-x-6">
         <a
           href="#"
-          className={`text-sm md:text-base transition-colors duration-200 ${
+          className={`text-sm md:text-base font-semibold transition-colors duration-200 ${
             darkMode
               ? "text-gray-400 hover:text-white"
               : "text-gray-600 hover:text-[#B45309]"
@@ -32,12 +32,12 @@ const Footer = ({ darkMode }) => (
         >
           Privacy Policy
         </a>
-
+  
         <a
           href="#"
-          className={`text-sm md:text-base transition-colors duration-200 ${
+          className={`text-sm md:text-base font-semibold transition-colors duration-200 ${
             darkMode
-              ? "text-gray-400 hover:text-white"
+              ? "text-gray-400 hover:text-white" 
               : "text-gray-600 hover:text-[#B45309]"
           }`}
         >

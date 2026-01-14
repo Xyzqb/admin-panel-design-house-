@@ -4,16 +4,15 @@ import StatsGrid from "./StatsGrid";
 export default function Dashboard({ darkMode }) {
   return (
     <div
-      className={`min-h-screen px-4 sm:px-6 lg:px-10 py-6 sm:py-8 space-y-8 transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-slate-50"}
+      className={`min-h-screen px-4 sm:px-6 lg:px-10 py-6 sm:py-8 space-y-8 transition-colors duration-300 
+        
       `}
     >
       {/* STATS GRID */}
       <div
-        className={`p-4 sm:p-6 shadow-sm
-          ${darkMode ? "bg-slate-800" : "bg-white"}
-        `}
+        className={`p-4 sm:p-6 shadow-sm bg-white`}
       >
-        <StatsGrid darkMode={darkMode} />
+        <StatsGrid />
       </div>
 
       {/* LOWER SECTION */}

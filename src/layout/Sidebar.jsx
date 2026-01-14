@@ -1,7 +1,8 @@
 import { ChevronDown, X, Menu } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { menuItems } from "../data/menuItems";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
 
 export default function Sidebar({
   sidebarOpen,
@@ -11,6 +12,7 @@ export default function Sidebar({
 }) {
   const location = useLocation();
   const [openSection, setOpenSection] = useState("Dashboard");
+  const navigate = useNavigate();
 
   return (
     <>
@@ -26,27 +28,9 @@ export default function Sidebar({
       <aside
         className={`fixed top-0 left-0 h-screen bg-white border-r-4 border-[#93C5FD]
         shadow-xl z-50 transition-all duration-300
-        ${sidebarOpen ? "w-85" : "w-20 -translate-x-full lg:translate-x-0"}
+        ${sidebarOpen ? "w-70" : "w-20 -translate-x-full lg:translate-x-0"}
         ${mobileMenuOpen ? "translate-x-0" : ""}`}
       >
-        {/* HEADER */}
-        {/* <div className="p-4 border-b border-[#93C5FD] bg-gradient-to-r from-white to-[#EFF6FF]">
-          <div className="flex items-center justify-between">
-            <div className="flex justify-center gap-3">
-              <img src="/images/logo.png" className="h-14" />
-            </div>
-
-            {sidebarOpen && (
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="hidden lg:flex p-1.5 rounded-lg hover:bg-[#EFF6FF]"
-              >
-                <X size={18} />
-              </button>
-            )}
-          </div>
-        </div> */}
-
         {/* HEADER */}
         <div className="relative p-4 border-b border-[#93C5FD] bg-gradient-to-r from-white to-[#EFF6FF]">
 
@@ -92,10 +76,16 @@ export default function Sidebar({
                   </h4>
                 )}
 
-                <button
-                  onClick={() =>
-                    sidebarOpen && setOpenSection(isOpen ? null : item.section)
-                  }
+                <button onClick={() => {
+                    if (item.hideDropdown) {
+                      navigate(item.path);    
+                      setMobileMenuOpen(false);
+                      return;
+                    }
+
+                    sidebarOpen && setOpenSection(isOpen ? null : item.section);
+                  }}
+
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl
                   ${isActive ? "bg-[#EFF6FF] border border-[#2563EB]" : "hover:bg-[#EFF6FF]"}
                   ${!sidebarOpen && "justify-center"}`}
@@ -105,12 +95,13 @@ export default function Sidebar({
                     {sidebarOpen && <span>{item.section}</span>}
                   </div>
 
-                  {sidebarOpen && (
+                  {sidebarOpen && !item.hideDropdown && item.submenu?.length > 0 && (
                     <ChevronDown
                       size={14}
                       className={`transition ${isOpen ? "rotate-180" : ""}`}
                     />
                   )}
+
                 </button>
 
                 {sidebarOpen && isOpen && (

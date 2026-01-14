@@ -324,7 +324,7 @@ export default function Testimonials() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6">
+        <div className="min-h-screen p-4 md:p-6">
             {/* Delete Confirmation Modal */}
             {showDeleteModal && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -539,7 +539,7 @@ export default function Testimonials() {
                     <div className="p-4 md:p-6 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50/50">
                         <div className={`flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
                             <div>
-                                <h1 className="text-2xl font-bold text-blue-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                                <h1 className="text-3xl font-bold text-blue-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                                     Testimonials Management
                                 </h1>
                                 <p className="text-gray-600 mt-1 text-lg">Manage customer feedback and reviews</p>

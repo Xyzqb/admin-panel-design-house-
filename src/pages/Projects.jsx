@@ -21,14 +21,15 @@ import {
   PauseCircle,
   CalendarDays
 } from "lucide-react";
+import SearchBar from "../components/common/SearchBar";
 
 export default function Projects() {
   const [projects, setProjects] = useState([
-    { 
-      id: "P-101", 
-      name: "E-Commerce Website", 
-      owner: "Frontend Team", 
-      status: "active", 
+    {
+      id: "P-101",
+      name: "E-Commerce Website",
+      owner: "Frontend Team",
+      status: "active",
       progress: 85,
       budget: "$45,000",
       startDate: "2024-01-15",
@@ -39,11 +40,11 @@ export default function Projects() {
       completedTasks: 36,
       color: "from-blue-500 to-blue-600"
     },
-    { 
-      id: "P-102", 
-      name: "CRM Dashboard", 
-      owner: "Backend Team", 
-      status: "completed", 
+    {
+      id: "P-102",
+      name: "CRM Dashboard",
+      owner: "Backend Team",
+      status: "completed",
       progress: 100,
       budget: "$32,500",
       startDate: "2023-11-20",
@@ -54,11 +55,11 @@ export default function Projects() {
       completedTasks: 28,
       color: "from-emerald-500 to-emerald-600"
     },
-    { 
-      id: "P-103", 
-      name: "Mobile Booking App", 
-      owner: "App Team", 
-      status: "active", 
+    {
+      id: "P-103",
+      name: "Mobile Booking App",
+      owner: "App Team",
+      status: "active",
       progress: 65,
       budget: "$58,000",
       startDate: "2024-02-10",
@@ -69,11 +70,11 @@ export default function Projects() {
       completedTasks: 36,
       color: "from-purple-500 to-purple-600"
     },
-    { 
-      id: "P-104", 
-      name: "AI Analytics Platform", 
-      owner: "Data Science Team", 
-      status: "planning", 
+    {
+      id: "P-104",
+      name: "AI Analytics Platform",
+      owner: "Data Science Team",
+      status: "planning",
       progress: 25,
       budget: "$75,000",
       startDate: "2024-03-01",
@@ -84,11 +85,11 @@ export default function Projects() {
       completedTasks: 4,
       color: "from-orange-500 to-orange-600"
     },
-    { 
-      id: "P-105", 
-      name: "Internal HR Portal", 
-      owner: "Full Stack Team", 
-      status: "active", 
+    {
+      id: "P-105",
+      name: "Internal HR Portal",
+      owner: "Full Stack Team",
+      status: "active",
       progress: 45,
       budget: "$28,000",
       startDate: "2024-01-30",
@@ -99,11 +100,11 @@ export default function Projects() {
       completedTasks: 15,
       color: "from-pink-500 to-pink-600"
     },
-    { 
-      id: "P-106", 
-      name: "Payment Gateway", 
-      owner: "Backend Team", 
-      status: "on-hold", 
+    {
+      id: "P-106",
+      name: "Payment Gateway",
+      owner: "Backend Team",
+      status: "on-hold",
       progress: 10,
       budget: "$52,000",
       startDate: "2024-02-25",
@@ -127,11 +128,11 @@ export default function Projects() {
     status: "all",
     priority: "all"
   });
-  const [newProject, setNewProject] = useState({ 
-    id: "", 
-    name: "", 
-    owner: "", 
-    status: "planning", 
+  const [newProject, setNewProject] = useState({
+    id: "",
+    name: "",
+    owner: "",
+    status: "planning",
     budget: "",
     teamSize: "",
     priority: "medium"
@@ -140,14 +141,14 @@ export default function Projects() {
   /* ================= FILTER LOGIC ================= */
   const filteredProjects = useMemo(() => {
     return projects.filter((p) => {
-      const matchesSearch = 
+      const matchesSearch =
         p.id.toLowerCase().includes(search.toLowerCase()) ||
         p.name.toLowerCase().includes(search.toLowerCase()) ||
         p.owner.toLowerCase().includes(search.toLowerCase());
-      
+
       const matchesStatus = filters.status === "all" || p.status === filters.status;
       const matchesPriority = filters.priority === "all" || p.priority === filters.priority;
-      
+
       return matchesSearch && matchesStatus && matchesPriority;
     });
   }, [projects, search, filters]);
@@ -169,9 +170,9 @@ export default function Projects() {
       "from-indigo-500 to-indigo-600",
       "from-rose-500 to-rose-600"
     ];
-    
+
     const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    
+
     const projectToAdd = {
       ...newProject,
       progress: 0,
@@ -185,11 +186,11 @@ export default function Projects() {
     };
 
     setProjects((prev) => [projectToAdd, ...prev]);
-    setNewProject({ 
-      id: "", 
-      name: "", 
-      owner: "", 
-      status: "planning", 
+    setNewProject({
+      id: "",
+      name: "",
+      owner: "",
+      status: "planning",
       budget: "",
       teamSize: "",
       priority: "medium"
@@ -203,8 +204,8 @@ export default function Projects() {
       return;
     }
 
-    setProjects((prev) => 
-      prev.map((p) => 
+    setProjects((prev) =>
+      prev.map((p) =>
         p.id === selectedProject.id ? { ...selectedProject } : p
       )
     );
@@ -228,12 +229,12 @@ export default function Projects() {
   };
 
   const handleEditClick = (project) => {
-    setSelectedProject({...project});
+    setSelectedProject({ ...project });
     setShowEditModal(true);
   };
 
   const getStatusColor = (status) => {
-    switch(status) {
+    switch (status) {
       case 'active': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       case 'completed': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'planning': return 'bg-amber-100 text-amber-800 border-amber-200';
@@ -243,7 +244,7 @@ export default function Projects() {
   };
 
   const getPriorityColor = (priority) => {
-    switch(priority) {
+    switch (priority) {
       case 'high': return 'bg-red-100 text-red-800 border-red-200';
       case 'medium': return 'bg-amber-100 text-amber-800 border-amber-200';
       case 'low': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
@@ -274,7 +275,7 @@ export default function Projects() {
     {
       title: "TOTAL BUDGET",
       value: "$" + projects.reduce((acc, p) => {
-        const budget = parseFloat(p.budget.replace(/[^0-9.-]+/g,""));
+        const budget = parseFloat(p.budget.replace(/[^0-9.-]+/g, ""));
         return acc + (isNaN(budget) ? 0 : budget);
       }, 0).toLocaleString(),
       change: "Across all projects",
@@ -309,15 +310,15 @@ export default function Projects() {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', { 
-      month: 'short', 
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-6">
+    <div className="min-h-screen p-4 md:p-6">
       {/* Delete Confirmation Modal */}
       {showDeleteModal && selectedProject && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -414,12 +415,11 @@ export default function Projects() {
                         <span className="text-sm font-medium">{showViewModal.progress}% Complete</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className={`h-2 rounded-full ${
-                            showViewModal.progress >= 80 ? 'bg-emerald-500' :
+                        <div
+                          className={`h-2 rounded-full ${showViewModal.progress >= 80 ? 'bg-emerald-500' :
                             showViewModal.progress >= 50 ? 'bg-blue-500' :
-                            showViewModal.progress >= 30 ? 'bg-amber-500' : 'bg-red-500'
-                          } transition-all duration-500`}
+                              showViewModal.progress >= 30 ? 'bg-amber-500' : 'bg-red-500'
+                            } transition-all duration-500`}
                           style={{ width: `${showViewModal.progress}%` }}
                         />
                       </div>
@@ -462,7 +462,7 @@ export default function Projects() {
               <div className="flex gap-3 pt-6 border-t border-gray-200">
                 <button
                   onClick={() => {
-                    setSelectedProject({...showViewModal});
+                    setSelectedProject({ ...showViewModal });
                     setShowViewModal(null);
                     setShowEditModal(true);
                   }}
@@ -779,11 +779,10 @@ export default function Projects() {
           <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50/50">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent flex items-center gap-3">
-                  <FolderKanban className="text-blue-600" size={32} />
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
                   Project Management
                 </h1>
-                <p className="text-gray-600 mt-1">Track and manage all your projects in one place</p>
+                <p className="text-gray-600 text-lg mt-1">Track and manage all your projects in one place</p>
               </div>
               <div className="flex flex-wrap gap-3">
                 <button
@@ -834,18 +833,12 @@ export default function Projects() {
           <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50/80 to-gray-100/50">
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search Bar */}
-              <div className="flex-1">
-                <div className="relative group">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 transition-all duration-300 group-focus-within:text-blue-500" size={20} />
-                  <input
-                    type="text"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search projects by ID, name, or owner..."
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-100 outline-none transition-all duration-300 shadow-sm group-hover:shadow"
-                  />
-                </div>
-              </div>
+              <SearchBar
+                value={search}
+                onChange={setSearch}
+                size="md"
+                className="w-200"
+              />
 
               {/* Filter Buttons */}
               <div className="flex flex-wrap gap-3">
@@ -937,8 +930,8 @@ export default function Projects() {
               <tbody className="divide-y divide-gray-200">
                 {filteredProjects.length > 0 ? (
                   filteredProjects.map((project) => (
-                    <tr 
-                      key={project.id} 
+                    <tr
+                      key={project.id}
                       className="transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50/50 hover:to-white group"
                     >
                       <td className="px-6 py-3 leading-tight">
@@ -964,7 +957,7 @@ export default function Projects() {
                           </div>
                         </div>
                       </td>
-                     <td className="px-4 py-3 leading-tight">
+                      <td className="px-4 py-3 leading-tight">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <Users size={16} className="text-gray-400" />
@@ -979,7 +972,7 @@ export default function Projects() {
                           </div>
                         </div>
                       </td>
-                     <td className="px-4 py-3 leading-tight">
+                      <td className="px-4 py-3 leading-tight">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <Calendar size={15} className="text-gray-400" />
@@ -1005,7 +998,7 @@ export default function Projects() {
                           </div>
                         </div>
                       </td>
-                     <td className="px-4 py-3 leading-tight">
+                      <td className="px-4 py-3 leading-tight">
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleViewClick(project)}
@@ -1061,17 +1054,6 @@ export default function Projects() {
           </div>
         </div>
       </div>
-
-      {/* Add custom styles for animations */}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.3s ease-out;
-        }
-      `}</style>
     </div>
   );
 }

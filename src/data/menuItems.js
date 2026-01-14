@@ -1,3 +1,4 @@
+import { path, section } from "framer-motion/client";
 import {
   LayoutDashboard,
   Briefcase,
@@ -6,6 +7,7 @@ import {
   Image,
   Download,
   FileText,
+  Folder,
 } from "lucide-react";
 
 export const menuItems = [
@@ -14,8 +16,15 @@ export const menuItems = [
     icon: LayoutDashboard,
     path: "/dashboard",
     showHeading: true,
+    hideDropdown: true,
+    submenu:[],
+  },
+  {
+    section: "Projects",
+    icon: Folder,
+    path: "/projects",
+    showHeading: false,
     submenu: [
-      // { name: "Analytics", path: "/dashboard/analytics" },
       { name: "Projects", path: "/projects" },
     ],
   },
@@ -56,8 +65,8 @@ export const menuItems = [
     path: "/blog",
     showHeading: false,
     submenu: [
-      { name: "Latest Posts", path: "/blog/latest" },
-      { name: "Categories", path: "/blog/categories" },
+      { name: "Blogs Page", path: "/blogs" },
+      // { name: "Categories", path: "/blog/categories" },
     ],
   },
   {
@@ -66,13 +75,14 @@ export const menuItems = [
     path: "/portfolio",
     showHeading: true,
     submenu: [
-      { name: "Interior Portfolio", path: "/Portfolio/web" },
-      { name: "Merchandising Portfolio", path: "/Portfolio/mobile" },
-      { name: "Kiosk Portfolio", path: "/Portfolios/uiux" },
-      { name: "Exhibition & Events Portfolio", path: "/Portfolio/web" },
-      { name: "Office Interior Portfolio", path: "/Portfolio/mobile" },
-      { name: "Furniture Portfolio", path: "/Portfolio/uiux" },
-      { name: "Videos", path: "/Portfolio/uiux" },
+      { name: "Portfolio details", path: "/Portfolio-details" }
+      // { name: "Interior Portfolio", path: "/Portfolio/web" },
+      // { name: "Merchandising Portfolio", path: "/Portfolio/mobile" },
+      // { name: "Kiosk Portfolio", path: "/Portfolios/uiux" },
+      // { name: "Exhibition & Events Portfolio", path: "/Portfolio/web" },
+      // { name: "Office Interior Portfolio", path: "/Portfolio/mobile" },
+      // { name: "Furniture Portfolio", path: "/Portfolio/uiux" },
+      // { name: "Videos", path: "/Portfolio/uiux" },
     ],
   },
   {
@@ -81,9 +91,10 @@ export const menuItems = [
     path: "/downloads",
     showHeading: true,
     submenu: [
-      { name: "E Brochure", path: "/downloads/resources" },
-      { name: "Newsletter", path: "/downloads/reports" },
-      { name: "Company Profile", path: "/downloads/reports" },
+      { name: "Downloads Detail", path: "/downloads" }
+      // { name: "E Brochure", path: "/downloads/resources" },
+      // { name: "Newsletter", path: "/downloads/reports" },
+      // { name: "Company Profile", path: "/downloads/reports" },
     ],
   },
 ];
