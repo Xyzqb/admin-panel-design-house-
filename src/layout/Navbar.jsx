@@ -1,9 +1,8 @@
-import { Search, Bell, Menu, X, LogOut, User } from "lucide-react";
+import { Bell, Menu, X, LogOut, User,Key } from "lucide-react";
 import { useState } from "react";
+import { FaCircleUser } from "react-icons/fa6";
 
 export default function Navbar({
-  sidebarOpen,
-  setSidebarOpen,
   mobileMenuOpen,
   setMobileMenuOpen,
   handleLogout
@@ -28,17 +27,6 @@ export default function Navbar({
           </button>
         </div>
 
-        {/* CENTER – SEARCH */}
-        <div className="hidden md:flex flex-1 max-w-2xl mx-10 h-12">
-          <div className="flex items-center w-full bg-white border border-slate-200 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-blue-200">
-            <Search size={18} className="text-slate-400" />
-            <input
-              placeholder="Search anything..."
-              className="ml-2 w-full bg-transparent outline-none text-sm text-slate-700 placeholder-slate-400"
-            />
-          </div>
-        </div>
-
         {/* RIGHT – ICONS */}
         <div className="flex items-center gap-4 relative">
 
@@ -55,19 +43,20 @@ export default function Navbar({
             onClick={() => setProfileOpen(!profileOpen)}
             className="flex items-center gap-2 p-1.5 rounded-full hover:bg-slate-100 transition"
           >
-            <img
+            <FaCircleUser size={20}/>
+            {/* <img
               src="/images/avatar.png"
               alt="user"
               className="w-8 h-8 rounded-full border border-slate-300"
-            />
+            /> */}
           </button>
 
           {/* PROFILE DROPDOWN */}
           {profileOpen && (
             <div className="absolute right-0 top-16 w-44 bg-white border border-slate-200 shadow-xl overflow-hidden">
               <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
-                <User size={16} />
-                Profile
+               <Key size={16} />
+               Change Password
               </button>
 
               <button

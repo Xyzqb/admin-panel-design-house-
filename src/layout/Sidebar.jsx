@@ -3,7 +3,6 @@ import { useState } from "react";
 import { menuItems } from "../data/menuItems";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-
 export default function Sidebar({
   sidebarOpen,
   setSidebarOpen,
@@ -13,6 +12,11 @@ export default function Sidebar({
   const location = useLocation();
   const [openSection, setOpenSection] = useState("Dashboard");
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -28,7 +32,7 @@ export default function Sidebar({
       <aside
         className={`fixed top-0 left-0 h-screen bg-white border-r-4 border-[#93C5FD]
         shadow-xl z-50 transition-all duration-300
-        ${sidebarOpen ? "w-70" : "w-20 -translate-x-full lg:translate-x-0"}
+        ${sidebarOpen ? "w-75" : "w-20 -translate-x-full lg:translate-x-0"}
         ${mobileMenuOpen ? "translate-x-0" : ""}`}
       >
         {/* HEADER */}
@@ -77,14 +81,14 @@ export default function Sidebar({
                 )}
 
                 <button onClick={() => {
-                    if (item.hideDropdown) {
-                      navigate(item.path);    
-                      setMobileMenuOpen(false);
-                      return;
-                    }
+                  if (item.hideDropdown) {
+                    navigate(item.path);
+                    setMobileMenuOpen(false);
+                    return;
+                  }
 
-                    sidebarOpen && setOpenSection(isOpen ? null : item.section);
-                  }}
+                  sidebarOpen && setOpenSection(isOpen ? null : item.section);
+                }}
 
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl
                   ${isActive ? "bg-[#EFF6FF] border border-[#2563EB]" : "hover:bg-[#EFF6FF]"}
@@ -128,10 +132,25 @@ export default function Sidebar({
           })}
         </div>
 
+
         {/* FOOTER */}
-        <div className="absolute bottom-0 w-full p-5 border-t border-[#93C5FD] text-center text-[10px] text-gray-500 bg-white">
-          {sidebarOpen && "v1.0.0 • Design House"}
+        <div className="absolute bottom-0 w-full p-2 border-t border-[#93C5FD] bg-white">
+          {sidebarOpen && (
+            <div className="flex flex-col items-center gap-2">
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center justify-center gap-2 px-2 py-3 text-md font-medium text-white bg-red-500 border border-red-200 rounded-lg hover:bg-red-500 transition"
+              >
+                Logout
+              </button>
+
+              <span className="text-[10px] text-gray-500">
+                v1.0.0 • Design House
+              </span>
+            </div>
+          )}
         </div>
+
       </aside>
     </>
   );

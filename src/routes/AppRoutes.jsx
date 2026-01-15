@@ -10,6 +10,12 @@ import Interior from "../pages/Services"; // ✅ FIXED
 import Blog from "../pages/Blogs";
 import Portfolio from "../pages/Portfolio";
 import Downloads from "../pages/Downloads";
+// posts
+import Post from "../pages/Post";
+import PostList from "../pages/PostList";
+
+// Setting
+import Settings from "../pages/Settings";
 
 export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
   return (
@@ -38,6 +44,12 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="/blogs" element={<Blog/>} />
         <Route path="/Portfolio-details" element={<Portfolio/>} />
         <Route path="downloads" element={<Downloads/>} />
+
+        {/* posts */}
+        <Route path="/create-a-post" element={<Post/>} />
+        <Route path="/post-list" element={<PostList/>} />
+        {/* settings */}
+        <Route path="/settings" element={<Settings/>} />
 
       </Route>
     </Routes>

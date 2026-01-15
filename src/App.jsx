@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
+import AppToast from "./components/AppToast";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
@@ -23,6 +24,7 @@ export default function App() {
         setIsLoggedIn={setIsLoggedIn}
         onLogout={handleLogout}
       />
+      <AppToast/>
     </BrowserRouter>
   );
 }

@@ -21,7 +21,7 @@ import {
   PauseCircle,
   CalendarDays
 } from "lucide-react";
-import SearchBar from "../components/common/SearchBar";
+import SearchBar from "../components/SearchBar";
 
 export default function Projects() {
   const [projects, setProjects] = useState([

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RxEyeOpen, RxEyeClosed } from "react-icons/rx";
+import { showLoginSuccess, showLoginError } from "../data/toast";
 
 function LoginPage({ onLogin }) {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -10,27 +11,27 @@ function LoginPage({ onLogin }) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const showAlert = (type, title, text) => {
-    const Swal = window.Swal;
-    if (type === 'success') {
-      Swal.fire({
-        icon: 'success',
-        title: title,
-        text: text,
-        confirmButtonColor: '#059669',
-        confirmButtonText: 'Great!',
-        timer: 2000
-      });
-    } else if (type === 'error') {
-      Swal.fire({
-        icon: 'error',
-        title: title,
-        text: text,
-        confirmButtonColor: '#dc2626',
-        confirmButtonText: 'Try Again'
-      });
-    }
-  };
+  // const showAlert = (type, title, text) => {
+  //   const Swal = window.Swal;
+  //   if (type === 'success') {
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: title,
+  //       text: text,
+  //       confirmButtonColor: '#059669',
+  //       confirmButtonText: 'Great!',
+  //       timer: 2000
+  //     });
+  //   } else if (type === 'error') {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: title,
+  //       text: text,
+  //       confirmButtonColor: '#dc2626',
+  //       confirmButtonText: 'Try Again'
+  //     });
+  //   }
+  // };
 
   const handleSubmit = () => {
     setIsLoading(true);
@@ -38,10 +39,11 @@ function LoginPage({ onLogin }) {
 
     setTimeout(() => {
       if (credentials.username === 'admin' && credentials.password === 'admin123') {
+        showLoginSuccess();
         onLogin();        // ✅ update auth state
         navigate('/');    // ✅ dashboard
       } else {
-        setError('Invalid username or password! Please try again.');
+        showLoginError();
         setIsLoading(false);
       }
     }, 1500);
@@ -55,9 +57,6 @@ function LoginPage({ onLogin }) {
 
   return (
     <>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
       <div className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8 relative overflow-hidden">
         {/* Decorative Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -166,7 +165,6 @@ function LoginPage({ onLogin }) {
 
 
             {/* Right Side - Full Cover Image */}
-            {/* <div className="hidden lg:block relative lg:order-2 bg-blue-50"> */}
             <div className="hidden lg:block relative lg:order-2 bg-gradient-to-br from-[#FFF4EC] via-[#FFE5D4] to-[#F5A56B]">
 
               {/* Image wrapper to create spacing */}
