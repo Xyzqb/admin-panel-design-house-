@@ -1,17 +1,14 @@
 import StatsGrid from "./StatsGrid";
-// import RecentActivity from "./RecentActivity";
 
-export default function Dashboard({ darkMode }) {
+export default function Dashboard() {
   return (
     <div
-      className={`min-h-screen px-4 sm:px-6 lg:px-10 py-6 sm:py-8 space-y-8 transition-colors duration-300 
+      className={`px-1 sm:px-1 lg:px-1 py-6 sm:py-6 transition-colors duration-300 
         
       `}
     >
       {/* STATS GRID */}
-      <div
-        className={`p-4 sm:p-6 shadow-sm bg-white`}
-      >
+      <div className={`p-4 sm:p-6 shadow-sm bg-white`}>
         <StatsGrid />
       </div>
 

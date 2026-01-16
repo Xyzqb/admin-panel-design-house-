@@ -55,8 +55,6 @@ const stats = [
     iconBg: "bg-blue-500",
     text: "text-blue-600",
   },
-
-  // PURPLE
   {
     title: "Active Clients",
     value: "42",
@@ -75,8 +73,6 @@ const stats = [
     iconBg: "bg-purple-500",
     text: "text-purple-600",
   },
-
-  // GREEN
   {
     title: "Design Concepts",
     value: "86",
@@ -95,8 +91,6 @@ const stats = [
     iconBg: "bg-green-500",
     text: "text-green-600",
   },
-
-  // YELLOW
   {
     title: "Testimonials",
     value: "64",
@@ -115,8 +109,6 @@ const stats = [
     iconBg: "bg-yellow-500",
     text: "text-yellow-600",
   },
-
-  // PINK
   {
     title: "Furniture Orders",
     value: "31",
@@ -135,8 +127,6 @@ const stats = [
     iconBg: "bg-orange-500",
     text: "text-orange-600",
   },
-
-  // INDIGO
   {
     title: "Site Visits",
     value: "14",
@@ -155,84 +145,7 @@ const stats = [
     iconBg: "bg-indigo-500",
     text: "text-indigo-600",
   },
-  
 ];
-
-const DashboardCard = ({
-  title,
-  value,
-  icon: Icon,
-  subtitle,
-  tint,
-  dark,
-  iconLight,
-  onClick,
-}) => {
-  return (
-    <div
-      className={`rounded-2xl px-6 py-5 transition-all duration-300 ${onClick ? "cursor-pointer hover:shadow-xl" : ""
-        }`}
-      onClick={onClick}
-      style={{
-        background: `linear-gradient(90deg, #ffffff 55%, ${tint} 100%)`,
-        boxShadow: "0px 4px 18px rgba(0,0,0,0.07)",
-        minHeight: "130px",
-      }}
-    >
-      <div className="flex items-center justify-between">
-        {/* LEFT TEXT */}
-        <div>
-          <p className="text-[11px] text-gray-600 font-semibold uppercase tracking-wide mb-1">
-            {title}
-          </p>
-
-          <h3
-            className="text-3xl font-extrabold leading-tight"
-            style={{ color: dark }}
-          >
-            {value}
-          </h3>
-
-          {subtitle && (
-            <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
-          )}
-        </div>
-
-        {/* ICON BUBBLE */}
-        <div
-          className="p-4 rounded-2xl text-white shadow-md flex items-center justify-center"
-          style={{
-            background: `linear-gradient(135deg, ${dark}, ${iconLight})`,
-          }}
-        >
-          <Icon size={26} />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ===================== PLATFORM OVERVIEW MINI CARDS =====================
-
-const MiniCard = ({ label, value, tint, dark }) => {
-  return (
-    <div
-      className="rounded-xl px-6 py-4 flex items-center justify-between transition-all"
-      style={{
-        background: `linear-gradient(90deg, #ffffff 30%, ${tint} 100%)`,
-        boxShadow: "0px 4px 14px rgba(0,0,0,0.05)",
-      }}
-    >
-      <span className="text-sm text-gray-600 font-medium">{label}</span>
-
-      <span className="text-xl font-extrabold" style={{ color: dark }}>
-        {value}
-      </span>
-    </div>
-  );
-};
-
-// ===================== MAIN DASHBOARD COMPONENT =====================
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -249,11 +162,9 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // Dynamic data from API
   const [projectTypes, setProjectTypes] = useState([]);
   const [revenueData, setRevenueData] = useState([]);
 
-  // Stats from API
   const [dashboardStats, setDashboardStats] = useState({
     totalClients: 0,
     activeProjects: 0,
@@ -275,79 +186,7 @@ const Dashboard = () => {
       try {
         setLoading(true);
 
-        // 1️⃣ FETCH DASHBOARD STATS
-        const statsResponse = await api.get("/api/admin/dashboard/stats");
-        if (statsResponse.data?.success) {
-          const stats = statsResponse.data.data;
-          setDashboardStats({
-            totalClients: stats.totalClients || 0,
-            activeProjects: stats.activeProjects || 0,
-            completedProjects: stats.completedProjects || 0,
-            pendingConsultations: stats.pendingConsultations || 0,
-            totalProducts: stats.totalProducts || 0,
-            monthlyRevenue: stats.monthlyRevenue || 0,
-            avgProjectValue: stats.avgProjectValue || 0,
-            clientSatisfaction: stats.clientSatisfaction || 0,
-          });
-        }
-
-        // 2️⃣ FETCH CLIENTS
-        const clientsRes = await api.get("/api/admin/clients");
-        if (clientsRes.data?.success) {
-          setClients(clientsRes.data.data || []);
-        }
-
-        // 3️⃣ FETCH PROJECTS
-        const projectsRes = await api.get("/api/admin/projects");
-        if (projectsRes.data?.success) {
-          setProjects(projectsRes.data.data || []);
-        }
-
-        // 4️⃣ FETCH CONSULTATIONS
-        const consultationsRes = await api.get("/api/admin/consultations");
-        if (consultationsRes.data?.success) {
-          setConsultations(consultationsRes.data.data || []);
-        }
-
-        // 5️⃣ FETCH PRODUCT DISTRIBUTION
-        const productsRes = await api.get("/api/admin/products/distribution");
-        if (productsRes.data?.success) {
-          const distribution = productsRes.data.data;
-          const formatted = Object.keys(distribution).map(key => ({
-            name: key.charAt(0).toUpperCase() + key.slice(1),
-            value: distribution[key],
-            color: getColorForProductType(key)
-          }));
-          setProjectTypes(formatted);
-        }
-
-        // 6️⃣ FETCH REVENUE DATA
-        const revenueRes = await api.get("/api/admin/revenue/monthly");
-        if (revenueRes.data?.success) {
-          setRevenueData(revenueRes.data.data || []);
-        }
-
-        // 7️⃣ FETCH PLATFORM OVERVIEW
-        const overviewRes = await api.get("/api/admin/platform/overview");
-        if (overviewRes.data?.success) {
-          const data = overviewRes.data.data;
-          setBlogPosts(data.blogPosts || []);
-          setPortfolio(data.portfolio || []);
-          setTestimonials(data.testimonials || []);
-          setServices(data.services || []);
-        }
-
-        // 8️⃣ FETCH PRODUCTS
-        const allProductsRes = await api.get("/api/admin/products");
-        if (allProductsRes.data?.success) {
-          setProducts(allProductsRes.data.data || []);
-        }
-
-      } catch (err) {
-        console.error("Error fetching dashboard data:", err);
-        toast.error("Error fetching dashboard data!");
-
-        // Fallback to mock data if API fails
+        // Fallback to mock data
         setClients(Array(15).fill({}).map((_, i) => ({
           createdAt: new Date(2024, i % 12, 1)
         })));
@@ -392,6 +231,9 @@ const Dashboard = () => {
           clientSatisfaction: 4.8,
         });
 
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+        toast.error("Error fetching dashboard data!");
       } finally {
         setLoading(false);
       }
@@ -400,7 +242,6 @@ const Dashboard = () => {
     fetchAll();
   }, []);
 
-  // Helper function for project type colors
   const getColorForProductType = (type) => {
     const colors = {
       residential: "#6366f1",
@@ -480,67 +321,69 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
+      <div className="flex items-center justify-center py-20">
         <div className="text-center space-y-4">
           <div className="h-12 w-12 border-4 border-amber-300 border-t-amber-600 rounded-full animate-spin mx-auto"></div>
-          <p className="text-amber-600 font-medium">Loading dashboard data...</p>
+          <p className="text-amber-600 font-medium">
+            Loading dashboard data...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="w-full ">
       <ToastContainer />
+      
+      {/* HEADER */}
+      <div className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-amber-600">
+          Interior Design Dashboard
+        </h1>
+        <p className="text-gray-600 mt-1 text-lg">
+          Insights & analytics for your interior design business
+        </p>
+      </div>
 
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 lg:space-y-10">
-        {/* HEADER */}
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-amber-600">
-            Interior Design Dashboard
-          </h1>
-          <p className="text-gray-600 mt-2 text-sm sm:text-base">
-            Insights & analytics for your interior design business
-          </p>
-        </div>
-
-        {/* ===================== ORIGINAL STATS GRID ===================== */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div className="space-y-4">
+        {/* STATS GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((item, index) => {
             const Icon = item.icon;
             return (
               <div
                 key={index}
-                className={`rounded-2xl p-5 shadow-sm hover:shadow-lg transition ${item.bg}`}
+                className={`rounded-2xl p-4 shadow-md hover:shadow-lg transition ${item.bg}`}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-semibold text-gray-600">
+                    <h4 className="text-xs font-semibold text-gray-600 uppercase">
                       {item.title}
                     </h4>
-                    <p className={`text-3xl font-bold mt-1 ${item.text}`}>
+                    <p className={`text-2xl md:text-3xl font-bold mt-1 ${item.text}`}>
                       {item.value}
                     </p>
                   </div>
 
                   <div className={`p-3 rounded-xl text-white ${item.iconBg}`}>
-                    <Icon size={24} />
+                    <Icon size={22} />
                   </div>
                 </div>
 
-                <p className="text-sm text-gray-500 mt-3">{item.desc}</p>
+                <p className="text-xs text-gray-500 mt-2">{item.desc}</p>
               </div>
             );
           })}
         </div>
 
-        {/* ===================== CHARTS ===================== */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+        {/* CHARTS */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* CLIENT GROWTH CHART */}
-          <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm">
-            <h3 className="font-semibold mb-4">Client Growth Trend</h3>
+          <div className="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+            <h3 className="font-semibold mb-3 text-base">Client Growth Trend</h3>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={280}>
               <AreaChart data={clientsMonthlyData}>
                 <defs>
                   <linearGradient id="clientGradient" x1="0" y1="0" x2="0" y2="1">
@@ -564,10 +407,10 @@ const Dashboard = () => {
           </div>
 
           {/* PROJECT TREND CHART */}
-          <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm">
-            <h3 className="font-semibold mb-4">Project Acquisition Trend</h3>
+          <div className="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+            <h3 className="font-semibold mb-3 text-base">Project Acquisition Trend</h3>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={280}>
               <LineChart data={projectsMonthlyData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
@@ -583,18 +426,18 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* PIE CHART - Project Type Distribution */}
-          <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm">
-            <h3 className="font-semibold mb-4">Project Type Distribution</h3>
+          {/* PIE CHART */}
+          <div className="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+            <h3 className="font-semibold mb-3 text-base">Project Type Distribution</h3>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={280}>
               <PieChart>
                 <Pie
                   data={projectTypes}
                   cx="50%"
                   cy="50%"
-                  outerRadius={100}
-                  innerRadius={40}
+                  outerRadius={90}
+                  innerRadius={35}
                   dataKey="value"
                   label={({ name, percent }) =>
                     `${name}: ${(percent * 100).toFixed(0)}%`
@@ -609,11 +452,11 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* BAR CHART - Revenue */}
-          <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm">
-            <h3 className="font-semibold mb-4">Monthly Revenue</h3>
+          {/* BAR CHART */}
+          <div className="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+            <h3 className="font-semibold mb-3 text-base">Monthly Revenue</h3>
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={280}>
               <BarChart data={revenueData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
@@ -625,11 +468,11 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* CONSULTATION STATUS BREAKDOWN */}
-        <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm">
-          <h3 className="font-semibold mb-5 sm:mb-6">Consultation Status Breakdown</h3>
+        {/* CONSULTATION STATUS */}
+        <div className="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+          <h3 className="font-semibold mb-4 text-base">Consultation Status Breakdown</h3>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {consultationStatus.map((s, i) => {
               const bgColors = [
                 "from-amber-50 to-yellow-50 border-amber-200",
@@ -647,35 +490,35 @@ const Dashboard = () => {
               return (
                 <div
                   key={i}
-                  className={`p-4 rounded-lg bg-gradient-to-br ${bgColors[i % bgColors.length]}`}
+                  className={`p-3 rounded-lg bg-gradient-to-br border ${bgColors[i % bgColors.length]}`}
                 >
-                  <p className="text-sm text-gray-600">{s.status}</p>
-                  <h4 className={`text-2xl font-bold ${textColors[i % textColors.length]}`}>
+                  <p className="text-xs text-gray-600">{s.status}</p>
+                  <h4 className={`text-xl font-bold ${textColors[i % textColors.length]}`}>
                     {s.count}
                   </h4>
                 </div>
               );
             })}
             {consultationStatus.length === 0 && (
-              <div className="col-span-4 text-center py-6 text-gray-500">
+              <div className="col-span-4 text-center py-6 text-gray-500 text-sm">
                 No consultation data available
               </div>
             )}
           </div>
         </div>
 
-        {/* RECENT ACTIVITY SECTION */}
-        <div className="bg-white rounded-xl p-5 sm:p-6 shadow-sm">
-          <h3 className="font-semibold mb-5 sm:mb-6">Recent Activity</h3>
+        {/* RECENT ACTIVITY */}
+        <div className="bg-white rounded-xl p-4 shadow-md border border-gray-200">
+          <h3 className="font-semibold mb-4 text-base">Recent Activity</h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div className="space-y-4">
-              <h4 className="font-medium text-gray-700 flex items-center gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-3">
+              <h4 className="font-medium text-gray-700 flex items-center gap-2 text-sm">
                 <Clock size={16} />
                 Recent Projects
               </h4>
               {projects.slice(0, 3).map((project, i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={i} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium">Project #{i + 1}</span>
                   <span className="text-xs px-2 py-1 rounded-full bg-amber-100 text-amber-800">
                     {project.status || 'active'}
@@ -684,13 +527,13 @@ const Dashboard = () => {
               ))}
             </div>
 
-            <div className="space-y-4">
-              <h4 className="font-medium text-gray-700 flex items-center gap-2">
+            <div className="space-y-3">
+              <h4 className="font-medium text-gray-700 flex items-center gap-2 text-sm">
                 <MessageCircle size={16} />
                 Recent Consultations
               </h4>
               {consultations.slice(0, 3).map((cons, i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={i} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium">Consultation #{i + 1}</span>
                   <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800">
                     {cons.status || 'pending'}
@@ -699,13 +542,13 @@ const Dashboard = () => {
               ))}
             </div>
 
-            <div className="space-y-4">
-              <h4 className="font-medium text-gray-700 flex items-center gap-2">
+            <div className="space-y-3">
+              <h4 className="font-medium text-gray-700 flex items-center gap-2 text-sm">
                 <Heart size={16} />
                 Top Services
               </h4>
               {services.slice(0, 3).map((service, i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div key={i} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium">{service.name || `Service ${i + 1}`}</span>
                   <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-800">
                     Popular
@@ -719,4 +562,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;

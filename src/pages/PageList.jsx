@@ -48,7 +48,7 @@ const initialPosts = [
     { id: '20', title: 'Restaurant Interior Design Concepts', date: '20-Feb-2025', status: 'active', views: 987, category: 'Restaurant' },
 ];
 
-const PostList = () => {
+const PageList = () => {
     // State management
     const [posts, setPosts] = useState(initialPosts);
     const [searchTerm, setSearchTerm] = useState('');
@@ -130,7 +130,7 @@ const PostList = () => {
             <div className="w-full">
                 {/* Header */}
                 <div className="mb-6 mx-2">
-                    <h1 className="text-3xl md:text-3xl font-bold text-amber-600">Blog Post List</h1>
+                    <h1 className="text-3xl md:text-3xl font-bold text-amber-600">Page List</h1>
                     <p className="text-gray-600 mt-2 text-lg">Manage and monitor all your blog posts</p>
                 </div>
 
@@ -514,4 +514,4 @@ const PostList = () => {
     );
 };
 
-export default PostList;
+export default PageList;

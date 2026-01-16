@@ -66,9 +66,9 @@ export const menuItems = [
     showHeading: true,
     hideDropdown: false,
     submenu: [
-      { name: "Gallery Category", path: "/gallery/category" },
-      { name: "Gallery Images List", path: "/gallery/list" },
-      { name: "Add Gallery Images", path: "/gallery/add" },
+      { name: "Gallery Category", path: "/gallery-category" },
+      { name: "Gallery Images List", path: "/gallery-image-list" },
+      { name: "Add Gallery Images", path: "/add-gallery-images" },
     ],
   },
 
@@ -79,8 +79,8 @@ export const menuItems = [
     showHeading: false,
     hideDropdown: false,
     submenu: [
-      { name: "Add Testimonials", path: "/testimonials/add" },
-      { name: "Testimonials List", path: "/testimonials/list" },
+      { name: "Add Testimonials", path: "/add-testimonials" },
+      { name: "Testimonials List", path: "/testimonials-list" },
     ],
   },
 
@@ -91,8 +91,8 @@ export const menuItems = [
     showHeading: false,
     hideDropdown: false,
     submenu: [
-      { name: "Add Requirements", path: "/vacancy/add" },
-      { name: "Vacancy List", path: "/vacancy/list" },
+      { name: "Add Requirements", path: "/vacancy-add" },
+      { name: "Vacancy List", path: "/vacancy-list" },
     ],
   },
 
@@ -103,8 +103,8 @@ export const menuItems = [
     showHeading: false,
     hideDropdown: false,
     submenu: [
-      { name: "Add Clients", path: "/clients/add" },
-      { name: "Clients List", path: "/clients/list" },
+      { name: "Add Clients", path: "/clients-add" },
+      { name: "Clients List", path: "/clients-list" },
     ],
   },
 
@@ -115,8 +115,8 @@ export const menuItems = [
     showHeading: false,
     hideDropdown: false,
     submenu: [
-      { name: "Add Facilities", path: "/facilities/add" },
-      { name: "Facilities List", path: "/facilities/list" },
+      { name: "Add Facilities", path: "/facilities-add" },
+      { name: "Facilities List", path: "/facilities-list" },
     ],
   },
   {
