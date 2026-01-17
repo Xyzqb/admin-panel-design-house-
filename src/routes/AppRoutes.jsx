@@ -1,15 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../layout/LoginPage";
 import Dashboard from "../pages/Dashboard";
-import Testimonials from "../pages/Testimonials";
 import AdminLayout from "../layout/AdminLayout";
-import Clients from "../pages/Clients";
-import Projects from "../pages/Projects";
-import Career from "../pages/Career";
-import Interior from "../pages/Services";
-import Blog from "../pages/Blogs";
-import Portfolio from "../pages/Portfolio";
-import Downloads from "../pages/Downloads";
 
 // page
 import CreatePage from "../pages/CreatePage";
@@ -26,6 +18,24 @@ import AddGalleryImages from "../pages/gallery/AddGalleryImages";
 
 // Testmonials
 import AddTestimonial from "../pages/testmonials/AddTestimonial";
+import TestimonialsList from "../pages/testmonials/TestmonialList";
+
+// vacancy
+import AddVacancy from "../pages/vacancy/AddVacancy";
+import VacancyList from "../pages/vacancy/VacancyList";
+
+// our clients
+import AddClients from "../pages/clients/AddClients";
+import ClientsList  from "../pages/clients/ClientList";
+
+// our projects
+import AddProject from "../pages/project/AddProject";
+import ProjectList from "../pages/project/ProjectList";
+
+// facilites
+import AddFacility from "../pages/facilities/AddFacility";
+import FacilityList from "../pages/facilities/FacilityList";
+
 
 // settings
 import Settings from "../pages/Settings";
@@ -56,26 +66,6 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         {/* DASHBOARD */}
         <Route path="dashboard" element={<Dashboard />} />
 
-        {/* MAIN PAGES */}
-        <Route path="clients" element={<Clients />} />
-        <Route path="testimonials" element={<Testimonials />} />
-        <Route path="projects" element={<Projects />} />
-
-        {/* SERVICES */}
-        <Route path="services/interior" element={<Interior />} />
-
-        {/* CAREER */}
-        <Route path="career/jobs" element={<Career />} />
-
-        {/* BLOG */}
-        <Route path="blogs" element={<Blog />} />
-
-        {/* PORTFOLIO */}
-        <Route path="portfolio-details" element={<Portfolio />} />
-
-        {/* DOWNLOADS */}
-        <Route path="downloads" element={<Downloads />} />
-
         {/* POSTS */}
         <Route path="create-a-post" element={<Post />} />
         <Route path="post-list" element={<PostList />} />
@@ -86,12 +76,28 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
 
         {/* gallery */}
         <Route path="/gallery-category" element={<GalleryCategory/>} />
-        <Route path="/gallery-image-list"element={<GalleryImagesList/>} />
+        <Route path="/gallery-image-list"element={<GalleryImagesList/>}/>
         <Route path="/add-gallery-images" element={<AddGalleryImages/>}/>
 
         {/* testmonial */}
         <Route path="/add-testimonials" element={<AddTestimonial/>} />
+        <Route path="/testimonials-list" element={<TestimonialsList/>}/>
 
+        {/* Vacancy */}
+        <Route path="/add-vacancy" element={<AddVacancy/>} />
+        <Route path="/vacancy-list" element={<VacancyList/>} />
+
+        {/* clients */}
+        <Route path="/add-clients" element={<AddClients/>} />
+        <Route path="/clients-list" element={<ClientsList/>} />
+
+        {/* projects */}
+        <Route path="/add-projects" element={<AddProject/>} />
+        <Route path="/projects-list" element={<ProjectList/>} />
+
+         {/* facility */}
+        <Route path="/add-facilities" element={<AddClients/>} />
+        <Route path="/facilities-list" element={<ClientsList/>} />
 
         {/* SETTINGS */}
         <Route path="settings" element={<Settings />} />

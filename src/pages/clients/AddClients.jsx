@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const AddTestimonial = () => {
+const AddClients = () => {
   const navigate = useNavigate();
 
   const [galleryData, setGalleryData] = useState({
     name: "",
     position: "",
     organisation: "",
+    url: "",
     image: null,
     status: "Inactive",
   });
@@ -62,6 +63,7 @@ const AddTestimonial = () => {
       name: "",
       position: "",
       organisation: "",
+      url: "",
       image: null,
       status: "Inactive",
     });
@@ -69,55 +71,38 @@ const AddTestimonial = () => {
     alert("Testimonial added successfully!");
   };
 
-  // ================= EDIT =================
-  const editEvent = (item) => {
-    setGalleryData(item);
-    setEditId(item.id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  useEffect(() => {
+    const editClient = JSON.parse(localStorage.getItem("editClient"));
 
-  // ================= DELETE =================
-  const deleteEvent = (id) => {
-    if (window.confirm("Are you sure you want to delete?")) {
-      setEvents((prev) => prev.filter((item) => item.id !== id));
+    if (editClient) {
+      setGalleryData(editClient);     
+      setEditId(editClient.id);       
+      localStorage.removeItem("editClient");
     }
-  };
+  }, []);
 
-  // ================= TOGGLE STATUS =================
-  const toggleStatus = (id) => {
-    setEvents((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? {
-            ...item,
-            status: item.status === "Active" ? "Inactive" : "Active",
-          }
-          : item
-      )
-    );
-  };
 
   return (
     <div className="bg-white shadow-md p-4 md:p-8 mt-6 h-[500px]">
       <div className="w-full">
-        <header className="mb-6">
+        <header className="mb-6 mx-3">
           {/* HEADER */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
             <div>
               <h1 className="text-3xl font-bold text-amber-600 mb-2">
-                Add Testimonials
+                {editId ? "Update Clients" : "Add Clients"}
               </h1>
               <p className="text-gray-600 text-lg">
-                Manage your testimonials details
+                Manage your clients details
               </p>
             </div>
 
             <button
-              onClick={() => navigate("/testimonials-list")}
+              onClick={() => navigate("/clients-list")}
               className="flex items-center gap-2 bg-gray-800 text-white px-6 py-3 rounded-sm hover:bg-gray-900"
             >
               <List className="w-5 h-5" />
-              Testimonials List
+              Clients List
             </button>
           </div>
 
@@ -131,7 +116,7 @@ const AddTestimonial = () => {
               {/* NAME */}
               <div>
                 <label className="text-sm font-medium text-gray-700">
-                  Name <span className="text-red-500">*</span>
+                  Client Name<span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -144,33 +129,17 @@ const AddTestimonial = () => {
                 />
               </div>
 
-              {/* POSITION */}
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Position <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="position"
-                  value={galleryData.position}
-                  onChange={handleInputChange}
-                  placeholder="Enter position"
-                  className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
-                  required
-                />
-              </div>
-
               {/* ORGANISATION */}
               <div>
                 <label className="text-sm font-medium text-gray-700">
-                  Organisation
+                  url
                 </label>
                 <input
-                  type="text"
-                  name="organisation"
-                  value={galleryData.organisation}
+                  type="url"
+                  name="url"
+                  value={galleryData.url}
                   onChange={handleInputChange}
-                  placeholder="Enter name"
+                  placeholder="https://example.com"
                   className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
                   required
                 />
@@ -236,7 +205,7 @@ const AddTestimonial = () => {
               type="submit"
               className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700"
             >
-              {editId ? "Update Testimonial" : "Add Testimonial"}
+              {editId ? "Update Clients" : "Add Clients"}
             </button>
           </form>
         </header>
@@ -244,4 +213,4 @@ const AddTestimonial = () => {
     </div>
   );
 };
-export default AddTestimonial;
+export default AddClients;

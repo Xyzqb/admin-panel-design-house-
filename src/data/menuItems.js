@@ -91,7 +91,7 @@ export const menuItems = [
     showHeading: false,
     hideDropdown: false,
     submenu: [
-      { name: "Add Requirements", path: "/vacancy-add" },
+      { name: "Add Requirements", path: "/add-vacancy" },
       { name: "Vacancy List", path: "/vacancy-list" },
     ],
   },
@@ -103,8 +103,20 @@ export const menuItems = [
     showHeading: false,
     hideDropdown: false,
     submenu: [
-      { name: "Add Clients", path: "/clients-add" },
+      { name: "Add Clients", path: "/add-clients" },
       { name: "Clients List", path: "/clients-list" },
+    ],
+  },
+
+    {
+    section: "Our Projects",
+    icon: Users,
+    path: "/projects",
+    showHeading: false,
+    hideDropdown: false,
+    submenu: [
+      { name: "Add Projects", path: "/add-projects" },
+      { name: "Projects List", path: "/projects-list" },
     ],
   },
 
@@ -115,7 +127,7 @@ export const menuItems = [
     showHeading: false,
     hideDropdown: false,
     submenu: [
-      { name: "Add Facilities", path: "/facilities-add" },
+      { name: "Add Facilities", path: "/add-facilities" },
       { name: "Facilities List", path: "/facilities-list" },
     ],
   },

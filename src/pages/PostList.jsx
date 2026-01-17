@@ -10,19 +10,14 @@ import {
     Calendar,
     Hash,
     TrendingUp,
-    ChevronLeft,
-    ChevronRight,
-    ChevronsLeft,
-    ChevronsRight,
     CheckCircle,
     XCircle,
-    Download,
-    Share2,
-    Copy
 } from 'lucide-react';
 import { showDeleted } from '../data/toast';
-import AdminPage from '../layout/AdminPage';
-
+import { toast } from "react-toastify";
+import DeleteConfirmToast from "../components/DeleteConfirmToast";
+import Pagination from "../components/Pagination";
+import { useNavigate } from "react-router-dom";
 
 // Mock data - In real app, this will come from Redux Toolkit Query
 const initialPosts = [
@@ -50,9 +45,10 @@ const initialPosts = [
 
 const PostList = () => {
     // State management
+    const navigate = useNavigate();
     const [posts, setPosts] = useState(initialPosts);
     const [searchTerm, setSearchTerm] = useState('');
-    const [rowsPerPage, setRowsPerPage] = useState(50);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState('all');
     const [categoryFilter, setCategoryFilter] = useState('all');
@@ -68,16 +64,20 @@ const PostList = () => {
         return matchesSearch && matchesStatus && matchesCategory;
     });
 
-    // Calculate pagination
-    const totalPages = Math.ceil(filteredPosts.length / rowsPerPage);
+    // Pagination calculations
     const startIndex = (currentPage - 1) * rowsPerPage;
-    const endIndex = Math.min(startIndex + rowsPerPage, filteredPosts.length);
+
+    const endIndex = Math.min(
+        startIndex + rowsPerPage,
+        filteredPosts.length
+    );
     const currentPosts = filteredPosts.slice(startIndex, endIndex);
 
     // Handle page change
     const handlePageChange = (page) => {
         setCurrentPage(Math.max(1, Math.min(page, totalPages)));
     };
+
 
 
     // Handle status toggle
@@ -88,14 +88,6 @@ const PostList = () => {
                 : post
         ));
         showStatusUpdated();
-    };
-
-    // Handle delete post
-    const handleDeletePost = (id) => {
-        if (window.confirm('Are you sure you want to delete this post?')) {
-            setPosts(posts.filter(post => post.id !== id));
-            showDeleted();
-        }
     };
 
     // Get status color
@@ -322,20 +314,28 @@ const PostList = () => {
                                                     {post.status === 'active' ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                                 </button>
                                                 <button
+                                                    onClick={() => navigate("/create-a-post")}
                                                     className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-lg transition-colors"
                                                     title="Edit"
                                                 >
                                                     <Edit className="w-4 h-4" />
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDeletePost(post.id)}
+                                                    onClick={() =>
+                                                        toast(
+                                                            <DeleteConfirmToast
+                                                                onDelete={() => {
+                                                                    setPosts(prev => prev.filter(p => p.id !== post.id));
+                                                                    showDeleted();
+                                                                }}
+                                                            />,
+                                                            { autoClose: false }
+                                                        )
+                                                    }
                                                     className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                                     title="Delete"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
-                                                </button>
-                                                <button className="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-50 rounded-lg transition-colors">
-                                                    <MoreVertical className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         </td>
@@ -401,18 +401,30 @@ const PostList = () => {
                                             {post.status === 'active' ? 'Deactivate' : 'Activate'}
                                         </button>
                                         <button
+                                            onClick={() => navigate("/create-a-post")}
                                             className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                                         >
                                             <Edit className="w-4 h-4" />
                                             Edit
                                         </button>
                                         <button
-                                            onClick={() => handleDeletePost(post.id)}
+                                            onClick={() =>
+                                                toast(
+                                                    <DeleteConfirmToast
+                                                        onDelete={() => {
+                                                            setPosts(prev => prev.filter(p => p.id !== post.id));
+                                                            showDeleted();
+                                                        }}
+                                                    />,
+                                                    { autoClose: false }
+                                                )
+                                            }
                                             className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                                         >
                                             <Trash2 className="w-4 h-4" />
                                             Delete
                                         </button>
+
                                     </div>
                                 </div>
                             </div>
@@ -435,83 +447,20 @@ const PostList = () => {
 
                 {/* Pagination & Stats */}
                 <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-                    {/* Stats */}
+
                     <div className="text-sm text-gray-600">
                         Showing <span className="font-semibold text-gray-800">{startIndex + 1}-{endIndex}</span> of{' '}
                         <span className="font-semibold text-gray-800">{filteredPosts.length}</span> posts
                     </div>
-
-                    {/* Pagination */}
-                    <div className="flex items-center gap-2">
-                        {/* First Page */}
-                        <button
-                            onClick={() => handlePageChange(1)}
-                            disabled={currentPage === 1}
-                            className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-                        >
-                            <ChevronsLeft className="w-4 h-4" />
-                        </button>
-
-                        {/* Previous Page */}
-                        <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-                        >
-                            <ChevronLeft className="w-4 h-4" />
-                        </button>
-
-                        {/* Page Numbers */}
-                        <div className="flex items-center gap-1">
-                            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                                let pageNum;
-                                if (totalPages <= 5) {
-                                    pageNum = i + 1;
-                                } else if (currentPage <= 3) {
-                                    pageNum = i + 1;
-                                } else if (currentPage >= totalPages - 2) {
-                                    pageNum = totalPages - 4 + i;
-                                } else {
-                                    pageNum = currentPage - 2 + i;
-                                }
-
-                                return pageNum <= totalPages ? (
-                                    <button
-                                        key={pageNum}
-                                        onClick={() => handlePageChange(pageNum)}
-                                        className={`w-10 h-10 rounded-lg border transition-colors ${currentPage === pageNum
-                                            ? 'bg-blue-500 text-white border-blue-500'
-                                            : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                                            }`}
-                                    >
-                                        {pageNum}
-                                    </button>
-                                ) : null;
-                            })}
-                        </div>
-
-                        {/* Next Page */}
-                        <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-                        >
-                            <ChevronRight className="w-4 h-4" />
-                        </button>
-
-                        {/* Last Page */}
-                        <button
-                            onClick={() => handlePageChange(totalPages)}
-                            disabled={currentPage === totalPages}
-                            className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors"
-                        >
-                            <ChevronsRight className="w-4 h-4" />
-                        </button>
-                    </div>
+                    <Pagination
+                        currentPage={currentPage}
+                        totalItems={filteredPosts.length}
+                        itemsPerPage={rowsPerPage}
+                        onPageChange={setCurrentPage}
+                    />
                 </div>
             </div>
         </div>
     );
 };
-
 export default PostList;
