@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Search, Filter, Eye, Edit2, Trash2, Plus, ChevronLeft, ChevronRight, Download, MoreVertical } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { SearchBar } from '../../components/SearchBar';
+import Pagination from "../../components/Pagination";
 
 const ProjectList = () => {
   const navigate = useNavigate();
-  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   // Mock data based on your table
   const projects = [
     { id: 164, client: 'Absolut', projectName: '', projectCategory: '123', photo: '123', status: 'Active' },
@@ -48,128 +50,88 @@ const ProjectList = () => {
       <div className="w-full">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Project List</h1>
-          <p className="text-gray-600">Manage and view all your projects</p>
+          <h1 className="text-3xl font-bold text-amber-600 mb-2">Project List</h1>
+          <p className="text-gray-600 text-lg">Manage and view all your projects</p>
         </div>
-
-        {/* Control Bar */}
-        <div className="bg-white rounded-xl shadow-md p-4 mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            {/* Left Controls */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Show</span>
-                <div className="relative">
-                  <select
-                    value={rowsPerPage}
-                    onChange={(e) => setRowsPerPage(Number(e.target.value))}
-                    className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                  >
-                    <option value={10}>10</option>
-                    <option value={25}>25</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
-                  </select>
-                  <div className="absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Rows</span>
-              </div>
-
-              <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                <Filter className="w-4 h-4" />
-                <span className="text-sm font-medium">Filters</span>
-              </button>
-
-              <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-                <Download className="w-4 h-4" />
-                <span className="text-sm font-medium">Export</span>
-              </button>
-            </div>
-
-            {/* Search and Add Button */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="relative flex-1 min-w-[200px]">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                />
-              </div>
-
-              <button
-                onClick={handleAddProject}
-                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-5 py-2.5 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all shadow-md hover:shadow-lg whitespace-nowrap"
-              >
-                <Plus className="w-5 h-5" />
-                Add Project
-              </button>
-            </div>
-          </div>
-        </div>
+        
+        <SearchBar
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(value) => {
+            setRowsPerPage(value);
+            setCurrentPage(1);
+          }}
+          searchValue={searchTerm}
+          onSearchChange={(value) => {
+            setSearchTerm(value);
+            setCurrentPage(1);
+          }}
+        />
 
         {/* Table Container */}
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-white rounded-md shadow-sm overflow-hidden border border-gray-200">
           {/* Desktop Table */}
           <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Id</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Client</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Project Name</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Project Category</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Photo</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Status</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Action</th>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-blue-50 border-b border-blue-100">
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Id</th>
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Client</th>
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Project Name</th>
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Project Category</th>
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Photo</th>
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Status</th>
+                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {paginatedProjects.map((project) => (
-                  <tr key={project.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="py-4 px-6 whitespace-nowrap">
+                {paginatedProjects.map((project, index) => (
+                  <tr 
+                    key={project.id} 
+                    className={`hover:bg-gray-50 transition-colors ${index !== paginatedProjects.length - 1 ? 'border-b border-gray-200' : ''}`}
+                  >
+                    <td className="py-4 px-6 whitespace-nowrap border-r border-gray-100">
                       <span className="text-sm font-semibold text-gray-900">#{project.id}</span>
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 border-r border-gray-100">
                       <div className="text-sm font-medium text-gray-900">{project.client}</div>
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 border-r border-gray-100">
                       <div className="text-sm text-gray-900">{project.projectName || '-'}</div>
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 border-r border-gray-100">
                       <div className="text-sm text-gray-900">{project.projectCategory}</div>
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 border-r border-gray-100">
                       {project.photo ? (
-                        <button className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
+                        <button className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
                           <span className="text-lg">📷</span>
                         </button>
                       ) : (
                         <span className="text-sm text-gray-500">-</span>
                       )}
                     </td>
-                    <td className="py-4 px-6">
+                    <td className="py-4 px-6 border-r border-gray-100">
                       <StatusBadge status={project.status} />
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => handleEdit(project)}
-                          className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+                          className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100"
                           title="Edit"
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button className="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors" title="View">
+                        <button 
+                          className="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors border border-green-100" 
+                          title="View"
+                        >
                           <Eye className="w-4 h-4" />
                         </button>
-                        <button className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors" title="Delete">
+                        <button 
+                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border border-red-100" 
+                          title="Delete"
+                        >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -191,7 +153,7 @@ const ProjectList = () => {
                   </div>
                   <StatusBadge status={project.status} />
                 </div>
-                
+
                 <div className="space-y-2">
                   <div>
                     <span className="text-xs font-medium text-gray-500">Project Name</span>
@@ -205,7 +167,7 @@ const ProjectList = () => {
                     <div>
                       <span className="text-xs font-medium text-gray-500">Photo</span>
                       <div className="mt-1">
-                        <button className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                        <button className="p-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100">
                           <span className="text-lg">📷</span>
                         </button>
                       </div>
@@ -217,15 +179,15 @@ const ProjectList = () => {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleEdit(project)}
-                      className="p-2 bg-blue-50 text-blue-600 rounded-lg"
+                      className="p-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100"
                       title="Edit"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button className="p-2 bg-green-50 text-green-600 rounded-lg" title="View">
+                    <button className="p-2 bg-green-50 text-green-600 rounded-lg border border-green-100" title="View">
                       <Eye className="w-4 h-4" />
                     </button>
-                    <button className="p-2 bg-red-50 text-red-600 rounded-lg" title="Delete">
+                    <button className="p-2 bg-red-50 text-red-600 rounded-lg border border-red-100" title="Delete">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -238,60 +200,22 @@ const ProjectList = () => {
           </div>
 
           {/* Table Footer */}
-          <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+          <div className="px-6 py-4 border-t border-gray-200 bg-blue-50">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-sm text-gray-700">
+              <div className="text-sm text-blue-700">
                 Showing <span className="font-semibold">{startIndex + 1}</span> to{' '}
                 <span className="font-semibold">
                   {Math.min(startIndex + rowsPerPage, filteredProjects.length)}
                 </span>{' '}
                 of <span className="font-semibold">{filteredProjects.length}</span> results
               </div>
-              
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className={`p-2 rounded-lg ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 hover:bg-gray-200'}`}
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                
-                {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                  let pageNum;
-                  if (totalPages <= 5) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i;
-                  } else {
-                    pageNum = currentPage - 2 + i;
-                  }
-                  
-                  return (
-                    <button
-                      key={pageNum}
-                      onClick={() => setCurrentPage(pageNum)}
-                      className={`w-10 h-10 rounded-lg font-medium ${
-                        currentPage === pageNum
-                          ? 'bg-blue-600 text-white'
-                          : 'text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
-                
-                <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className={`p-2 rounded-lg ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 hover:bg-gray-200'}`}
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-              </div>
+
+              <Pagination
+                currentPage={currentPage}
+                totalItems={filteredProjects.length}
+                itemsPerPage={rowsPerPage}
+                onPageChange={setCurrentPage}
+              />
             </div>
           </div>
         </div>
@@ -306,7 +230,7 @@ const ProjectList = () => {
             <p className="text-gray-500 mb-6">Try adjusting your search or filter to find what you're looking for.</p>
             <button
               onClick={handleAddProject}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors border border-blue-600"
             >
               <Plus className="w-5 h-5" />
               Add Your First Project

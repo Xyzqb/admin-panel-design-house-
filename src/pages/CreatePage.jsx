@@ -13,16 +13,10 @@ import {
     FileText,
     Save,
     X,
-    Layout,
     Users,
-    Store,
-    Home,
-    Building,
-    Utensils,
-    Calendar,
-    Award,
-    Trello
 } from 'lucide-react';
+import { useLocation } from "react-router-dom";
+
 
 const CreatePage = () => {
     // Form state
@@ -78,6 +72,10 @@ const CreatePage = () => {
             }));
         }
     };
+
+
+    const location = useLocation();
+    const pageId = location.state?.pageId || null;
 
     // Handle form submission
     const handleSubmit = (e) => {
@@ -300,13 +298,12 @@ const CreatePage = () => {
                                 />
                             </div>
 
-                               {/* Submit Button */}
+                            {/* Submit Button */}
                             <button
                                 type="submit"
                                 className="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
                             >
-                                <Save className="w-5 h-5" />
-                                Add Post Now
+                                {pageId ? "Update Page" : "Add Page"}
                             </button>
                         </div>
 
@@ -419,21 +416,20 @@ const CreatePage = () => {
                                     </label>
                                 </div>
 
-                                 {/* Client */}
-                                    <div>
-                                        <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                                            Alt Tag  *
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.altTag}
-                                            onChange={(e) => setFormData(prev => ({ ...prev, altTag: e.target.value }))}
-                                            placeholder="Enter Alt Tag"
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                                            required
-                                        />
-                                    </div>
-
+                                {/* Client */}
+                                <div>
+                                    <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                                        Alt Tag  *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={formData.altTag}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, altTag: e.target.value }))}
+                                        placeholder="Enter Alt Tag"
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        required
+                                    />
+                                </div>
                             </div>
 
                             {/* SEO Card */}
@@ -476,8 +472,6 @@ const CreatePage = () => {
                                     <p className="text-xs text-gray-500 mt-1">Recommended: 150-160 characters</p>
                                 </div>
                             </div>
-
-                    
                         </div>
                     </div>
                 </form>

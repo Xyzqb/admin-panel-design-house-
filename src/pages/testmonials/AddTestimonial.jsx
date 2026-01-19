@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import PageHeader from "../../components/PageHeader";
 
 const AddTestimonial = () => {
   const navigate = useNavigate();
@@ -100,26 +101,16 @@ const AddTestimonial = () => {
   return (
     <div className="bg-white shadow-md p-4 md:p-8 mt-6 h-[500px]">
       <div className="w-full">
-        <header className="mb-6">
+        <header className="mb-6 mx-6">
           {/* HEADER */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
-            <div>
-              <h1 className="text-3xl font-bold text-amber-600 mb-2">
-                Add Testimonials
-              </h1>
-              <p className="text-gray-600 text-lg">
-                Manage your testimonials details
-              </p>
-            </div>
-
-            <button
-              onClick={() => navigate("/testimonials-list")}
-              className="flex items-center gap-2 bg-gray-800 text-white px-6 py-3 rounded-sm hover:bg-gray-900"
-            >
-              <List className="w-5 h-5" />
-              Testimonials List
-            </button>
-          </div>
+          <PageHeader
+            title="Add Testimonials"
+            description="Manage your testimonials details"
+            buttonText="Testimonials List"
+            buttonIcon={List}
+            buttonPath="/testimonials-list"
+          />
+           </header>
 
           {/* FORM */}
           <form
@@ -239,7 +230,7 @@ const AddTestimonial = () => {
               {editId ? "Update Testimonial" : "Add Testimonial"}
             </button>
           </form>
-        </header>
+       
       </div>
     </div>
   );

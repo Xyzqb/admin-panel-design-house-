@@ -2,6 +2,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "../layout/LoginPage";
 import Dashboard from "../pages/Dashboard";
 import AdminLayout from "../layout/AdminLayout";
+import ChangePassword from "../pages/ChangePassword";
+import Crosual from "../pages/Carousel";
+import EnquiryList from "../pages/EnquiryList";
 
 // page
 import CreatePage from "../pages/CreatePage";
@@ -96,10 +99,13 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="/projects-list" element={<ProjectList/>} />
 
          {/* facility */}
-        <Route path="/add-facilities" element={<AddClients/>} />
-        <Route path="/facilities-list" element={<ClientsList/>} />
+        <Route path="/add-facilities" element={<AddFacility/>} />
+        <Route path="/facilities-list" element={<FacilityList/>} />
 
         {/* SETTINGS */}
+        <Route path="/change-password" element={<ChangePassword/>} />
+        <Route path="/carousel" element={<Crosual/>} />
+        <Route path="/enquiry-list" element={<EnquiryList/>}/>
         <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>

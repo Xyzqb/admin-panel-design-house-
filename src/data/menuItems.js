@@ -6,7 +6,7 @@ import {
   Users,
   Briefcase,
   BookOpen,
-  Download,
+  Images,
   Lock,
   Settings,
   MessageSquare,
@@ -108,7 +108,7 @@ export const menuItems = [
     ],
   },
 
-    {
+  {
     section: "Our Projects",
     icon: Users,
     path: "/projects",
@@ -147,6 +147,14 @@ export const menuItems = [
     hideDropdown: true,
     submenu: [],
   },
+  {
+    section: "Carousel",
+    icon: Images,
+    path: "/carousel",
+    showHeading: false,
+    hideDropdown: true,
+    submenu: [],
+  },
 
   {
     section: "Change Password",
@@ -165,68 +173,3 @@ export const menuItems = [
     submenu: [],
   },
 ];
-
-// {
-//   section: "Our Projects",
-//   icon: Folder,
-//   path: "/projects",
-//   showHeading: false,
-//   submenu: [
-//     { name: "Add Projects", path: "/projects" },
-//     { name: "Project List", path: "/projects" },
-//   ],
-// },
-// {
-//   section: "Services",
-//   icon: Briefcase,
-//   path: "/services",
-//   showHeading: true,
-//   submenu: [
-//     { name: "All Services", path: "/services/interior" },
-//   ],
-// },
-// {
-//   section: "Career",
-//   icon: FileText,
-//   path: "/career",
-//   showHeading: false,
-//   submenu: [{ name: "Open Positions", path: "/career/jobs" }],
-// },
-// {
-//   section: "Our Clients",
-//   icon: Users,
-//   path: "/clients",
-//   showHeading: false,
-//   submenu: [
-//     { name: "All Clients", path: "/clients" },
-//     { name: "Testimonials", path: "/testimonials" },
-//   ],
-// },
-// {
-//   section: "Blog",
-//   icon: BookOpen,
-//   path: "/blog",
-//   showHeading: false,
-//   submenu: [
-//     { name: "Blogs Page", path: "/blogs" },
-//   ],
-// },
-// {
-//   section: "Portfolio",
-//   icon: Image,
-//   path: "/portfolio",
-//   showHeading: true,
-//   submenu: [
-//     { name: "Portfolio details", path: "/Portfolio-details" }
-//   ],
-// },
-// {
-//   section: "Downloads",
-//   icon: Download,
-//   path: "/downloads",
-//   showHeading: true,
-//   submenu: [
-//     { name: "Downloads Detail", path: "/downloads" }
-//   ],
-// },
-

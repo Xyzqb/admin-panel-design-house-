@@ -52,6 +52,7 @@ const PostList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState('all');
     const [categoryFilter, setCategoryFilter] = useState('all');
+    const [editId, setEditId] = useState(null);
 
     // Extract unique categories
     const categories = ['all', ...new Set(initialPosts.map(post => post.category).filter(Boolean))];
@@ -77,8 +78,6 @@ const PostList = () => {
     const handlePageChange = (page) => {
         setCurrentPage(Math.max(1, Math.min(page, totalPages)));
     };
-
-
 
     // Handle status toggle
     const togglePostStatus = (id) => {
@@ -125,6 +124,15 @@ const PostList = () => {
                     <h1 className="text-3xl md:text-3xl font-bold text-amber-600">Blog Post List</h1>
                     <p className="text-gray-600 mt-2 text-lg">Manage and monitor all your blog posts</p>
                 </div>
+
+                {/* <div>
+              <h1 className="text-3xl font-bold text-amber-600 mb-2">
+                {editId ? "Update Clients" : "Add Clients"}
+              </h1>
+              <p className="text-gray-600 text-lg">
+                Manage your clients details
+              </p>
+            </div> */}
 
                 {/* Controls Card */}
                 <div className="rounded-md p-6 border border-gray-200 mb-6">
@@ -314,7 +322,9 @@ const PostList = () => {
                                                     {post.status === 'active' ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                                 </button>
                                                 <button
-                                                    onClick={() => navigate("/create-a-post")}
+                                                    onClick={() => navigate("/create-a-post", {
+                                                        state:{editId:post.id}
+                                                    })}
                                                     className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-lg transition-colors"
                                                     title="Edit"
                                                 >

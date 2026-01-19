@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Plus, List, Pencil, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import DeleteConfirmToast from "../../components/DeleteConfirmToast";
 
 
 const GalleryCategory = () => {
@@ -85,9 +87,14 @@ const GalleryCategory = () => {
   };
 
   const deleteEvent = (id) => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
-      setEvents(events.filter(event => event.id !== id));
-    }
+    toast(
+      <DeleteConfirmToast
+        onDelete={() => {
+          setEvents(prev => prev.filter(event => event.id !== id));
+        }}
+      />,
+      { autoClose: false }
+    );
   };
 
   return (

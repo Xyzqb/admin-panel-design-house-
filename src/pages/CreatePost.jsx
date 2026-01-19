@@ -23,6 +23,8 @@ import {
   Award,
   Trello
 } from 'lucide-react';
+import { useLocation } from "react-router-dom";
+
 
 const Post = () => {
   // Form state
@@ -80,6 +82,10 @@ const Post = () => {
         : [...prev.categories, categoryId]
     }));
   };
+
+  const location = useLocation();
+const editId = location.state?.editId || null;
+
 
   // Handle image upload
   const handleImageUpload = (e) => {
@@ -494,8 +500,9 @@ const Post = () => {
                 type="submit"
                 className="w-full py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold text-lg hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2"
               >
-                <Save className="w-5 h-5" />
-                Add Post Now
+                {editId ? "Update Post" : "Add Post"}
+                {/* <Save className="w-5 h-5" />
+                Add Post Now */}
               </button>
             </div>
           </div>

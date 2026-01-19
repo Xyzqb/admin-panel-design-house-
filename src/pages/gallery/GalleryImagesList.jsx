@@ -3,10 +3,13 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import DeleteConfirmToast from "../../components/DeleteConfirmToast";
+import Pagination from '../../components/Pagination';
+import {SearchBar} from "../../components/SearchBar";
 
 const GalleryImagesList = () => {
     // State for UI
-    const [rowsPerPage, setRowsPerPage] = useState(50);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
@@ -49,32 +52,20 @@ const GalleryImagesList = () => {
     };
 
     // Delete handler - Ready for RTK Query
-    const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this image?")) {
-            try {
-                // For API - Uncomment when ready
-                /*
-                await deleteImage(id).unwrap();
-                toast.success("Image deleted successfully", {
-                    position: "top-right",
-                    autoClose: 2000,
-                });
-                refetch();
-                */
-
-                // For mock data
-                toast.success("Image deleted successfully", {
-                    position: "top-right",
-                    autoClose: 2000,
-                });
-
-            } catch (error) {
-                toast.error("Failed to delete image", {
-                    position: "top-right",
-                    autoClose: 2000,
-                });
-            }
-        }
+    const handleDelete = (id) => {
+        toast(
+            <DeleteConfirmToast
+                onDelete={() => {
+                    // For API later: call delete mutation here
+                    // For now (mock):
+                    toast.success("Image deleted successfully", {
+                        position: "top-right",
+                        autoClose: 2000,
+                    });
+                }}
+            />,
+            { autoClose: false }
+        );
     };
 
     // Toggle status
@@ -126,67 +117,19 @@ const GalleryImagesList = () => {
 
                     </div>
 
-                    {/* Control Bar */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-
-                            {/* Rows Selector */}
-                            <div className="flex items-center space-x-3">
-                                <span className="text-gray-700 font-medium">Show</span>
-                                <div className="relative">
-                                    <select
-                                        value={rowsPerPage}
-                                        onChange={(e) => {
-                                            setRowsPerPage(e.target.value === 'All' ? 'All' : parseInt(e.target.value));
-                                            setCurrentPage(1);
-                                        }}
-                                        className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-2.5 pr-10 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                    >
-                                        <option value={10}>10</option>
-                                        <option value={25}>25</option>
-                                        <option value={50}>50</option>
-                                        <option value={100}>100</option>
-                                        <option value="All">All</option>
-                                    </select>
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
-                                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <span className="text-gray-700 font-medium">entries</span>
-                            </div>
-
-                            {/* Search */}
-                            <div className="flex-1 max-w-lg">
-                                <div className="relative">
-                                    <input
-                                        type="text"
-                                        placeholder="Search by title, project or event..."
-                                        value={searchTerm}
-                                        onChange={(e) => {
-                                            setSearchTerm(e.target.value);
-                                            setCurrentPage(1);
-                                        }}
-                                        className="w-full px-4 py-2.5 pl-11 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                    />
-                                    <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                                        <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Stats */}
-                            <div className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-lg border border-indigo-100">
-                                <span className="text-sm font-medium">
-                                    Total: {filteredImages.length}
-                                </span>
-                            </div>
-
-                        </div>
-                    </div>
+                    <SearchBar
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={(value) => {
+                            setRowsPerPage(value);
+                            setCurrentPage(1);
+                        }}
+                        searchValue={searchTerm}
+                        onSearchChange={(value) => {
+                            setSearchTerm(value);
+                            setCurrentPage(1);
+                        }}
+                        searchPlaceholder="Search by title, project or event..."
+                    />
                 </div>
 
                 {/* Main Table */}
@@ -406,58 +349,12 @@ const GalleryImagesList = () => {
                                 </span> of{' '}
                                 <span className="font-medium">{totalItems}</span> results
                             </div>
-
-                            <div className="flex items-center space-x-2">
-                                <button
-                                    onClick={handlePreviousPage}
-                                    disabled={currentPage === 1}
-                                    className={`px-4 py-2 text-sm font-medium rounded-lg border ${currentPage === 1
-                                        ? 'text-gray-400 bg-gray-100 border-gray-200 cursor-not-allowed'
-                                        : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                                        } transition-colors`}
-                                >
-                                    Previous
-                                </button>
-
-                                <div className="flex items-center space-x-1">
-                                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                                        let pageNum;
-                                        if (totalPages <= 5) {
-                                            pageNum = i + 1;
-                                        } else if (currentPage <= 3) {
-                                            pageNum = i + 1;
-                                        } else if (currentPage >= totalPages - 2) {
-                                            pageNum = totalPages - 4 + i;
-                                        } else {
-                                            pageNum = currentPage - 2 + i;
-                                        }
-
-                                        return (
-                                            <button
-                                                key={pageNum}
-                                                onClick={() => setCurrentPage(pageNum)}
-                                                className={`px-3 py-1 text-sm font-medium rounded ${currentPage === pageNum
-                                                    ? 'bg-indigo-600 text-white'
-                                                    : 'text-gray-700 hover:bg-gray-100'
-                                                    } transition-colors`}
-                                            >
-                                                {pageNum}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-
-                                <button
-                                    onClick={handleNextPage}
-                                    disabled={currentPage === totalPages}
-                                    className={`px-4 py-2 text-sm font-medium rounded-lg border ${currentPage === totalPages
-                                        ? 'text-gray-400 bg-gray-100 border-gray-200 cursor-not-allowed'
-                                        : 'text-gray-700 bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400'
-                                        } transition-colors`}
-                                >
-                                    Next
-                                </button>
-                            </div>
+                            <Pagination
+                                currentPage={currentPage}
+                                totalItems={totalItems}
+                                itemsPerPage={rowsPerPage === "All" ? totalItems : rowsPerPage}
+                                onPageChange={setCurrentPage}
+                            />
                         </div>
                     </div>
                 </div>

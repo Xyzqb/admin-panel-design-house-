@@ -6,12 +6,10 @@ import {
   CheckCircle,
   XCircle,
   Search,
-  Filter,
-  Upload
 } from 'lucide-react';
 import { showDeleted } from "../../data/toast";
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
-
+import { SearchBar } from "../../components/SearchBar";
 
 const ClientList = () => {
 
@@ -20,15 +18,12 @@ const ClientList = () => {
     setTestimonials(stored);
   }, []);
 
-
   // State for testimonials
   const [testimonials, setTestimonials] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [selectedRows, setSelectedRows] = useState([]);
-  // const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // const [testimonialToDelete, setTestimonialToDelete] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingTestimonial, setEditingTestimonial] = useState(null);
 
@@ -84,7 +79,6 @@ const ClientList = () => {
     }
   };
 
-
   // Filter testimonials based on search and status filter
   const filteredTestimonials = testimonials.filter((testimonial) => {
     const name = testimonial.name || "";
@@ -95,7 +89,6 @@ const ClientList = () => {
 
     return matchesSearch && matchesStatus;
   });
-
 
   // Handle rows per page change
   const handleRowsPerPageChange = (e) => {
@@ -112,75 +105,19 @@ const ClientList = () => {
           <p className="text-gray-600 mt-2 text-lg">Manage and view all clients in your system</p>
         </div>
 
-        {/* Controls */}
-        <div className="bg-white rounded-md shadow-sm p-4 mb-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex flex-col sm:flex-row gap-4 flex-1">
-              {/* Search */}
-              <div className="relative flex-1">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Search testimonials..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-
-              {/* Status Filter */}
-              <div className="relative">
-                <select
-                  className="border border-gray-300 rounded-lg py-2 pl-10 pr-8 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full"
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <option value="All">All Status</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Filter className="h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3">
-              {selectedRows.length > 0 && (
-                <button
-                  onClick={handleBulkDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete Selected ({selectedRows.length})
-                </button>
-              )}
-              <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2">
-                <Upload className="h-4 w-4" />
-                Add
-              </button>
-            </div>
-          </div>
-
-          {/* Rows per page selector */}
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-gray-700">Show</span>
-            <select
-              className="border border-gray-300 rounded-lg py-1 px-3 focus:ring-2 focus:ring-blue-500"
-              value={rowsPerPage}
-              onChange={handleRowsPerPageChange}
-            >
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
-            <span className="text-gray-700">Rows</span>
-          </div>
-        </div>
+        <SearchBar
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={(value) => {
+            setRowsPerPage(value);
+            setCurrentPage(1);
+          }}
+          searchValue={searchTerm}
+          onSearchChange={(value) => {
+            setSearchTerm(value);
+            setCurrentPage(1);
+          }}
+          searchPlaceholder="Search by title, project or event..."
+        />
 
         {/* Table Container */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
@@ -203,7 +140,7 @@ const ClientList = () => {
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     Name
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     Url
                   </th>
 
@@ -239,7 +176,15 @@ const ClientList = () => {
                       {testimonial.name || "No Name"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                      {testimonial.organisation}
+                      <a
+                        href={testimonial.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline"
+                      >
+                        {testimonial.url}
+                      </a>
+
                     </td>
                     <td className="px-6 py-4">
                       {testimonial.image ? (
