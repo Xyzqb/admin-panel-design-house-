@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard";
 import AdminLayout from "../layout/AdminLayout";
 import ChangePassword from "../pages/ChangePassword";
 import Crosual from "../pages/Carousel";
+import AddCarousel from "../pages/AddCarousel";
 import EnquiryList from "../pages/EnquiryList";
 
 // page
@@ -104,6 +105,7 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
 
         {/* SETTINGS */}
         <Route path="/change-password" element={<ChangePassword/>} />
+        <Route path="/add-carousels" element={<AddCarousel />} />
         <Route path="/carousel" element={<Crosual/>} />
         <Route path="/enquiry-list" element={<EnquiryList/>}/>
         <Route path="settings" element={<Settings />} />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import PageHeader from "../../components/PageHeader";
 
 const AddVacancy = () => {
     const navigate = useNavigate();
@@ -59,7 +60,7 @@ const AddVacancy = () => {
         setVacancyData({
             postName: "",
             noOfVacancy: "",
-            icon:"",
+            icon: "",
             keyResponsibilities: "",
             experience: "",
             date: "",
@@ -106,25 +107,13 @@ const AddVacancy = () => {
             <div className="w-full">
                 <header className="mb-6">
                     {/* HEADER */}
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6 mx-2">
-                        <div>
-                            <h1 className="text-3xl font-bold text-amber-600 mb-2">
-                                Add Vacancy
-                            </h1>
-                            <p className="text-gray-600 text-lg">
-                                Manage your vacancy details
-                            </p>
-                        </div>
-
-                        <button
-                            onClick={() => navigate("/vacancy-list")}
-                            className="flex items-center gap-2 bg-gray-800 text-white px-6 py-3 rounded-sm hover:bg-gray-900 transition-colors"
-                        >
-                            <List className="w-5 h-5" />
-                            Vacancy List
-                        </button>
-                    </div>
-
+                    <PageHeader
+                        title="Add Vacancy"
+                        description=" Manage your vacancy details"
+                        buttonText="Vacancy List"
+                        buttonIcon={List}
+                        buttonPath="/vacancy-list"
+                    />
                     {/* FORM */}
                     <form
                         onSubmit={handleSubmit}

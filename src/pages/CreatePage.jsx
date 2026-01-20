@@ -60,7 +60,6 @@ const CreatePage = () => {
         'Dressing Table',
     ];
 
-
     // Handle image upload
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
@@ -73,24 +72,41 @@ const CreatePage = () => {
         }
     };
 
-
     const location = useLocation();
     const pageId = location.state?.pageId || null;
 
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form submitted:', formData);
-        alert('Post added successfully!');
+
+        const storedPages = JSON.parse(localStorage.getItem("pages")) || [];
+
+        const newPage = {
+            id: Date.now().toString(),
+            title: formData.postTitle,
+            date: new Date().toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+            }),
+            status: formData.postStatus,
+            views: 0,
+            category: formData.serviceCategory,
+            permalink: formData.permalink,
+        };
+        localStorage.setItem("pages", JSON.stringify([newPage, ...storedPages]))
+        toast.success("✅ Page added successfully!");
     };
 
     // Format permalink
-    const formatPermalink = (title) => {
-        return title
+    const formatPermalink = (text) =>
+        text
             .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)/g, '');
-    };
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
+
 
     return (
         <div className="bg-white shadow-md mt-6 p-6 ">
@@ -122,7 +138,6 @@ const CreatePage = () => {
                                                 setFormData(prev => ({
                                                     ...prev,
                                                     postTitle: newTitle,
-                                                    permalink: formatPermalink(newTitle)
                                                 }));
                                             }}
                                             placeholder="Enter Post Title"
@@ -184,8 +199,6 @@ const CreatePage = () => {
                                     ))}
                                 </select>
                             </div>
-
-
                             {/* Client & Location Card */}
                             <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

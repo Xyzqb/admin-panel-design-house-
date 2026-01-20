@@ -133,17 +133,7 @@ const GalleryImagesList = () => {
                 </div>
 
                 {/* Main Table */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    {/* Table Header */}
-                    <div className="px-6 py-5 border-b border-gray-200 bg-gray-50">
-                        <h2 className="text-lg font-semibold text-gray-900">
-                            Gallery Images
-                        </h2>
-                        <p className="text-sm text-gray-500 mt-1">
-                            Showing {paginatedImages.length} of {filteredImages.length} images
-                        </p>
-                    </div>
-
+                <div className="bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden">
                     {/* Desktop Table */}
                     <div className="hidden lg:block overflow-x-auto">
                         <table className="w-full">
@@ -341,21 +331,12 @@ const GalleryImagesList = () => {
 
                     {/* Footer with Pagination */}
                     <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                            <div className="text-sm text-gray-700">
-                                Showing <span className="font-medium">{startIndex + 1}</span> to{' '}
-                                <span className="font-medium">
-                                    {Math.min(startIndex + paginatedImages.length, totalItems)}
-                                </span> of{' '}
-                                <span className="font-medium">{totalItems}</span> results
-                            </div>
                             <Pagination
                                 currentPage={currentPage}
                                 totalItems={totalItems}
                                 itemsPerPage={rowsPerPage === "All" ? totalItems : rowsPerPage}
                                 onPageChange={setCurrentPage}
                             />
-                        </div>
                     </div>
                 </div>
             </div>

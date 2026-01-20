@@ -30,7 +30,11 @@ export const showUploadSuccess = () => {
 };
 
 export const showStatusUpdated = () =>
-  toast.info("Post status updated");
+  toast.info("status updated");
 
 export const showDeleted = () =>
-  toast.success("Post deleted successfully 🗑️");
+  toast.success("data deleted successfully 🗑️");
+
+export const addSuccessfully = () =>{
+  toast.success("data added successfully");
+}

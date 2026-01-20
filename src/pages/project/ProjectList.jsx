@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { Search, Filter, Eye, Edit2, Trash2, Plus, ChevronLeft, ChevronRight, Download, MoreVertical } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Eye, Edit2, Trash2, MoreVertical } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { SearchBar } from '../../components/SearchBar';
 import Pagination from "../../components/Pagination";
+import EmptyState from '../../components/EmptyState';
+import { toast } from "react-toastify";
+import DeleteConfirmToast from '../../components/DeleteConfirmToast';
 
 const ProjectList = () => {
   const navigate = useNavigate();
@@ -11,13 +14,22 @@ const ProjectList = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Mock data based on your table
-  const projects = [
-    { id: 164, client: 'Absolut', projectName: '', projectCategory: '123', photo: '123', status: 'Active' },
-    { id: 163, client: '100 Pipers', projectName: 'Frosty', projectCategory: 'Shop In Shop', status: 'Inactive' },
-    { id: 162, client: 'Tommy Hilfiger', projectName: 'Tommy Hilfiger', projectCategory: 'Window Display', status: 'Active' },
-    { id: 161, client: 'Supreme Furniture', projectName: 'Supreme Furniture', projectCategory: 'Window Display', status: 'Active' },
-    { id: 160, client: 'Design House India Pvt. Ltd.', projectName: 'Table And Chair', projectCategory: 'Office Chairs', status: 'Active' },
-  ];
+  const [projects, setProjects] = useState([]);
+  useEffect(() => {
+    const storedProjects =
+      JSON.parse(localStorage.getItem("projects")) || [];
+    setProjects(storedProjects);
+  }, []);
+
+  const handleDelete = (id) => {
+    const updatedProjects = projects.filter(
+      (project) => project.id !== id
+    );
+
+    setProjects(updatedProjects);
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
+    toast.success("Project deleted successfully");
+  };
 
   // Status badge component
   const StatusBadge = ({ status }) => (
@@ -42,7 +54,7 @@ const ProjectList = () => {
 
   const handleEdit = (project) => {
     localStorage.setItem('editProject', JSON.stringify(project));
-    navigate('/add-project');
+    navigate('/add-projects');
   };
 
   return (
@@ -53,7 +65,7 @@ const ProjectList = () => {
           <h1 className="text-3xl font-bold text-amber-600 mb-2">Project List</h1>
           <p className="text-gray-600 text-lg">Manage and view all your projects</p>
         </div>
-        
+
         <SearchBar
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={(value) => {
@@ -85,8 +97,8 @@ const ProjectList = () => {
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {paginatedProjects.map((project, index) => (
-                  <tr 
-                    key={project.id} 
+                  <tr
+                    key={project.id}
                     className={`hover:bg-gray-50 transition-colors ${index !== paginatedProjects.length - 1 ? 'border-b border-gray-200' : ''}`}
                   >
                     <td className="py-4 px-6 whitespace-nowrap border-r border-gray-100">
@@ -102,12 +114,15 @@ const ProjectList = () => {
                       <div className="text-sm text-gray-900">{project.projectCategory}</div>
                     </td>
                     <td className="py-4 px-6 border-r border-gray-100">
-                      {project.photo ? (
-                        <button className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100">
-                          <span className="text-lg">📷</span>
-                        </button>
-                      ) : (
-                        <span className="text-sm text-gray-500">-</span>
+                      {project.photo && (
+                        <div>
+                          <span className="text-xs font-medium text-gray-500">Photo</span>
+                          <img
+                            src={project.photo}
+                            alt="Project"
+                            className="mt-1 w-10 h-10 object-cover rounded-md border"
+                          />
+                        </div>
                       )}
                     </td>
                     <td className="py-4 px-6 border-r border-gray-100">
@@ -122,14 +137,16 @@ const ProjectList = () => {
                         >
                           <Edit2 className="w-4 h-4" />
                         </button>
-                        <button 
-                          className="p-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors border border-green-100" 
-                          title="View"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button 
-                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border border-red-100" 
+                        <button
+                          onClick={() =>
+                            toast(
+                              <DeleteConfirmToast
+                                onDelete={() => handleDelete(project.id)}
+                              />,
+                              { autoClose: false }
+                            )
+                          }
+                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 border border-red-100"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -178,16 +195,23 @@ const ProjectList = () => {
                 <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => handleEdit(project)}
+                      onClick={() => navigate("/add-projects")}
                       className="p-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100"
                       title="Edit"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button className="p-2 bg-green-50 text-green-600 rounded-lg border border-green-100" title="View">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                    <button className="p-2 bg-red-50 text-red-600 rounded-lg border border-red-100" title="Delete">
+                    <button
+                      onClick={() =>
+                        toast(
+                          <DeleteConfirmToast
+                            onDelete={() => handleDelete(project.id)}
+                          />,
+                          { autoClose: false }
+                        )
+                      }
+                      className="p-2 bg-red-50 text-red-600 rounded-lg border border-red-100"
+                    >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </div>
@@ -200,46 +224,27 @@ const ProjectList = () => {
           </div>
 
           {/* Table Footer */}
-          <div className="px-6 py-4 border-t border-gray-200 bg-blue-50">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-sm text-blue-700">
-                Showing <span className="font-semibold">{startIndex + 1}</span> to{' '}
-                <span className="font-semibold">
-                  {Math.min(startIndex + rowsPerPage, filteredProjects.length)}
-                </span>{' '}
-                of <span className="font-semibold">{filteredProjects.length}</span> results
-              </div>
-
-              <Pagination
-                currentPage={currentPage}
-                totalItems={filteredProjects.length}
-                itemsPerPage={rowsPerPage}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+          <div className="px-6 py-4 border-t border-gray-200">
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredProjects.length}
+              itemsPerPage={rowsPerPage}
+              onPageChange={setCurrentPage}
+            />
           </div>
         </div>
 
         {/* Empty State */}
         {filteredProjects.length === 0 && (
-          <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-              <Search className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">No projects found</h3>
-            <p className="text-gray-500 mb-6">Try adjusting your search or filter to find what you're looking for.</p>
-            <button
-              onClick={handleAddProject}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors border border-blue-600"
-            >
-              <Plus className="w-5 h-5" />
-              Add Your First Project
-            </button>
-          </div>
+          <EmptyState
+            title="No Projects found"
+            description="You haven't added any Projects yet."
+            actionLabel="Add Projects "
+            onAction={() => navigate("/add-Projects")}
+          />
         )}
       </div>
     </div>
   );
 };
-
 export default ProjectList;

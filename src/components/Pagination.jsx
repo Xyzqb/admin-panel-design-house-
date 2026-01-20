@@ -1,165 +1,23 @@
-// import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
-// import { useState, useEffect } from "react";
-
-// const Pagination = ({
-//   currentPage,
-//   totalItems,
-//   itemsPerPage,
-//   onPageChange,
-// }) => {
-//   const totalPages = Math.ceil(totalItems / itemsPerPage);
-//   const [visiblePages, setVisiblePages] = useState([]);
-
-//   useEffect(() => {
-//     const generateVisiblePages = () => {
-//       const pages = [];
-//       const maxVisible = 5; // Show max 5 page numbers
-//       let start = Math.max(1, currentPage - 2);
-//       let end = Math.min(totalPages, start + maxVisible - 1);
-
-//       // Adjust start if we're near the end
-//       if (end - start + 1 < maxVisible) {
-//         start = Math.max(1, end - maxVisible + 1);
-//       }
-
-//       // Always show first page
-//       if (start > 1) {
-//         pages.push(1);
-//         if (start > 2) {
-//           pages.push("ellipsis-start");
-//         }
-//       }
-
-//       // Add visible pages
-//       for (let i = start; i <= end; i++) {
-//         if (i > 0 && i <= totalPages) {
-//           pages.push(i);
-//         }
-//       }
-
-//       // Always show last page
-//       if (end < totalPages) {
-//         if (end < totalPages - 1) {
-//           pages.push("ellipsis-end");
-//         }
-//         pages.push(totalPages);
-//       }
-
-//       return pages;
-//     };
-
-//     setVisiblePages(generateVisiblePages());
-//   }, [currentPage, totalPages]);
-
-//   if (totalPages <= 1) return null;
-
-//   return (
-//     <nav 
-//       className="flex items-center justify-center mt-8" 
-//       aria-label="Pagination"
-//     >
-//       <div className="flex items-center gap-1">
-//         {/* Previous Button */}
-//         <button
-//           disabled={currentPage === 1}
-//           onClick={() => onPageChange(currentPage - 1)}
-//           aria-label="Previous page"
-//           className={`
-//             flex items-center justify-center w-10 h-10 rounded-lg
-//             transition-all duration-200 ease-out
-//             border border-gray-200
-//             ${
-//               currentPage === 1
-//                 ? "text-gray-400 cursor-not-allowed bg-gray-50"
-//                 : "text-gray-600 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 active:scale-95"
-//             }
-//           `}
-//         >
-//           <ChevronLeft size={20} />
-//         </button>
-
-//         {/* Page Numbers */}
-//         <div className="flex items-center gap-1 mx-2">
-//           {visiblePages.map((page, index) => {
-//             if (page === "ellipsis-start" || page === "ellipsis-end") {
-//               return (
-//                 <div
-//                   key={`ellipsis-${index}`}
-//                   className="flex items-center justify-center w-10 h-10 text-gray-400"
-//                 >
-//                   <MoreHorizontal size={20} />
-//                 </div>
-//               );
-//             }
-
-//             return (
-//               <button
-//                 key={page}
-//                 onClick={() => onPageChange(page)}
-//                 aria-label={`Page ${page}`}
-//                 aria-current={page === currentPage ? "page" : undefined}
-//                 className={`
-//                   flex items-center justify-center w-10 h-10 rounded-lg
-//                   text-sm font-medium transition-all duration-200 ease-out
-//                   border
-//                   ${
-//                     page === currentPage
-//                       ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-//                       : "text-gray-700 border-gray-200 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600"
-//                   }
-//                   hover:scale-105 active:scale-95
-//                 `}
-//               >
-//                 {page}
-//               </button>
-//             );
-//           })}
-//         </div>
-
-//         {/* Next Button */}
-//         <button
-//           disabled={currentPage === totalPages}
-//           onClick={() => onPageChange(currentPage + 1)}
-//           aria-label="Next page"
-//           className={`
-//             flex items-center justify-center w-10 h-10 rounded-lg
-//             transition-all duration-200 ease-out
-//             border border-gray-200
-//             ${
-//               currentPage === totalPages
-//                 ? "text-gray-400 cursor-not-allowed bg-gray-50"
-//                 : "text-gray-600 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 active:scale-95"
-//             }
-//           `}
-//         >
-//           <ChevronRight size={20} />
-//         </button>
-//       </div>
-
-//       {/* Page Info */}
-//       {/* <div className="ml-4 text-sm text-gray-600 hidden sm:block">
-//         <span className="font-medium">{currentPage}</span> of{" "}
-//         <span className="font-medium">{totalPages}</span>
-//         {" • "}
-//         <span className="text-gray-500">
-//           {totalItems} total {totalItems === 1 ? "item" : "items"}
-//         </span>
-//       </div> */}
-//     </nav>
-//   );
-// };
-
-// export default Pagination;
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange }) => {
+const Pagination = ({
+  currentPage,
+  totalItems,
+  itemsPerPage,
+  onPageChange,
+  label = "posts",
+}) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const [visiblePages, setVisiblePages] = useState([]);
+
+  const startItem = (currentPage - 1) * itemsPerPage + 1;
+  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   useEffect(() => {
     const pages = [];
     const maxVisible = 5;
+
     let start = Math.max(1, currentPage - 2);
     let end = Math.min(totalPages, start + maxVisible - 1);
 
@@ -178,57 +36,51 @@ const Pagination = ({ currentPage, totalItems, itemsPerPage, onPageChange }) => 
     setVisiblePages(pages);
   }, [currentPage, totalPages]);
 
-  if (totalPages <= 1) return null;
-
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* TEXT */}
+      <div className="text-sm text-gray-700">
+        Showing <span className="font-semibold">{startItem}</span>–
+        <span className="font-semibold">{endItem}</span> of{" "}
+        <span className="font-semibold">{totalItems}</span> {label}
+      </div>
 
-      {/* Prev */}
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className={`p-2 rounded-lg border ${
-          currentPage === 1
-            ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
-            : "bg-white text-blue-600 border-blue-200 hover:bg-blue-50"
-        }`}
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
+      {/* BUTTONS */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="p-2 rounded-lg border bg-white text-blue-600 disabled:opacity-50"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
 
-      {/* Pages */}
-      {visiblePages.map((page, i) =>
-        page === "..." ? (
-          <span key={i} className="px-2 text-blue-400">
-            <MoreHorizontal className="w-5 h-5" />
-          </span>
-        ) : (
-          <button
-            key={page}
-            onClick={() => onPageChange(page)}
-            className={`w-10 h-10 rounded-lg font-medium border ${
-              page === currentPage
-                ? "bg-blue-600 text-white border-blue-700"
-                : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50"
-            }`}
-          >
-            {page}
-          </button>
-        )
-      )}
+        {visiblePages.map((page, i) =>
+          page === "..." ? (
+            <MoreHorizontal key={i} className="w-5 h-5 text-gray-400" />
+          ) : (
+            <button
+              key={page}
+              onClick={() => onPageChange(page)}
+              className={`w-10 h-10 rounded-lg border ${
+                page === currentPage
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-700"
+              }`}
+            >
+              {page}
+            </button>
+          )
+        )}
 
-      {/* Next */}
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className={`p-2 rounded-lg border ${
-          currentPage === totalPages
-            ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
-            : "bg-white text-blue-600 border-blue-200 hover:bg-blue-50"
-        }`}
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="p-2 rounded-lg border bg-white text-blue-600 disabled:opacity-50"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,616 +1,237 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Edit,
   Trash2,
   Eye,
-  Search,
-  Filter,
-  ChevronLeft,
-  ChevronRight,
-  Plus,
+  Users,
   CheckCircle,
   XCircle,
-  Users,
-} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { SearchBar } from "../../components/SearchBar";
+import Pagination from "../../components/Pagination";
+import EmptyState from "../../components/EmptyState";
+import DeleteConfirmToast from "../../components/DeleteConfirmToast";
 
 const VacancyList = () => {
   const navigate = useNavigate();
 
-  // State management
+  /* ---------------- STATE ---------------- */
   const [vacancies, setVacancies] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('All');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
   const [selectedRows, setSelectedRows] = useState([]);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [vacancyToDelete, setVacancyToDelete] = useState(null);
-  const [showViewModal, setShowViewModal] = useState(false);
-  const [viewingVacancy, setViewingVacancy] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Load vacancies from localStorage on mount
+  /* ---------------- LOAD DATA ---------------- */
   useEffect(() => {
-    const savedVacancies = JSON.parse(localStorage.getItem("vacancies")) || [];
-    setVacancies(savedVacancies);
+    const saved = JSON.parse(localStorage.getItem("vacancies")) || [];
+    setVacancies(saved);
   }, []);
 
-  // useEffect(() => {
-  //   const savedVacancies = JSON.parse(localStorage.getItem('vacancies')) || [];
-  //   if (savedVacancies.length > 0) {
-  //     setVacancies(prev => [...savedVacancies, ...prev]);
-  //   }
-  // }, []);
+  /* ---------------- FILTER ---------------- */
+  const filteredVacancies = vacancies.filter((v) => {
+    const matchesSearch = v.name
+      ?.toLowerCase()
+      .includes(searchTerm.toLowerCase());
 
-  // Handle delete vacancy
-  const handleDeleteClick = (id) => {
-    setVacancyToDelete(id);
-    setShowDeleteModal(true);
-  };
+    const matchesStatus =
+      statusFilter === "All" || v.status === statusFilter;
 
-  // Confirm delete vacancy
-  const confirmDelete = () => {
-    if (vacancyToDelete) {
-      const updatedVacancies = vacancies.filter(v => v.id !== vacancyToDelete);
-      setVacancies(updatedVacancies);
-      // Update localStorage
-      localStorage.setItem('vacancies', JSON.stringify(updatedVacancies.filter(v => v.id > 14)));
-      setShowDeleteModal(false);
-      setVacancyToDelete(null);
-    }
-  };
+    return matchesSearch && matchesStatus;
+  });
 
-  // View vacancy details
-  const handleViewClick = (vacancy) => {
-    setViewingVacancy(vacancy);
-    setShowViewModal(true);
-  };
+  /* ---------------- PAGINATION ---------------- */
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const currentVacancies = filteredVacancies.slice(startIndex, endIndex);
 
-  // Toggle vacancy status
-  // const toggleStatus = (id) => {
-  //   const updatedVacancies = vacancies.map(v =>
-  //     v.id === id
-  //       ? { ...v, status: v.status === 'Active' ? 'Inactive' : 'Active' }
-  //       : v
-  //   );
-  //   setVacancies(updatedVacancies);
-  //   // Update localStorage
-  //   localStorage.setItem('vacancies', JSON.stringify(updatedVacancies.filter(v => v.id > 14)));
-  // };
+  /* ---------------- ACTIONS ---------------- */
 
   const toggleStatus = (id) => {
-    const updatedVacancies = vacancies.map(v =>
+    const updated = vacancies.map((v) =>
       v.id === id
         ? { ...v, status: v.status === "Active" ? "Inactive" : "Active" }
         : v
     );
 
-    setVacancies(updatedVacancies);
-    localStorage.setItem("vacancies", JSON.stringify(updatedVacancies));
-
-    showStatusUpdated();
+    setVacancies(updated);
+    localStorage.setItem("vacancies", JSON.stringify(updated));
   };
 
-
-  // Toggle row selection
-  const toggleRowSelection = (id) => {
-    if (selectedRows.includes(id)) {
-      setSelectedRows(selectedRows.filter(rowId => rowId !== id));
-    } else {
-      setSelectedRows([...selectedRows, id]);
-    }
+  const handleDelete = (id) => {
+    toast(
+      <DeleteConfirmToast
+        onDelete={() => {
+          const updated = vacancies.filter((v) => v.id !== id);
+          setVacancies(updated);
+          localStorage.setItem("vacancies", JSON.stringify(updated));
+        }}
+      />,
+      { autoClose: false }
+    );
   };
 
-  // Select all rows
-  const toggleSelectAll = () => {
-    const currentPageIds = filteredVacancies
-      .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
-      .map(v => v.id);
-
-    if (selectedRows.length === currentPageIds.length) {
-      setSelectedRows([]);
-    } else {
-      setSelectedRows(currentPageIds);
-    }
-  };
-
-  // Bulk delete selected rows
   const handleBulkDelete = () => {
-    if (selectedRows.length > 0) {
-      const updatedVacancies = vacancies.filter(v => !selectedRows.includes(v.id));
-      setVacancies(updatedVacancies);
-      // Update localStorage
-      localStorage.setItem('vacancies', JSON.stringify(updatedVacancies.filter(v => v.id > 14)));
-      setSelectedRows([]);
-    }
-  };
+    if (!selectedRows.length) return;
 
-  // Filter vacancies based on search and status filter
-  const filteredVacancies = vacancies.filter(vacancy => {
-    const matchesSearch = vacancy.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'All' || vacancy.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
-
-  // Pagination calculations
-  const totalPages = Math.ceil(filteredVacancies.length / rowsPerPage);
-  const indexOfLastItem = currentPage * rowsPerPage;
-  const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-  const currentVacancies = filteredVacancies.slice(indexOfFirstItem, indexOfLastItem);
-
-  // Handle page change
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // Handle rows per page change
-  const handleRowsPerPageChange = (e) => {
-    const value = parseInt(e.target.value);
-    setRowsPerPage(value);
-    setCurrentPage(1); // Reset to first page
-  };
-
-  // Navigate to create vacancy page
-  const handleCreateVacancy = () => {
-    navigate('/add-vacancy');
-  };
-
-  // Render pagination buttons
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    const maxVisibleButtons = 5;
-
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
-
-    if (endPage - startPage + 1 < maxVisibleButtons) {
-      startPage = Math.max(1, endPage - maxVisibleButtons + 1);
-    }
-
-    // Previous button
-    buttons.push(
-      <button
-        key="prev"
-        onClick={() => handlePageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className={`px-3 py-1 rounded-md ${currentPage === 1
-          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-          : 'bg-white text-gray-700 hover:bg-gray-100 border'}`}
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </button>
+    toast(
+      <DeleteConfirmToast
+        onDelete={() => {
+          const updated = vacancies.filter(
+            (v) => !selectedRows.includes(v.id)
+          );
+          setVacancies(updated);
+          localStorage.setItem("vacancies", JSON.stringify(updated));
+          setSelectedRows([]);
+        }}
+      />,
+      { autoClose: false }
     );
-
-    // First page
-    if (startPage > 1) {
-      buttons.push(
-        <button
-          key={1}
-          onClick={() => handlePageChange(1)}
-          className="px-3 py-1 rounded-md bg-white text-gray-700 hover:bg-gray-100 border"
-        >
-          1
-        </button>
-      );
-      if (startPage > 2) {
-        buttons.push(
-          <span key="ellipsis1" className="px-2 text-gray-500">
-            ...
-          </span>
-        );
-      }
-    }
-
-    // Page numbers
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(
-        <button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          className={`px-3 py-1 rounded-md ${currentPage === i
-            ? 'bg-blue-600 text-white'
-            : 'bg-white text-gray-700 hover:bg-gray-100 border'}`}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    // Last page
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        buttons.push(
-          <span key="ellipsis2" className="px-2 text-gray-500">
-            ...
-          </span>
-        );
-      }
-      buttons.push(
-        <button
-          key={totalPages}
-          onClick={() => handlePageChange(totalPages)}
-          className="px-3 py-1 rounded-md bg-white text-gray-700 hover:bg-gray-100 border"
-        >
-          {totalPages}
-        </button>
-      );
-    }
-
-    // Next button
-    buttons.push(
-      <button
-        key="next"
-        onClick={() => handlePageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className={`px-3 py-1 rounded-md ${currentPage === totalPages
-          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-          : 'bg-white text-gray-700 hover:bg-gray-100 border'}`}
-      >
-        <ChevronRight className="h-4 w-4" />
-      </button>
-    );
-
-    return buttons;
   };
 
+  /* ---------------- RENDER ---------------- */
   return (
-    <div className="bg-white shadow-md mt-6 p-4 md:p-6">
-      <div className="w-full">
-        {/* Header */}
-        <div className="mb-4 mx-2">
-          <h1 className="text-3xl font-bold text-amber-600">Vacancy List</h1>
-          <p className="text-gray-600 mt-2 text-lg">Manage and view all job vacancies in your system</p>
-        </div>
-
-        {/* Controls */}
-        <div className="bg-white rounded-sm shadow-sm p-4 mb-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex flex-col sm:flex-row gap-4 flex-1">
-              {/* Search */}
-              <div className="relative flex-1">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Search vacancies..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-
-              {/* Status Filter */}
-              <div className="relative">
-                <select
-                  className="border border-gray-300 rounded-lg py-2 pl-10 pr-8 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full"
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <option value="All">All Status</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Filter className="h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-3">
-              {selectedRows.length > 0 && (
-                <button
-                  onClick={handleBulkDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center gap-2 transition-colors"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  Delete Selected ({selectedRows.length})
-                </button>
-              )}
-              <button
-                onClick={handleCreateVacancy}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 transition-colors"
-              >
-                <Plus className="h-4 w-4" />
-                Create a Vacancy
-              </button>
-            </div>
-          </div>
-
-          {/* Rows per page selector */}
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-gray-700 font-medium">Show</span>
-            <select
-              className="border border-gray-300 rounded-lg py-1 px-3 focus:ring-2 focus:ring-blue-500 bg-white"
-              value={rowsPerPage}
-              onChange={handleRowsPerPageChange}
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-            </select>
-            <span className="text-gray-700 font-medium">Rows</span>
-          </div>
-        </div>
-
-        {/* Table Container */}
-        <div className="bg-white rounded-sm shadow-sm overflow-hidden mb-6">
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gradient-to-r from-blue-50 to-indigo-50">
-                <tr>
-                  <th className="px-6 py-4">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                      checked={selectedRows.length === currentVacancies.length && currentVacancies.length > 0}
-                      onChange={toggleSelectAll}
-                    />
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Id
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    No. of Vacancy
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Responsibilities
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Icon
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Experience Required
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {currentVacancies.map((vacancy) => (
-                  <tr
-                    key={vacancy.id}
-                    className={`hover:bg-gray-50 transition-colors ${selectedRows.includes(vacancy.id) ? 'bg-blue-50' : ''}`}
-                  >
-                    <td className="px-6 py-4">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                        checked={selectedRows.includes(vacancy.id)}
-                        onChange={() => toggleRowSelection(vacancy.id)}
-                      />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {vacancy.id}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm font-medium text-gray-900">{vacancy.name}</div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 text-gray-400 mr-2" />
-                        <span className="text-sm font-medium text-gray-900">
-                          {vacancy.vacancyCount}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div
-                        className="text-sm text-gray-700 max-w-xs truncate"
-                        dangerouslySetInnerHTML={{ __html: vacancy.responsibilities }}
-                      />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {vacancy.icon}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                      {vacancy.experience}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <button
-                        onClick={() => toggleStatus(vacancy.id)}
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors ${vacancy.status === 'Active'
-                          ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                          : 'bg-red-100 text-red-800 hover:bg-red-200'
-                          }`}
-                      >
-                        {vacancy.status === 'Active' ? (
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                        ) : (
-                          <XCircle className="h-3 w-3 mr-1" />
-                        )}
-                        {vacancy.status}
-                      </button>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex items-center space-x-3">
-                        <button
-                          onClick={() => handleViewClick(vacancy)}
-                          className="text-blue-600 hover:text-blue-900 p-1.5 rounded-lg hover:bg-blue-50 transition-colors"
-                          title="View"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button
-                          // onClick={() => navigate(`/edit-vacancy/${vacancy.id}`)}
-                          onClick={() => {
-                            localStorage.setItem("editVacancy", JSON.stringify(vacancy));
-                            navigate("/add-vacancy");
-                          }}
-                          className="text-green-600 hover:text-green-900 p-1.5 rounded-lg hover:bg-green-50 transition-colors"
-                          title="Edit"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteClick(vacancy.id)}
-                          className="text-red-600 hover:text-red-900 p-1.5 rounded-lg hover:bg-red-50 transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Empty state */}
-          {filteredVacancies.length === 0 && (
-            <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">No vacancies found</div>
-              <p className="text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
-            </div>
-          )}
-
-          {/* Pagination */}
-          {filteredVacancies.length > 0 && (
-            <div className="bg-gray-50 px-6 py-4 border-t border-gray-200">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <div className="text-sm text-gray-700 mb-4 sm:mb-0">
-                  Showing <span className="font-medium">{indexOfFirstItem + 1}</span> to{' '}
-                  <span className="font-medium">
-                    {Math.min(indexOfLastItem, filteredVacancies.length)}
-                  </span> of{' '}
-                  <span className="font-medium">{filteredVacancies.length}</span> results
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <div className="text-sm text-gray-700 mr-4">
-                    {selectedRows.length > 0 && (
-                      <span className="mr-4">
-                        {selectedRows.length} row{selectedRows.length !== 1 ? 's' : ''} selected
-                      </span>
-                    )}
-                    Page {currentPage} of {totalPages}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {renderPaginationButtons()}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+    <div className="bg-white shadow-md mt-6 p-6">
+      {/* Header */}
+      <div className="mb-4">
+        <h1 className="text-3xl font-bold text-amber-600">
+          Vacancy List
+        </h1>
+        <p className="text-gray-600 mt-2 text-lg">
+          Manage and view all job vacancies
+        </p>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
-            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
-              <Trash2 className="h-6 w-6 text-red-600" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 text-center mb-2">Delete Vacancy</h3>
-            <p className="text-gray-600 text-center mb-6">
-              Are you sure you want to delete this vacancy? This action cannot be undone.
-            </p>
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
+      {/* SearchBar */}
+      <SearchBar
+        rowsPerPage={rowsPerPage}
+        totalItems={filteredVacancies.length}
+        onRowsPerPageChange={(value) => {
+          setRowsPerPage(value);
+          setCurrentPage(1);
+        }}
+        searchValue={searchTerm}
+        onSearchChange={(value) => {
+          setSearchTerm(value);
+          setCurrentPage(1);
+        }}
+      />
+
+      {/* Bulk Delete */}
+      {selectedRows.length > 0 && (
+        <button
+          onClick={handleBulkDelete}
+          className="mb-4 px-4 py-2 bg-red-600 text-white rounded-lg"
+        >
+          Delete Selected ({selectedRows.length})
+        </button>
       )}
 
-      {/* View Details Modal */}
-      {showViewModal && viewingVacancy && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold text-gray-900">Vacancy Details</h3>
-                <button
-                  onClick={() => setShowViewModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  ✕
-                </button>
-              </div>
+      {/* Table */}
+      <div className="border rounded-md overflow-hidden">
+        <table className="w-full">
+          <thead className="bg-blue-50">
+            <tr>
+              <th className="px-4 py-3"></th>
+              <th className="px-4 py-3 text-left">ID</th>
+              <th className="px-4 py-3 text-left">Name</th>
+              <th className="px-4 py-3">Vacancies</th>
+              <th className="px-4 py-3">Experience</th>
+              <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500 mb-1">ID</h4>
-                  <p className="text-lg font-semibold text-gray-800">{viewingVacancy.id}</p>
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500 mb-1">Status</h4>
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${viewingVacancy.status === 'Active'
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-red-100 text-red-800'
-                    }`}>
-                    {viewingVacancy.status}
-                  </span>
-                </div>
-              </div>
+          <tbody>
+            {currentVacancies.map((v) => (
+              <tr key={v.id} className="border-t hover:bg-gray-50">
+                <td className="px-4 py-3">
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(v.id)}
+                    onChange={() =>
+                      setSelectedRows((prev) =>
+                        prev.includes(v.id)
+                          ? prev.filter((id) => id !== v.id)
+                          : [...prev, v.id]
+                      )
+                    }
+                  />
+                </td>
 
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-500 mb-1">Name</h4>
-                <p className="text-lg font-semibold text-gray-800">{viewingVacancy.name}</p>
-              </div>
+                <td className="px-4 py-3">{v.id}</td>
+                <td className="px-4 py-3 font-medium">{v.name}</td>
 
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500 mb-1">No. of Vacancy</h4>
-                  <p className="text-lg font-semibold text-gray-800">{viewingVacancy.vacancyCount}</p>
-                </div>
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500 mb-1">Experience Required</h4>
-                  <p className="text-lg font-semibold text-gray-800">{viewingVacancy.experience}</p>
-                </div>
-              </div>
+                <td className="px-4 py-3 text-center">
+                  <Users className="inline w-4 h-4 mr-1" />
+                  {v.vacancyCount}
+                </td>
 
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-500 mb-1">Key Responsibilities</h4>
-                <div
-                  className="bg-gray-50 p-4 rounded-lg mt-2"
-                  dangerouslySetInnerHTML={{ __html: viewingVacancy.responsibilities }}
-                />
-              </div>
+                <td className="px-4 py-3">{v.experience}</td>
 
-              <div className="flex justify-end space-x-4 pt-4 border-t">
-                <button
-                  onClick={() => setShowViewModal(false)}
-                  className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Close
-                </button>
-                <button
-                  onClick={() => {
-                    setShowViewModal(false);
-                    navigate(`/edit-vacancy/${viewingVacancy.id}`);
-                  }}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Edit Vacancy
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+                <td className="px-4 py-3">
+                  <button
+                    onClick={() => toggleStatus(v.id)}
+                    className={`px-3 py-1 rounded-full text-xs ${
+                      v.status === "Active"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {v.status === "Active" ? (
+                      <CheckCircle className="inline w-3 h-3 mr-1" />
+                    ) : (
+                      <XCircle className="inline w-3 h-3 mr-1" />
+                    )}
+                    {v.status}
+                  </button>
+                </td>
+
+                <td className="px-4 py-3 flex justify-end gap-2">
+                  <button
+                    onClick={() => navigate("/add-vacancy", { state: v })}
+                    className="p-2 hover:bg-green-50 rounded"
+                    title="Edit"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(v.id)}
+                    className="p-2 hover:bg-red-50 rounded"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {filteredVacancies.length === 0 && (
+          <EmptyState
+            title="No vacancies found"
+            description="You haven't added any vacancies yet."
+            actionLabel="Add Vacancy"
+            onAction={() => navigate("/add-vacancy")}
+          />
+        )}
+      </div>
+
+      {/* Pagination */}
+      <div className="mt-6">
+        <Pagination
+          currentPage={currentPage}
+          totalItems={filteredVacancies.length}
+          itemsPerPage={rowsPerPage}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </div>
   );
 };

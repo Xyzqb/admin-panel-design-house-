@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Eye, Edit2, Trash2, Plus, MoreVertical, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Edit2, Trash2, Plus, MoreVertical } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { SearchBar } from '../../components/SearchBar';
-import PageHeader from '../../components/PageHeader';
 import Pagination from '../../components/Pagination';
+import EmptyState from '../../components/EmptyState';
+import { toast } from "react-toastify";
 
 const FacilitiesList = () => {
   const navigate = useNavigate();
-  const [rowsPerPage, setRowsPerPage] = useState(5 );
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [facilities, setFacilities] = useState([
@@ -56,15 +57,17 @@ const FacilitiesList = () => {
   };
 
   const handleEdit = (facility) => {
-    localStorage.setItem('editFacility', JSON.stringify(facility));
-    navigate('/add-facility');
+    localStorage.setItem("editFacility", JSON.stringify(facility));
+    toast.info("Edit mode enabled");
+    navigate("/add-facility");
   };
 
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this facility?')) {
-      setFacilities(prev => prev.filter(facility => facility.id !== id));
-      alert('Facility deleted successfully!');
-    }
+    setFacilities(prev =>
+      prev.filter(facility => facility.id !== id)
+    );
+
+    toast.success("Facility deleted successfully");
   };
 
   const handleToggleStatus = (id) => {
@@ -169,7 +172,7 @@ const FacilitiesList = () => {
                           {facility.status === 'Active' ? '✅' : '❌'}
                         </button>
                         <button
-                          onClick={() => handleEdit(facility)}
+                          onClick={() => navigate("/add-facilities")}
                           className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100"
                           title="Edit"
                         >
@@ -215,7 +218,7 @@ const FacilitiesList = () => {
                       {facility.status === 'Active' ? '✅' : '❌'}
                     </button>
                     <button
-                      onClick={() => handleEdit(facility)}
+                      onClick={() => navigate("/add-facilities")}
                       className="p-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100"
                       title="Edit"
                     >
@@ -239,50 +242,23 @@ const FacilitiesList = () => {
 
           {/* Table Footer */}
           <div className="px-6 py-4 border-t border-gray-200 bg-blue-50">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-sm text-blue-700">
-                Showing <span className="font-semibold">{startIndex + 1}</span> to{' '}
-                <span className="font-semibold">
-                  {Math.min(startIndex + rowsPerPage, filteredFacilities.length)}
-                </span>{' '}
-                of <span className="font-semibold">{filteredFacilities.length}</span> facilities
-              </div>
-
-              <Pagination
-                currentPage={currentPage}
-                totalItems={filteredFacilities.length}
-                itemsPerPage={rowsPerPage}
-                onPageChange={setCurrentPage}
-              />
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalItems={filteredFacilities.length}
+              itemsPerPage={rowsPerPage}
+              onPageChange={setCurrentPage}
+            />
           </div>
         </div>
 
         {/* Empty State */}
         {filteredFacilities.length === 0 && (
-          <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-              <Search className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">No facilities found</h3>
-            <p className="text-gray-500 mb-6">Try adjusting your search or add a new facility.</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={handleAddNewFacility}
-                className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors border border-green-700"
-              >
-                <Plus className="w-5 h-5" />
-                Add Sample Facility
-              </button>
-              <button
-                onClick={handleAddFacility}
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors border border-blue-700"
-              >
-                <Plus className="w-5 h-5" />
-                Create New Facility
-              </button>
-            </div>
-          </div>
+          <EmptyState
+            title="No Facility found"
+            description="You haven't added any Facility yet."
+            actionLabel="Add Facility "
+            onAction={() => navigate("/add-facilities")}
+          />
         )}
       </div>
     </div>

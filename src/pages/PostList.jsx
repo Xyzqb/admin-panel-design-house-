@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     Search,
     Filter,
-    MoreVertical,
     Edit,
     Trash2,
     Eye,
     EyeOff,
     Calendar,
     Hash,
-    TrendingUp,
     CheckCircle,
     XCircle,
 } from 'lucide-react';
@@ -18,35 +16,21 @@ import { toast } from "react-toastify";
 import DeleteConfirmToast from "../components/DeleteConfirmToast";
 import Pagination from "../components/Pagination";
 import { useNavigate } from "react-router-dom";
-
-// Mock data - In real app, this will come from Redux Toolkit Query
-const initialPosts = [
-    { id: '1', title: 'Best Interior Designer in Noida', date: '05-Jan-2026', status: 'active', views: 1245, category: 'Design' },
-    { id: '2', title: 'Best Interior Designer in Delhi', date: '13-Dec-2025', status: 'active', views: 982, category: 'Design' },
-    { id: '3', title: 'Best Interior Designer in Ghaziabad', date: '07-Nov-2025', status: 'active', views: 876, category: 'Design' },
-    { id: '4', title: 'Smart Office designs that work expert interior solutions for every space', date: '22-May-2025', status: 'active', views: 1543, category: 'Office' },
-    { id: '5', title: 'Why Design House India Pvt. Showroom Interiors in Delhi — The Best One in Business', date: '19-May-2025', status: 'active', views: 2109, category: 'Showroom' },
-    { id: '6', title: 'The Importance of Showroom Interior Design More Than You Think', date: '13-May-2025', status: 'active', views: 1890, category: 'Showroom' },
-    { id: '7', title: 'Top Modular Kitchen Trends 2025 | Design House India Pvt. Ltd.', date: '08-May-2025', status: 'active', views: 3210, category: 'Kitchen' },
-    { id: '8', title: 'How Design House India Pvt. Ltd. Makes Sustainable Showroom interior Design in Delhi', date: '05-May-2025', status: 'active', views: 1432, category: 'Sustainable' },
-    { id: '9', title: 'Transform Your Brand with Stunning Showroom Interior Designs by Design House India Pvt Ltd', date: '28-Apr-2025', status: 'active', views: 1789, category: 'Branding' },
-    { id: '10', title: 'Your Space with Design House India Pvt. Ltd.: Best Interior Designer in Ghaziabad', date: '26-Apr-2025', status: 'active', views: 1123, category: 'Design' },
-    { id: '11', title: 'Modern Workspace Designs for Enhanced Productivity', date: '15-Apr-2025', status: 'active', views: 987, category: 'Office' },
-    { id: '12', title: 'Innovative Kitchen Cabinet Designs 2025', date: '10-Apr-2025', status: 'inactive', views: 654, category: 'Kitchen' },
-    { id: '13', title: 'Sustainable Materials in Interior Design', date: '05-Apr-2025', status: 'active', views: 2345, category: 'Sustainable' },
-    { id: '14', title: 'Commercial Space Planning Strategies', date: '28-Mar-2025', status: 'active', views: 876, category: 'Commercial' },
-    { id: '15', title: 'Residential Interior Design Trends', date: '20-Mar-2025', status: 'inactive', views: 543, category: 'Residential' },
-    { id: '16', title: 'Budget-Friendly Interior Solutions', date: '15-Mar-2025', status: 'active', views: 1890, category: 'Budget' },
-    { id: '17', title: 'Luxury Villa Interior Designs', date: '10-Mar-2025', status: 'active', views: 1234, category: 'Luxury' },
-    { id: '18', title: 'Small Space Optimization Techniques', date: '05-Mar-2025', status: 'active', views: 765, category: 'Space' },
-    { id: '19', title: 'Corporate Office Interior Guidelines', date: '28-Feb-2025', status: 'inactive', views: 432, category: 'Corporate' },
-    { id: '20', title: 'Restaurant Interior Design Concepts', date: '20-Feb-2025', status: 'active', views: 987, category: 'Restaurant' },
-];
+import EmptyState from "../components/EmptyState";
 
 const PostList = () => {
+
+    const getStoredPosts = () => {
+        return JSON.parse(localStorage.getItem("posts")) || [];
+    };
+    useEffect(() => {
+        setPosts(getStoredPosts());
+    }, []);
+
+
     // State management
     const navigate = useNavigate();
-    const [posts, setPosts] = useState(initialPosts);
+    const [posts, setPosts] = useState(getStoredPosts());
     const [searchTerm, setSearchTerm] = useState('');
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
@@ -55,7 +39,7 @@ const PostList = () => {
     const [editId, setEditId] = useState(null);
 
     // Extract unique categories
-    const categories = ['all', ...new Set(initialPosts.map(post => post.category).filter(Boolean))];
+    const categories = ['all', ...new Set(posts.map(post => post.category).filter(Boolean))];
 
     // Filter posts based on search term, status, and category
     const filteredPosts = posts.filter(post => {
@@ -124,15 +108,6 @@ const PostList = () => {
                     <h1 className="text-3xl md:text-3xl font-bold text-amber-600">Blog Post List</h1>
                     <p className="text-gray-600 mt-2 text-lg">Manage and monitor all your blog posts</p>
                 </div>
-
-                {/* <div>
-              <h1 className="text-3xl font-bold text-amber-600 mb-2">
-                {editId ? "Update Clients" : "Add Clients"}
-              </h1>
-              <p className="text-gray-600 text-lg">
-                Manage your clients details
-              </p>
-            </div> */}
 
                 {/* Controls Card */}
                 <div className="rounded-md p-6 border border-gray-200 mb-6">
@@ -237,69 +212,55 @@ const PostList = () => {
 
                     {/* Table - Desktop */}
                     <div className="hidden lg:block overflow-x-auto">
-                        <table className="w-full">
+                        <table className="w-full table-fixed">
                             <thead className="bg-gradient-to-r from-blue-50 to-cyan-50">
                                 <tr>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+                                    <th className="px-6 py-4 w-[40%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
                                         Post Title
                                     </th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+
+                                    <th className="px-6 py-4 w-[20%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
                                         <div className="flex items-center gap-1">
                                             <Calendar className="w-4 h-4" />
                                             Post Date
                                         </div>
                                     </th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
-                                        Category
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
-                                        <div className="flex items-center gap-1">
-                                            <TrendingUp className="w-4 h-4" />
-                                            Views
-                                        </div>
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+
+                                    <th className="px-6 py-4 w-[20%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
                                         Status
                                     </th>
-                                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-200">
+
+                                    <th className="px-6 py-4 w-[20%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
+
                             <tbody className="divide-y divide-gray-200">
                                 {currentPosts.map((post) => (
-                                    <tr
-                                        key={post.id}
-                                        className="hover:bg-gray-50 transition-colors duration-150"
-                                    >
+                                    <tr key={post.id} className="hover:bg-gray-50">
+                                        {/* Title */}
                                         <td className="px-6 py-4">
-                                            <div className="max-w-md">
-                                                <p className="text-gray-800 font-medium">{post.title}</p>
-                                            </div>
+                                            <p className="text-gray-800 font-medium truncate">
+                                                {post.title}
+                                            </p>
                                         </td>
+
+                                        {/* Date */}
                                         <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 text-gray-700">
                                                 <Calendar className="w-4 h-4 text-gray-400" />
-                                                <span className="text-gray-700">{post.date}</span>
+                                                {post.date}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(post.category)}`}>
-                                                {post.category}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2">
-                                                <TrendingUp className="w-4 h-4 text-blue-500" />
-                                                <span className="text-gray-700 font-medium">{post.views?.toLocaleString()}</span>
-                                            </div>
-                                        </td>
+
+                                        {/* Status */}
                                         <td className="px-6 py-4">
                                             <button
                                                 onClick={() => togglePostStatus(post.id)}
-                                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border transition-colors ${getStatusColor(post.status)} hover:opacity-90`}
+                                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(post.status)}`}
                                             >
-                                                {post.status === 'active' ? (
+                                                {post.status === "active" ? (
                                                     <>
                                                         <CheckCircle className="w-3 h-3 mr-1" />
                                                         Active
@@ -312,24 +273,32 @@ const PostList = () => {
                                                 )}
                                             </button>
                                         </td>
+
+                                        {/* Actions */}
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2">
                                                 <button
                                                     onClick={() => togglePostStatus(post.id)}
-                                                    className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
-                                                    title={post.status === 'active' ? 'Deactivate' : 'Activate'}
+                                                    className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg"
+                                                    title={post.status === "active" ? "Deactivate" : "Activate"}
                                                 >
-                                                    {post.status === 'active' ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                                    {post.status === "active" ? (
+                                                        <EyeOff className="w-4 h-4" />
+                                                    ) : (
+                                                        <Eye className="w-4 h-4" />
+                                                    )}
                                                 </button>
+
                                                 <button
-                                                    onClick={() => navigate("/create-a-post", {
-                                                        state:{editId:post.id}
-                                                    })}
-                                                    className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-lg transition-colors"
+                                                    onClick={() =>
+                                                        navigate("/create-a-post", { state: { editId: post.id } })
+                                                    }
+                                                    className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-lg"
                                                     title="Edit"
                                                 >
                                                     <Edit className="w-4 h-4" />
                                                 </button>
+
                                                 <button
                                                     onClick={() =>
                                                         toast(
@@ -342,7 +311,7 @@ const PostList = () => {
                                                             { autoClose: false }
                                                         )
                                                     }
-                                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg"
                                                     title="Delete"
                                                 >
                                                     <Trash2 className="w-4 h-4" />
@@ -354,87 +323,55 @@ const PostList = () => {
                             </tbody>
                         </table>
                     </div>
-
                     {/* Mobile View */}
                     <div className="lg:hidden divide-y divide-gray-200">
                         {currentPosts.map((post) => (
-                            <div key={post.id} className="p-4 hover:bg-gray-50 transition-colors">
+                            <div key={post.id} className="p-4 hover:bg-gray-50">
                                 <div className="space-y-3">
-                                    {/* Header */}
-                                    <div className="flex justify-between items-start">
-                                        <div className="flex-1">
-                                            <h3 className="font-medium text-gray-800 mb-1">{post.title}</h3>
-                                            <div className="flex items-center gap-2 text-sm text-gray-500">
-                                                <Calendar className="w-3 h-3" />
-                                                {post.date}
-                                            </div>
+                                    {/* Title + Date */}
+                                    <div>
+                                        <h3 className="font-medium text-gray-800">{post.title}</h3>
+                                        <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                                            <Calendar className="w-3 h-3" />
+                                            {post.date}
                                         </div>
-                                        <button className="p-1 text-gray-400 hover:text-gray-600">
-                                            <MoreVertical className="w-5 h-5" />
-                                        </button>
                                     </div>
 
-                                    {/* Stats */}
-                                    <div className="flex flex-wrap gap-2">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(post.category)}`}>
-                                            {post.category}
-                                        </span>
-                                        <div className="flex items-center gap-1 text-sm text-gray-600">
-                                            <TrendingUp className="w-3 h-3" />
-                                            {post.views?.toLocaleString()} views
-                                        </div>
-                                        <button
-                                            onClick={() => togglePostStatus(post.id)}
-                                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border transition-colors ${getStatusColor(post.status)} hover:opacity-90 ml-auto`}
-                                        >
-                                            {post.status === 'active' ? (
-                                                <>
-                                                    <CheckCircle className="w-3 h-3 mr-1" />
-                                                    Active
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <XCircle className="w-3 h-3 mr-1" />
-                                                    Inactive
-                                                </>
-                                            )}
-                                        </button>
-                                    </div>
+                                    {/* Status */}
+                                    <button
+                                        onClick={() => togglePostStatus(post.id)}
+                                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusColor(post.status)}`}
+                                    >
+                                        {post.status === "active" ? (
+                                            <>
+                                                <CheckCircle className="w-3 h-3 mr-1" />
+                                                Active
+                                            </>
+                                        ) : (
+                                            <>
+                                                <XCircle className="w-3 h-3 mr-1" />
+                                                Inactive
+                                            </>
+                                        )}
+                                    </button>
 
                                     {/* Actions */}
-                                    <div className="flex justify-between pt-2 border-t border-gray-100">
+                                    <div className="flex justify-between pt-2 border-t">
                                         <button
                                             onClick={() => togglePostStatus(post.id)}
-                                            className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                            className="flex items-center gap-1 text-sm text-gray-600"
                                         >
-                                            {post.status === 'active' ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                            {post.status === 'active' ? 'Deactivate' : 'Activate'}
+                                            {post.status === "active" ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                            Toggle
                                         </button>
+
                                         <button
                                             onClick={() => navigate("/create-a-post")}
-                                            className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                                            className="flex items-center gap-1 text-sm text-gray-600"
                                         >
                                             <Edit className="w-4 h-4" />
                                             Edit
                                         </button>
-                                        <button
-                                            onClick={() =>
-                                                toast(
-                                                    <DeleteConfirmToast
-                                                        onDelete={() => {
-                                                            setPosts(prev => prev.filter(p => p.id !== post.id));
-                                                            showDeleted();
-                                                        }}
-                                                    />,
-                                                    { autoClose: false }
-                                                )
-                                            }
-                                            className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                        >
-                                            <Trash2 className="w-4 h-4" />
-                                            Delete
-                                        </button>
-
                                     </div>
                                 </div>
                             </div>
@@ -443,25 +380,17 @@ const PostList = () => {
 
                     {/* Empty State */}
                     {currentPosts.length === 0 && (
-                        <div className="p-12 text-center">
-                            <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                                <Search className="w-8 h-8 text-gray-400" />
-                            </div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">No posts found</h3>
-                            <p className="text-gray-500">
-                                Try adjusting your search or filter to find what you're looking for.
-                            </p>
-                        </div>
+                        <EmptyState
+                            title="No post found"
+                            description="You haven't added any post yet."
+                            actionLabel="Add Post"
+                            onAction={() => navigate("/create-a-post")}
+                        />
                     )}
                 </div>
 
                 {/* Pagination & Stats */}
-                <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-
-                    <div className="text-sm text-gray-600">
-                        Showing <span className="font-semibold text-gray-800">{startIndex + 1}-{endIndex}</span> of{' '}
-                        <span className="font-semibold text-gray-800">{filteredPosts.length}</span> posts
-                    </div>
+                <div className="mt-6 gap-4">
                     <Pagination
                         currentPage={currentPage}
                         totalItems={filteredPosts.length}

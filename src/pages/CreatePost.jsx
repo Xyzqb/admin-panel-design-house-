@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { 
-  Upload, 
+import {
+  Upload,
   Globe,
   Hash,
   MapPin,
@@ -24,6 +24,7 @@ import {
   Trello
 } from 'lucide-react';
 import { useLocation } from "react-router-dom";
+import { addSuccessfully } from '../data/toast';
 
 
 const Post = () => {
@@ -84,7 +85,7 @@ const Post = () => {
   };
 
   const location = useLocation();
-const editId = location.state?.editId || null;
+  const editId = location.state?.editId || null;
 
 
   // Handle image upload
@@ -99,19 +100,60 @@ const editId = location.state?.editId || null;
     }
   };
 
+  // local storage
+  const getStoredPosts = () => {
+    return JSON.parse(localStorage.getItem("posts")) || [];
+  };
+
+  const savePosts = (posts) => {
+    localStorage.setItem("posts", JSON.stringify(posts));
+  };
+
+
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Post added successfully!');
+
+    const existingPosts = getStoredPosts();
+
+    const newPost = {
+      id: Date.now().toString(),
+      title: formData.postTitle,
+      date: new Date().toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+      status: formData.postStatus,
+      views: 0,
+      category: formData.categories[0] || "General",
+      permalink: formData.permalink,
+    };
+
+    const updatedPosts = [newPost, ...existingPosts];
+
+    savePosts(updatedPosts);
+
+    addSuccessfully();
+
+    // OPTIONAL: redirect to post list
+    // navigate("/post-list");
   };
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log('Form submitted:', formData);
+  //   addSuccessfully();
+  // };
+
   // Format permalink
-  const formatPermalink = (title) => {
-    return title
+  const formatPermalink = (text) => {
+    return text
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")         
+      .replace(/-+/g, "-");        
   };
 
   return (
@@ -144,7 +186,6 @@ const editId = location.state?.editId || null;
                         setFormData(prev => ({
                           ...prev,
                           postTitle: newTitle,
-                          permalink: formatPermalink(newTitle)
                         }));
                       }}
                       placeholder="Enter Post Title"
@@ -184,7 +225,7 @@ const editId = location.state?.editId || null;
                   <h2 className="text-lg font-semibold text-gray-800">Post Category *</h2>
                 </div>
                 <p className="text-sm text-gray-600 mb-6">Select one or more categories for your post</p>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                   {categories.map((category) => {
                     const Icon = category.icon;
@@ -194,11 +235,10 @@ const editId = location.state?.editId || null;
                         key={category.id}
                         type="button"
                         onClick={() => handleCategoryToggle(category.id)}
-                        className={`p-3 border rounded-lg transition-all duration-200 flex items-center gap-2 ${
-                          isSelected
-                            ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm'
-                            : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
-                        }`}
+                        className={`p-3 border rounded-lg transition-all duration-200 flex items-center gap-2 ${isSelected
+                          ? 'border-blue-500 bg-blue-50 text-blue-600 shadow-sm'
+                          : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                          }`}
                       >
                         <Icon className="w-4 h-4" />
                         <span className="text-sm text-left">{category.name}</span>
@@ -254,7 +294,7 @@ const editId = location.state?.editId || null;
                   <Ruler className="w-5 h-5 text-amber-600" />
                   <h2 className="text-lg font-semibold text-gray-800">Dimensions</h2>
                 </div>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {/* Height */}
                   <div>
@@ -312,31 +352,12 @@ const editId = location.state?.editId || null;
                   </div>
                 </div>
 
-                {/* Rich Text Editor Toolbar */}
-                <div className="border border-gray-300 rounded-t-lg bg-gray-100 p-2 flex flex-wrap gap-1">
-                  {['B', 'I', 'S', 'I_x', ':', '=', '+', '-', '/', '^', '%', '&', '|', '<', '>', '?'].map((btn, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded bg-white hover:bg-gray-50 transition-colors text-sm font-medium"
-                    >
-                      {btn}
-                    </button>
-                  ))}
-                  <button
-                    type="button"
-                    className="ml-auto px-3 py-1 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 transition-colors"
-                  >
-                    Source
-                  </button>
-                </div>
-
                 {/* Text Area */}
                 <textarea
                   value={formData.postDescription}
                   onChange={(e) => setFormData(prev => ({ ...prev, postDescription: e.target.value }))}
                   placeholder="Write your post description here..."
-                  rows={8}
+                  rows={5}
                   className="w-full px-4 py-3 border border-t-0 border-gray-300 rounded-b-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                   required
                 />
@@ -353,18 +374,17 @@ const editId = location.state?.editId || null;
                 </div>
 
                 {/* Image Upload Area */}
-                <div 
-                  className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors duration-300 ${
-                    formData.imagePreview 
-                      ? 'border-green-400 bg-green-50' 
-                      : 'border-gray-300 hover:border-purple-400 hover:bg-purple-50'
-                  }`}
+                <div
+                  className={`border-2 border-dashed rounded-xl p-6 text-center transition-colors duration-300 ${formData.imagePreview
+                    ? 'border-green-400 bg-green-50'
+                    : 'border-gray-300 hover:border-purple-400 hover:bg-purple-50'
+                    }`}
                 >
                   {formData.imagePreview ? (
                     <div className="relative">
-                      <img 
-                        src={formData.imagePreview} 
-                        alt="Preview" 
+                      <img
+                        src={formData.imagePreview}
+                        alt="Preview"
                         className="w-48 h-48 mx-auto object-cover rounded-lg"
                       />
                       <button
@@ -420,7 +440,7 @@ const editId = location.state?.editId || null;
                   <Eye className="w-5 h-5 text-gray-600" />
                   <h2 className="text-lg font-semibold text-gray-800">Post Status *</h2>
                 </div>
-                
+
                 <div className="space-y-3">
                   <label className="flex items-center gap-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
                     <input
@@ -436,7 +456,7 @@ const editId = location.state?.editId || null;
                       <span className="text-gray-700">Active</span>
                     </div>
                   </label>
-                  
+
                   <label className="flex items-center gap-3 p-3 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer">
                     <input
                       type="radio"

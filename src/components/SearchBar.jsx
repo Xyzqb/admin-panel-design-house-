@@ -112,18 +112,18 @@ export const SearchBar = ({
             className="px-3 py-2 border border-blue-200 rounded bg-white text-blue-700
               focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
             <option value={50}>50</option>
-            <option value={100}>100</option>
+             <option value={10}>75</option>
+            <option value={25}>100</option>
+            <option value={100}>150</option>
+            <option value="all">All</option>
           </select>
 
           <span className="text-sm text-blue-700">Rows</span>
         </div>
 
         {/* Search */}
-        <div className="relative w-full lg:w-64">
+        <div className="relative w-full lg:w-74">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" />
           <input
             type="text"
@@ -136,7 +136,6 @@ export const SearchBar = ({
               focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
       </div>
     </div>
   );

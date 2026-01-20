@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import AddCarousel from "./AddCarousel";
+import AddCarousel from "../pages/AddCarousel";
+import { useNavigate } from "react-router-dom";
+
 
 import {
     Plus, Trash2, Edit, Eye, Image, Calendar, Clock, Star, Settings, Search, Filter, Download
 } from 'lucide-react';
 
 const Carousel = () => {
-    const [showAddCarousel, setShowAddCarousel] = useState(false);
     const [carousels, setCarousels] = useState([
         {
             id: 1,
@@ -40,11 +41,13 @@ const Carousel = () => {
         }
     ]);
 
-    const [showAddModal, setShowAddModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
     const [currentTime, setCurrentTime] = useState(new Date());
     const [festivalStatus, setFestivalStatus] = useState({});
+    const [showAddCarousel, setShowAddCarousel] = useState(false);
+    const navigate = useNavigate();
+
 
     // New carousel form
     const [newCarousel, setNewCarousel] = useState({
@@ -214,17 +217,18 @@ const Carousel = () => {
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
                             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                Hero Carousel Manager
+                                Carousel Management
                             </h1>
                             <p className="text-gray-600 mt-2 text-lg">Manage your website hero section carousels</p>
                         </div>
                         <button
-                            onClick={() => setShowAddCarousel(true)}
+                            onClick={() => navigate("/add-carousels")}
                             className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl flex items-center gap-2"
                         >
                             <Plus className="w-5 h-5" />
                             Add Carousel
                         </button>
+
                     </div>
 
                     {/* Festival Status Bar */}

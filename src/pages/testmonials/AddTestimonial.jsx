@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { List } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import PageHeader from "../../components/PageHeader";
+import { addSuccessfully } from "../../data/toast";
 
 const AddTestimonial = () => {
-  const navigate = useNavigate();
 
   const [galleryData, setGalleryData] = useState({
     name: "",
@@ -66,22 +65,7 @@ const AddTestimonial = () => {
       image: null,
       status: "Inactive",
     });
-
-    alert("Testimonial added successfully!");
-  };
-
-  // ================= EDIT =================
-  const editEvent = (item) => {
-    setGalleryData(item);
-    setEditId(item.id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  // ================= DELETE =================
-  const deleteEvent = (id) => {
-    if (window.confirm("Are you sure you want to delete?")) {
-      setEvents((prev) => prev.filter((item) => item.id !== id));
-    }
+    addSuccessfully();
   };
 
   // ================= TOGGLE STATUS =================
@@ -230,7 +214,6 @@ const AddTestimonial = () => {
               {editId ? "Update Testimonial" : "Add Testimonial"}
             </button>
           </form>
-       
       </div>
     </div>
   );
