@@ -28,5 +28,4 @@ const DeleteConfirmToast = ({ onDelete }) => {
     </div>
   );
 };
-
 export default DeleteConfirmToast;

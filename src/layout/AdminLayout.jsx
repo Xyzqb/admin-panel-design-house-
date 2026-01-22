@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import { useState } from "react";
+import Sidebar from "./Sidebar";
 
 export default function AdminLayout({ onLogout }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);

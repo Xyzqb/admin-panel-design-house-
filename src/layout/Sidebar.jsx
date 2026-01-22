@@ -3,7 +3,7 @@ import { useState } from "react";
 import { menuItems } from "../data/menuItems";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
-export default function Sidebar({
+export default function Sidebar ({
   sidebarOpen,
   setSidebarOpen,
   mobileMenuOpen,
@@ -46,20 +46,22 @@ export default function Sidebar({
           {/* CLOSE BUTTON */}
           {sidebarOpen && (
             <button
-              onClick={() => setSidebarOpen(false)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 hidden lg:flex p-1.5 rounded-lg hover:bg-[#EFF6FF]"
+              onClick={() => {
+                setSidebarOpen(false);
+                setMobileMenuOpen(false);
+              }}
+              className="absolute right-4 top-4 p-2 rounded-lg hover:bg-[#EFF6FF]"
             >
               <X size={20} />
             </button>
           )}
         </div>
 
-
         {/* OPEN BUTTON */}
         {!sidebarOpen && (
           <button
             onClick={() => setSidebarOpen(true)}
-            className="hidden lg:flex mx-auto mt-4 p-2 rounded-lg bg-[#2563EB] text-white"
+            className="mx-4 mt-4 p-2 rounded-lg bg-[#2563EB] text-white"
           >
             <Menu size={18} />
           </button>
@@ -96,7 +98,7 @@ export default function Sidebar({
                 >
                   <div className="flex items-center gap-2">
                     <Icon size={16} className="text-[#2563EB]" />
-                    {sidebarOpen && <span>{item.section}</span>}
+                    {sidebarOpen && <span className="whitespace-nowrap">{item.section}</span>}
                   </div>
 
                   {sidebarOpen && !item.hideDropdown && item.submenu?.length > 0 && (
@@ -132,7 +134,6 @@ export default function Sidebar({
           })}
         </div>
 
-
         {/* FOOTER */}
         <div className="absolute bottom-0 w-full p-2 border-t border-[#93C5FD] bg-white">
           {sidebarOpen && (
@@ -150,7 +151,6 @@ export default function Sidebar({
             </div>
           )}
         </div>
-
       </aside>
     </>
   );

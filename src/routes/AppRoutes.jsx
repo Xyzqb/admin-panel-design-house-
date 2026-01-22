@@ -6,6 +6,7 @@ import ChangePassword from "../pages/ChangePassword";
 import Crosual from "../pages/Carousel";
 import AddCarousel from "../pages/AddCarousel";
 import EnquiryList from "../pages/EnquiryList";
+import Remainder from "../pages/Remainder";
 
 // page
 import CreatePage from "../pages/CreatePage";
@@ -109,6 +110,7 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="/carousel" element={<Crosual/>} />
         <Route path="/enquiry-list" element={<EnquiryList/>}/>
         <Route path="settings" element={<Settings />} />
+        <Route path="/remainder-list" element={<Remainder/>} />
       </Route>
     </Routes>
   );

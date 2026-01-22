@@ -1,267 +1,298 @@
-// HeroCarouselConfig.jsx
-import React, { useState } from 'react';
-import { 
-  Upload, 
-  Save, 
-  Plus, 
-  X, 
-  Type, 
-  Image as ImageIcon,
-  Sliders,
-  CheckCircle,
-  Edit
-} from 'lucide-react';
+import { useState } from 'react';
+import { Plus, X, Image, Trash2, ArrowLeft } from 'lucide-react';
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AddCarousel = () => {
-  const [activeConfig, setActiveConfig] = useState(true);
-  const [overlayOpacity, setOverlayOpacity] = useState(0.8);
-  const [images, setImages] = useState([
-    { id: 1, name: 'Upload 1' },
-    { id: 2, name: 'Upload 2' },
-    { id: 3, name: 'Upload 3' }
-  ]);
+
+  const navigate = useNavigate();
+
   const [phrases, setPhrases] = useState([
-    { id: 1, text: 'e.g., Your Journey, Our Priority' },
-    { id: 2, text: 'Typewriter phrase...' },
-    { id: 3, text: 'Typewriter phrase...' },
-    { id: 4, text: 'Typewriter phrase...' }
+    'e.g., Your Journey, Our Priority',
+    'Typewriter phrase...',
+    'Typewriter phrase...'
   ]);
   const [subtitle, setSubtitle] = useState('Short description shown below heading...');
   const [buttonText, setButtonText] = useState('Book Your Ride Now');
+  const [opacity, setOpacity] = useState(0.80);
+  const [isActive, setIsActive] = useState(true);
+  const [images, setImages] = useState([null, null, null]);
+  const [imagePreviews, setImagePreviews] = useState(['', '', '']);
 
-  const handleAddImage = () => {
-    if (images.length < 10) {
-      const newId = images.length + 1;
-      setImages([...images, { id: newId, name: `Upload ${newId}` }]);
-    }
-  };
-
-  const handleRemoveImage = (id) => {
-    if (images.length > 3) {
-      setImages(images.filter(img => img.id !== id));
-    }
-  };
-
-  const handleAddPhrase = () => {
+  const addPhrase = () => {
     if (phrases.length < 5) {
-      const newId = phrases.length + 1;
-      setPhrases([...phrases, { id: newId, text: 'Typewriter phrase...' }]);
+      setPhrases([...phrases, '']);
     }
   };
 
-  const handleRemovePhrase = (id) => {
+  const updatePhrase = (index, value) => {
+    const newPhrases = [...phrases];
+    newPhrases[index] = value;
+    setPhrases(newPhrases);
+  };
+
+  const removePhrase = (index) => {
     if (phrases.length > 3) {
-      setPhrases(phrases.filter(phrase => phrase.id !== id));
+      setPhrases(phrases.filter((_, i) => i !== index));
     }
   };
 
-  const handlePhraseChange = (id, newText) => {
-    setPhrases(phrases.map(phrase => 
-      phrase.id === id ? { ...phrase, text: newText } : phrase
-    ));
+  const addImageSlot = () => {
+    if (images.length < 10) {
+      setImages([...images, null]);
+      setImagePreviews([...imagePreviews, '']);
+    }
+  };
+
+  const handleImageUpload = (index, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const newImages = [...images];
+      newImages[index] = file;
+      setImages(newImages);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newPreviews = [...imagePreviews];
+        newPreviews[index] = reader.result;
+        setImagePreviews(newPreviews);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = (index) => {
+    const newImages = [...images];
+    newImages[index] = null;
+    setImages(newImages);
+
+    const newPreviews = [...imagePreviews];
+    newPreviews[index] = '';
+    setImagePreviews(newPreviews);
   };
 
   const handleSave = () => {
-    alert('Configuration saved successfully!');
+    if (images.filter(Boolean).length < 3) {
+      toast.error("Minimum 3 images required");
+      return;
+    }
+
+    const newCarousel = {
+      id: Date.now(),
+
+      // ✅ REQUIRED FIELDS USED BY Carousel.jsx
+      title: phrases[0] || "Untitled Carousel",
+      titles: phrases,                     // 🔥 FIX
+      subtitle,
+      description: subtitle,               // 🔥 FIX
+      priority: 1,                          // 🔥 FIX
+
+      images: images
+        .map((img, i) =>
+          img
+            ? {
+              id: Date.now() + i,
+              name: img.name,
+              url: imagePreviews[i],
+            }
+            : null
+        )
+        .filter(Boolean),
+
+      status: isActive ? "active" : "inactive",
+      createdAt: new Date().toISOString(),
+      festivalSchedule: null,
+    };
+
+    const existing = JSON.parse(localStorage.getItem("carousels")) || [];
+    localStorage.setItem(
+      "carousels",
+      JSON.stringify([newCarousel, ...existing])
+    );
+
+    toast.success("Carousel added successfully 🚀");
+    navigate("/carousel");
   };
 
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-purple-900 mb-2">
-            <Type className="inline-block mr-3 text-purple-600" size={28} />
-            Hero Carousel Configuration
-          </h1>
-          <p className="text-purple-700">
-            Upload 3-10 images & control hero section content and typewriter titles.
-          </p>
-        </div>
+    <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 mt-6 shadow-md p-6">
+      <div className="w-full">
+        {/* Add Carousel View */}
+        <div className="bg-white rounded-md shadow-lg p-8">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Column - Image Upload Section */}
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-6 shadow-lg border border-purple-200">
-              <h2 className="text-xl font-semibold text-purple-800 mb-4 flex items-center">
-                <ImageIcon className="mr-2" size={20} />
-                Carousel Slides ({images.length} images)
-              </h2>
-              <p className="text-sm text-purple-600 mb-4">
-                Minimum 3, maximum 10 images allowed
-              </p>
-
-              <button
-                onClick={handleAddImage}
-                disabled={images.length >= 10}
-                className="mb-6 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-md"
-              >
-                <Plus size={18} className="mr-2" />
-                Add Image
-              </button>
-
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {images.map((image) => (
-                  <div 
-                    key={image.id}
-                    className="bg-white rounded-xl p-4 shadow-md border border-purple-300 relative group hover:shadow-lg transition-shadow"
-                  >
-                    <div className="aspect-video bg-gradient-to-br from-purple-200 to-pink-200 rounded-lg mb-3 flex items-center justify-center">
-                      <Upload className="text-purple-500" size={32} />
-                    </div>
-                    <p className="text-purple-800 font-medium text-center">{image.name}</p>
-                    {images.length > 3 && (
-                      <button
-                        onClick={() => handleRemoveImage(image.id)}
-                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-lg"
-                      >
-                        <X size={16} />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-sm text-purple-500 mt-4">
-                <span className="font-medium">Recommended:</span> 16:9 images, PNG/JPG up to 5MB each
-              </p>
-            </div>
+          {/* Header */}
+          <div className="mb-10 flex items-center gap-4">
+            <button
+              onClick={() => navigate("/carousel")}
+              className="p-2 rounded-lg bg-purple-100 hover:bg-purple-200 text-purple-700 transition-colors"
+              title="Back to Carousel List"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <h1 className="text-3xl font-bold text-purple-900 mb-2">
+              Add Hero Carousel
+            </h1>
           </div>
 
-          {/* Right Column - Content Configuration */}
-          <div className="space-y-6">
-            {/* Typewriter Phrases Section */}
-            <div className="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-2xl p-6 shadow-lg border border-blue-200">
-              <h2 className="text-xl font-semibold text-blue-800 mb-4 flex items-center">
-                <Type className="mr-2" size={20} />
-                Hero Titles (Typewriter Lines)
-              </h2>
-              <p className="text-sm text-blue-600 mb-4">
-                Minimum 3, maximum 5 phrases allowed
-              </p>
+          {/* Carousel Slides Section */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-purple-800">
+                  Carousel Slides ({images.filter(img => img !== null).length}/{images.length} images)
+                </h2>
+                <p className="text-gray-600 mt-1">Minimum 3, maximum 10 images allowed</p>
+              </div>
+              <button
+                onClick={addImageSlot}
+                disabled={images.length >= 10}
+                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
+              >
+                <Plus className="w-4 h-4" />
+                Add Image
+              </button>
+            </div>
 
-              <div className="space-y-3 mb-4">
-                {phrases.map((phrase, index) => (
-                  <div key={phrase.id} className="flex items-center gap-3 group">
-                    <span className="text-blue-600 font-medium min-w-6">{index + 1}.</span>
-                    <input
-                      type="text"
-                      value={phrase.text}
-                      onChange={(e) => handlePhraseChange(phrase.id, e.target.value)}
-                      className="flex-1 px-4 py-2 bg-white/80 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-blue-800 placeholder-blue-400"
-                    />
-                    {phrases.length > 3 && (
-                      <button
-                        onClick={() => handleRemovePhrase(phrase.id)}
-                        className="p-2 text-red-500 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <X size={18} />
-                      </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-6 mb-6">
+              {images.map((image, index) => (
+                <div key={index} className="relative group">
+                  <div className="aspect-[16/9] bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl border-2 border-dashed border-purple-200 flex flex-col items-center justify-center p-4">
+                    {imagePreviews[index] ? (
+                      <div className="relative w-full h-full">
+                        <img
+                          src={imagePreviews[index]}
+                          alt={`Slide ${index + 1}`}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                        <button
+                          onClick={() => removeImage(index)}
+                          className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                        <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                          Slide {index + 1}
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        <Image className="w-10 h-10 text-purple-400 mb-3" />
+                        <span className="text-purple-600 font-medium text-sm">Upload {index + 1}</span>
+                      </>
                     )}
                   </div>
-                ))}
-              </div>
+                  {!imagePreviews[index] && (
+                    <label className="mt-3 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all cursor-pointer font-medium text-sm">
+                      <Plus className="w-4 h-4" />
+                      Upload
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageUpload(index, e)}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+              ))}
+            </div>
 
+            <p className="text-sm text-purple-600">
+              <span className="font-medium">Recommended:</span> 16:9 images, PNG/JPG up to 5MB each
+            </p>
+          </div>
+
+          {/* Hero Titles Section */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-xl font-semibold text-blue-800">Hero Titles (Typewriter Lines)</h2>
+                <p className="text-gray-600 mt-1">Minimum 3, maximum 5 phrases allowed</p>
+              </div>
               <button
-                onClick={handleAddPhrase}
+                onClick={addPhrase}
                 disabled={phrases.length >= 5}
-                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center shadow-md"
+                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg hover:from-blue-600 hover:to-cyan-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
               >
-                <Plus size={18} className="mr-2" />
+                <Plus className="w-4 h-4" />
                 Add Phrase
               </button>
             </div>
 
-            {/* Subtitle Section */}
-            <div className="bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl p-6 shadow-lg border border-green-200">
-              <h2 className="text-xl font-semibold text-green-800 mb-4">
-                Subtitle / Description
-              </h2>
+            <div className="space-y-4 mb-8">
+              {phrases.map((phrase, index) => (
+                <div key={index} className="flex items-center gap-4 group">
+                  <span className="text-blue-600 font-medium min-w-6">{index + 1}.</span>
+                  <input
+                    type="text"
+                    value={phrase}
+                    onChange={(e) => updatePhrase(index, e.target.value)}
+                    placeholder={index === 0 ? "e.g., Your Journey, Our Priority" : "Typewriter phrase..."}
+                    className="flex-1 px-5 py-3.5 border-2 border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all text-blue-800 placeholder-blue-400"
+                  />
+                  {phrases.length > 3 && (
+                    <button
+                      onClick={() => removePhrase(index)}
+                      className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Short Description Below Hero Titles */}
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+              <h3 className="text-lg font-semibold text-green-800 mb-3">Subtitle / Description</h3>
               <textarea
                 value={subtitle}
                 onChange={(e) => setSubtitle(e.target.value)}
-                className="w-full px-4 py-3 bg-white/80 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-green-800 placeholder-green-400 min-h-[80px]"
-                placeholder="Enter subtitle description..."
+                placeholder="Short description shown below heading..."
+                rows={3}
+                className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all text-green-800 placeholder-green-400 bg-white/80 resize-none"
               />
             </div>
+          </div>
 
-            {/* Primary Button & Configuration */}
-            <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl p-6 shadow-lg border border-amber-200">
-              <h2 className="text-xl font-semibold text-amber-800 mb-4">
-                Primary Button Text
-              </h2>
-              
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  value={buttonText}
-                  onChange={(e) => setButtonText(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/80 border border-amber-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-amber-800 mb-4"
-                />
-
-                <div className="flex items-center justify-between p-4 bg-white/50 rounded-lg border border-amber-300">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${activeConfig ? 'bg-green-100' : 'bg-gray-100'}`}>
-                      <CheckCircle className={activeConfig ? 'text-green-600' : 'text-gray-400'} size={20} />
-                    </div>
-                    <div>
-                      <p className="font-medium text-amber-800">Set as Active Configuration</p>
-                      <p className="text-sm text-amber-600">This configuration will be live on your site</p>
-                    </div>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={activeConfig}
-                      onChange={(e) => setActiveConfig(e.target.checked)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-12 h-6 bg-amber-300 peer-focus:outline-none peer-focus:ring-amber-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                  </label>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Sliders size={18} className="text-amber-600" />
-                      <span className="font-medium text-amber-800">Overlay Opacity ({overlayOpacity.toFixed(2)})</span>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${activeConfig ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                      {activeConfig ? 'Active' : 'Inactive'}
-                    </span>
-                  </div>
-                  
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={overlayOpacity}
-                    onChange={(e) => setOverlayOpacity(parseFloat(e.target.value))}
-                    className="w-full h-2 bg-amber-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-amber-500"
-                  />
-                  <div className="flex justify-between text-sm text-amber-600">
-                    <span>0%</span>
-                    <span>25%</span>
-                    <span>50%</span>
-                    <span>75%</span>
-                    <span>100%</span>
-                  </div>
-                </div>
+          {/* Active Configuration Toggle */}
+          <div className="flex items-center justify-between p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl border border-gray-300 mb-8">
+            <div className="flex items-center gap-4">
+              <div className={`p-2 rounded-lg ${isActive ? 'bg-green-100' : 'bg-gray-200'}`}>
+                <div className={`w-4 h-4 rounded-full ${isActive ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-800">Set as Active Configuration</p>
+                <p className="text-sm text-gray-600">This configuration will be live on your site</p>
               </div>
             </div>
-
-            {/* Save Button */}
-            <div className="sticky bottom-6">
+            <div className="flex items-center gap-3">
+              {isActive && (
+                <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                  Active
+                </span>
+              )}
               <button
-                onClick={handleSave}
-                className="w-full py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-3 text-lg font-semibold"
+                onClick={() => setIsActive(!isActive)}
+                className={`relative inline-flex items-center h-6 w-11 rounded-full transition-colors ${isActive ? 'bg-green-500' : 'bg-gray-300'
+                  }`}
               >
-                <Save size={22} />
-                Save Carousel Configuration
+                <span
+                  className={`inline-block w-4 h-4 transform bg-white rounded-full transition-transform ${isActive ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                />
               </button>
             </div>
           </div>
+
+          {/* Save Button */}
+          <button
+            onClick={handleSave}
+            className="w-full py-4 bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 text-white font-bold text-lg rounded-xl hover:from-purple-700 hover:via-purple-600 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl"
+          >
+            Save Carousel Configuration
+          </button>
         </div>
       </div>
     </div>

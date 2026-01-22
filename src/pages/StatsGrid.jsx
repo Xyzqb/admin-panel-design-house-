@@ -6,14 +6,10 @@ import {
   Home,
   Star,
   MessageCircle,
-  Calendar,
-  Layers,
-  Heart,
   Clock,
-  Activity,
   Sofa,
-  ClipboardList,
-  Paintbrush,
+  UserCheck,
+  Heart,
 } from "lucide-react";
 
 import {
@@ -34,116 +30,79 @@ import {
 } from "recharts";
 
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const stats = [
   {
-    title: "Total Projects",
+    title: "TOTAL PROJECTS",
     value: "128",
     desc: "Completed interiors",
     icon: Home,
-    bg: "bg-blue-50",
     iconBg: "bg-blue-500",
+    bg: "bg-blue-50",
     text: "text-blue-600",
   },
   {
-    title: "New Leads",
+    title: "NEW LEADS",
     value: "23",
     desc: "This month",
     icon: Users,
-    bg: "bg-blue-50",
-    iconBg: "bg-blue-500",
-    text: "text-blue-600",
+    iconBg: "bg-indigo-500",
+    bg: "bg-indigo-50",
+    text: "text-indigo-600",
   },
   {
-    title: "Active Clients",
+    title: "ACTIVE CLIENTS",
     value: "42",
     desc: "Ongoing projects",
-    icon: Users,
-    bg: "bg-purple-50",
+    icon: UserCheck,
     iconBg: "bg-purple-500",
+    bg: "bg-purple-50",
     text: "text-purple-600",
   },
   {
-    title: "Client Meetings",
-    value: "18",
-    desc: "Scheduled",
-    icon: Calendar,
-    bg: "bg-purple-50",
-    iconBg: "bg-purple-500",
-    text: "text-purple-600",
-  },
-  {
-    title: "Design Concepts",
-    value: "86",
-    desc: "Custom layouts",
-    icon: Layers,
-    bg: "bg-green-50",
-    iconBg: "bg-green-500",
-    text: "text-green-600",
-  },
-  {
-    title: "Approved Designs",
+    title: "APPROVED DESIGNS",
     value: "61",
     desc: "Client approved",
     icon: Star,
-    bg: "bg-green-50",
-    iconBg: "bg-green-500",
-    text: "text-green-600",
+    iconBg: "bg-emerald-500",
+    bg: "bg-emerald-50",
+    text: "text-emerald-600",
   },
   {
-    title: "Testimonials",
+    title: "TESTIMONIALS",
     value: "64",
     desc: "Happy customers",
-    icon: Star,
-    bg: "bg-yellow-50",
-    iconBg: "bg-yellow-500",
-    text: "text-yellow-600",
+    icon: Heart,
+    iconBg: "bg-rose-500",
+    bg: "bg-rose-50",
+    text: "text-rose-600",
   },
   {
-    title: "Ratings",
+    title: "RATINGS",
     value: "4.8",
     desc: "Average score",
-    icon: Activity,
-    bg: "bg-yellow-50",
-    iconBg: "bg-yellow-500",
-    text: "text-yellow-600",
+    icon: Star,
+    iconBg: "bg-amber-500",
+    bg: "bg-amber-50",
+    text: "text-amber-600",
   },
   {
-    title: "Furniture Orders",
+    title: "FURNITURE ORDERS",
     value: "31",
     desc: "Custom furniture",
     icon: Sofa,
-    bg: "bg-pink-50",
     iconBg: "bg-pink-500",
+    bg: "bg-pink-50",
     text: "text-pink-600",
   },
   {
-    title: "Material Samples",
-    value: "47",
-    desc: "Available options",
-    icon: Layers,
-    bg: "bg-orange-50",
-    iconBg: "bg-orange-500",
-    text: "text-orange-600",
-  },
-  {
-    title: "Site Visits",
-    value: "14",
-    desc: "This month",
-    icon: Calendar,
-    bg: "bg-indigo-50",
-    iconBg: "bg-indigo-500",
-    text: "text-indigo-600",
-  },
-  {
-    title: "Pending Tasks",
+    title: "PENDING TASKS",
     value: "9",
     desc: "Design approvals",
-    icon: ClipboardList,
-    bg: "bg-indigo-50",
-    iconBg: "bg-indigo-500",
-    text: "text-indigo-600",
+    icon: Clock,
+    iconBg: "bg-cyan-500",
+    bg: "bg-cyan-50",
+    text: "text-cyan-600",
   },
 ];
 
@@ -335,7 +294,7 @@ const Dashboard = () => {
   return (
     <div className="w-full ">
       <ToastContainer />
-      
+
       {/* HEADER */}
       <div className="mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-amber-600">
@@ -347,36 +306,67 @@ const Dashboard = () => {
       </div>
 
       <div className="space-y-4">
-        {/* STATS GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((item, index) => {
             const Icon = item.icon;
+
             return (
               <div
                 key={index}
-                className={`rounded-2xl p-4 shadow-md hover:shadow-lg transition ${item.bg}`}
+                className="group relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-3xl p-6 border border-slate-200 transition-all duration-500 shadow-[0_6px_14px_rgba(0,0,0,0.12)] overflow-hidden"
               >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-xs font-semibold text-gray-600 uppercase">
-                      {item.title}
-                    </h4>
-                    <p className={`text-2xl md:text-3xl font-bold mt-1 ${item.text}`}>
-                      {item.value}
-                    </p>
-                  </div>
+           
+                <div className="absolute inset-0 pointer-events-none">
+                
+                  <div
+                    className={`absolute top-0 right-0 w-60 h-60
+              ${item.iconBg} opacity-15 rounded-full -mr-20 -mt-20 transition-transform duration-500 group-hover:-mr-10 group-hover:-mt-10`}
+                  />
 
-                  <div className={`p-3 rounded-xl text-white ${item.iconBg}`}>
-                    <Icon size={22} />
-                  </div>
+         
+                  <div
+                    className={`absolute bottom-0 left-0 w-32 h-32 ${item.iconBg} opacity-15 rounded-full -ml-16 -mb-16 transition-transform duration-500 group-hover:-ml-8 group-hover:-mb-8`}
+                  />
                 </div>
 
-                <p className="text-xs text-gray-500 mt-2">{item.desc}</p>
+                <div className="relative z-10">
+                 
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-9 h-9 rounded-2xl bg-gradient-to-br ${item.iconBg} ${item.iconBg.replace("500", "600")} flex items-center justify-center shadow-md`}
+                      >
+                        <Icon className="w-5 h-5 text-white" strokeWidth={2.5} />
+                      </div>
+
+                      <p className="text-xs font-bold text-slate-600 uppercase tracking-widest">
+                        {item.title}
+                      </p>
+                    </div>
+
+                    <div
+                      className={`px-3 py-1 rounded-full text-md font-bold ${item.bg} ${item.text} border-2 ${item.iconBg.replace("bg-", "border-")}`}
+                    >
+                      {index + 1}
+                    </div>
+                  </div>
+
+           
+                  <div>
+                    <p className={`text-xl font-extrabold ${item.text} mb-2 leading-none`}>
+                      {item.value}
+                    </p>
+
+                    <p className="text-sm text-slate-700 font-medium">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
               </div>
             );
           })}
         </div>
-
+        
         {/* CHARTS */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* CLIENT GROWTH CHART */}
