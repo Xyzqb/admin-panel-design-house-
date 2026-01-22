@@ -1,13 +1,16 @@
-import { path, section } from "framer-motion/client";
 import {
   LayoutDashboard,
-  Briefcase,
-  Users,
-  BookOpen,
-  Image,
-  Download,
   FileText,
   Folder,
+  Image,
+  Users,
+  Briefcase,
+  BookOpen,
+  Images,
+  Lock,
+  Settings,
+  CalendarCheck,
+  Building2 
 } from "lucide-react";
 
 export const menuItems = [
@@ -17,84 +20,166 @@ export const menuItems = [
     path: "/dashboard",
     showHeading: true,
     hideDropdown: true,
-    submenu:[],
+    submenu: [],
   },
+
   {
-    section: "Projects",
-    icon: Folder,
-    path: "/projects",
-    showHeading: false,
-    submenu: [
-      { name: "Projects", path: "/projects" },
-    ],
-  },
-  {
-    section: "Services",
-    icon: Briefcase,
-    path: "/services",
-    showHeading: true,
-    submenu: [
-      { name: "All Services", path: "/services/interior" },
-      // { name: "Merchandising", path: "/services/merchandising" },
-      // { name: "Kiosk", path: "/services/kiosk" },
-      // { name: "Exhibition & Events", path: "/services/exhibition-events" },
-      // { name: "Office Interior", path: "/services/office-interior" },
-      // { name: "Furniture", path: "/services/furniture" },
-    ],
-  },
-  {
-    section: "Career",
+    section: "Create a Post",
     icon: FileText,
-    path: "/career",
+    path: "/create-a-post",
     showHeading: false,
-    submenu: [{ name: "Open Positions", path: "/career/jobs" }],
+    hideDropdown: true,
+    submenu: [],
   },
+
+  {
+    section: "Post List",
+    icon: Folder,
+    path: "/post-list",
+    showHeading: false,
+    hideDropdown: true,
+    submenu: [],
+  },
+
+  {
+    section: "Create a Page",
+    icon: BookOpen,
+    path: "/create-a-page",
+    showHeading: false,
+    hideDropdown: true,
+    submenu: [],
+  },
+
+  {
+    section: "Page List",
+    icon: Folder,
+    path: "/page-list",
+    showHeading: false,
+    hideDropdown: true,
+    submenu: [],
+  },
+
+  {
+    section: "Portfolio Gallery",
+    icon: Image,
+    path: "/portfolio-gallery",
+    showHeading: true,
+    hideDropdown: false,
+    submenu: [
+      { name: "Gallery Category", path: "/gallery-category" },
+      { name: "Gallery Images List", path: "/gallery-image-list" },
+      { name: "Add Gallery Images", path: "/add-gallery-images" },
+    ],
+  },
+
+  {
+    section: "Testimonials",
+    icon: Users,
+    path: "/testimonials",
+    showHeading: false,
+    hideDropdown: false,
+    submenu: [
+      { name: "Add Testimonials", path: "/add-testimonials" },
+      { name: "Testimonials List", path: "/testimonials-list" },
+    ],
+  },
+
+  {
+    section: "Vacancy",
+    icon: Briefcase,
+    path: "/vacancy",
+    showHeading: false,
+    hideDropdown: false,
+    submenu: [
+      { name: "Add Requirements", path: "/add-vacancy" },
+      { name: "Vacancy List", path: "/vacancy-list" },
+    ],
+  },
+
   {
     section: "Our Clients",
     icon: Users,
     path: "/clients",
     showHeading: false,
+    hideDropdown: false,
     submenu: [
-      { name: "All Clients", path: "/clients" },
-      { name: "Testimonials", path: "/testimonials" },
+      { name: "Add Clients", path: "/add-clients" },
+      { name: "Clients List", path: "/clients-list" },
     ],
   },
+
   {
-    section: "Blog",
-    icon: BookOpen,
-    path: "/blog",
+    section: "Our Projects",
+    icon: Users,
+    path: "/projects",
     showHeading: false,
+    hideDropdown: false,
     submenu: [
-      { name: "Blogs Page", path: "/blogs" },
-      // { name: "Categories", path: "/blog/categories" },
+      { name: "Add Projects", path: "/add-projects" },
+      { name: "Projects List", path: "/projects-list" },
+    ],
+  },
+
+  {
+    section: "Facilities & Infrastructure",
+    icon: Folder,
+    path: "/facilities",
+    showHeading: false,
+    hideDropdown: false,
+    submenu: [
+      { name: "Add Facilities", path: "/add-facilities" },
+      { name: "Facilities List", path: "/facilities-list" },
+    ],
+  },
+  // {
+  //   section: "Marketing",
+  //   showHeading: true,
+  //   hideDropdown: true,
+  //   icon: Building2,
+  //   path: "",
+  //   submenu: [],
+  // },
+  {
+    section: "Corporate Section",
+    icon: Building2 ,
+    path: "/corporate",
+    showHeading: true,
+    hideDropdown: false,
+    submenu: [
+      {name:"Add Corporate Clients", path:"/add-corporate-clients"},
+      {name:"Corporate Clients List", path:"/corporate-clients-list"}
     ],
   },
   {
-    section: "Portfolio",
-    icon: Image,
-    path: "/portfolio",
+    section: "Home Slider",
+    icon: Images,
+    path: "/carousel",
     showHeading: true,
-    submenu: [
-      { name: "Portfolio details", path: "/Portfolio-details" }
-      // { name: "Interior Portfolio", path: "/Portfolio/web" },
-      // { name: "Merchandising Portfolio", path: "/Portfolio/mobile" },
-      // { name: "Kiosk Portfolio", path: "/Portfolios/uiux" },
-      // { name: "Exhibition & Events Portfolio", path: "/Portfolio/web" },
-      // { name: "Office Interior Portfolio", path: "/Portfolio/mobile" },
-      // { name: "Furniture Portfolio", path: "/Portfolio/uiux" },
-      // { name: "Videos", path: "/Portfolio/uiux" },
-    ],
+    hideDropdown: true,
+    submenu: [],
+  },
+   {
+    section: "Book Meeting",
+    icon: CalendarCheck,
+    path: "/enquiry-list",
+    showHeading: false,
+    hideDropdown: true,
+    submenu: [],
   },
   {
-    section: "Downloads",
-    icon: Download,
-    path: "/downloads",
-    showHeading: true,
-    submenu: [
-      { name: "Downloads Detail", path: "/downloads" }
-      // { name: "E Brochure", path: "/downloads/resources" },
-      // { name: "Newsletter", path: "/downloads/reports" },
-      // { name: "Company Profile", path: "/downloads/reports" },
-    ],
+    section: "Change Password",
+    icon: Lock,
+    path: "/change-password",
+    showHeading: false,
+    hideDropdown: true,
+    submenu: [],
+  },
+  {
+    section: "Settings",
+    icon: Settings,
+    path: "/settings",
+    showHeading: false,
+    hideDropdown: true,
+    submenu: [],
   },
 ];

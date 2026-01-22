@@ -320,12 +320,12 @@ const Dashboard = () => {
                 
                   <div
                     className={`absolute top-0 right-0 w-60 h-60
-              ${item.iconBg} opacity-15 rounded-full -mr-20 -mt-20 transition-transform duration-500 group-hover:-mr-10 group-hover:-mt-10`}
+                   ${item.iconBg} opacity-15 rounded-full -mr-20 -mt-20 transition-transform duration-700 group-hover:-mr-10 group-hover:-mt-10`}
                   />
 
          
                   <div
-                    className={`absolute bottom-0 left-0 w-32 h-32 ${item.iconBg} opacity-15 rounded-full -ml-16 -mb-16 transition-transform duration-500 group-hover:-ml-8 group-hover:-mb-8`}
+                    className={`absolute bottom-0 left-0 w-32 h-32 ${item.iconBg} opacity-15 rounded-full -ml-16 -mb-16 transition-transform duration-700 group-hover:-ml-8 group-hover:-mb-8`}
                   />
                 </div>
 

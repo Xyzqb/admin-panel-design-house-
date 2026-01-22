@@ -25,7 +25,7 @@ const AddFacilities = () => {
   return (
     <div className="bg-white shadow-md mt-6">
       {/* CENTERED CONTAINER */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-6">
 
         {/* HEADER */}
         <PageHeader

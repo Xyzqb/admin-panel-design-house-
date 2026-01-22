@@ -3,8 +3,8 @@ import LoginPage from "../layout/LoginPage";
 import Dashboard from "../pages/Dashboard";
 import AdminLayout from "../layout/AdminLayout";
 import ChangePassword from "../pages/ChangePassword";
-import Crosual from "../pages/Carousel";
-import AddCarousel from "../pages/AddCarousel";
+import Crosual from "../pages/HomeSlider";
+import FestivalCarousel from "../pages/FestivalCarousel";
 import EnquiryList from "../pages/EnquiryList";
 import Remainder from "../pages/Remainder";
 
@@ -41,6 +41,9 @@ import ProjectList from "../pages/project/ProjectList";
 import AddFacility from "../pages/facilities/AddFacility";
 import FacilityList from "../pages/facilities/FacilityList";
 
+// corporate
+import AddCorporateClients from "../pages/corporate-clients/AddCorporateClients";
+import CorporateList from "../pages/corporate-clients/CorporateClientsList";
 
 // settings
 import Settings from "../pages/Settings";
@@ -104,9 +107,13 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="/add-facilities" element={<AddFacility/>} />
         <Route path="/facilities-list" element={<FacilityList/>} />
 
+        {/* corporate */}
+        <Route path="/add-corporate-clients" element={<AddCorporateClients/>} />
+        <Route path="/corporate-clients-list" element={<CorporateList/>}/>
+
         {/* SETTINGS */}
         <Route path="/change-password" element={<ChangePassword/>} />
-        <Route path="/add-carousels" element={<AddCarousel />} />
+        <Route path="/festival-carousels" element={<FestivalCarousel />} />
         <Route path="/carousel" element={<Crosual/>} />
         <Route path="/enquiry-list" element={<EnquiryList/>}/>
         <Route path="settings" element={<Settings />} />
