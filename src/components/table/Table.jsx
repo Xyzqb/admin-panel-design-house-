@@ -1,52 +1,79 @@
+import { Edit, Trash2 } from "lucide-react";
+
 export default function Table({
   columns = [],
   data = [],
-  renderActions,
+  onEdit,
+  onDelete,
 }) {
+  const showActions = onEdit || onDelete;
+
   return (
-    <div className="overflow-x-auto bg-white rounded-xl shadow border">
-      <table className="min-w-full text-sm">
+    <div className="overflow-x-auto bg-white rounded-sm shadow-md border border-gray-100">
+      <table className="w-full text-sm">
         {/* HEADER */}
-        <thead className="bg-gray-100">
+        <thead className="bg-gradient-to-r from-blue-600 to-blue-700">
           <tr>
             {columns.map((col) => (
               <th
                 key={col.key}
-                className="px-4 py-3 text-left font-semibold text-gray-600"
+                className="px-6 py-4 text-left font-bold text-white uppercase text-xs"
               >
                 {col.label}
               </th>
             ))}
 
-            {renderActions && (
-              <th className="px-4 py-3 text-right">Actions</th>
+            {showActions && (
+              <th className="px-6 py-4 text-right font-bold text-white uppercase text-xs">
+                Actions
+              </th>
             )}
           </tr>
         </thead>
 
         {/* BODY */}
-        <tbody>
+        <tbody className="divide-y divide-gray-200">
           {data.length === 0 ? (
             <tr>
               <td
-                colSpan={columns.length + 1}
-                className="text-center py-6 text-gray-400"
+                colSpan={columns.length + (showActions ? 1 : 0)}
+                className="text-center py-12 text-gray-400"
               >
                 No data found
               </td>
             </tr>
           ) : (
             data.map((row, index) => (
-              <tr key={index} className="border-t hover:bg-gray-50">
+              <tr key={index} className="hover:bg-blue-50 transition">
                 {columns.map((col) => (
-                  <td key={col.key} className="px-4 py-3">
-                    {row[col.key]}
+                  <td key={col.key} className="px-6 py-4">
+                    {col.render ? col.render(row) : row[col.key]}
                   </td>
                 ))}
 
-                {renderActions && (
-                  <td className="px-4 py-3 text-right">
-                    {renderActions(row)}
+                {showActions && (
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      {onEdit && (
+                        <button
+                          onClick={() => onEdit(row)}
+                          className="p-2 text-green-600 hover:bg-green-100 rounded-lg"
+                          title="Edit"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </button>
+                      )}
+
+                      {onDelete && (
+                        <button
+                          onClick={() => onDelete(row)}
+                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
                   </td>
                 )}
               </tr>
@@ -58,39 +85,69 @@ export default function Table({
   );
 }
 
-// import Table from "../../components/table/Table";
-// import { Edit, Trash } from "lucide-react";
 
-// export default function FacilitiesList() {
-//   const columns = [
-//     { key: "name", label: "Facility Name" },
-//     { key: "location", label: "Location" },
-//     { key: "status", label: "Status" },
-//   ];
 
-//   const data = [
-//     { name: "Warehouse", location: "Noida", status: "Active" },
-//     { name: "Plant", location: "Delhi", status: "Inactive" },
-//   ];
-
+// export default function Table({
+//   columns = [],
+//   data = [],
+//   renderActions,
+// }) {
 //   return (
-//     <div className="p-4">
-//       <h1 className="text-xl font-semibold mb-4">Facilities</h1>
+//     <div className="overflow-x-auto bg-white rounded-2xl shadow-xl border border-gray-100">
+//       <table className="w-full text-sm">
+//         {/* HEADER */}
+//         <thead className="bg-gradient-to-r from-blue-600 to-blue-700">
+//           <tr>
+//             {columns.map((col) => (
+//               <th
+//                 key={col.key}
+//                 className="px-6 py-4 text-left font-bold text-white uppercase text-xs"
+//               >
+//                 {col.label}
+//               </th>
+//             ))}
+//             {renderActions && (
+//               <th className="px-6 py-4 text-right font-bold text-white uppercase text-xs">
+//                 Actions
+//               </th>
+//             )}
+//           </tr>
+//         </thead>
 
-//       <Table
-//         columns={columns}
-//         data={data}
-//         renderActions={(row) => (
-//           <div className="flex justify-end gap-2">
-//             <button className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-//               <Edit size={16} />
-//             </button>
-//             <button className="p-2 bg-red-50 text-red-600 rounded-lg">
-//               <Trash size={16} />
-//             </button>
-//           </div>
-//         )}
-//       />
+//         {/* BODY */}
+//         <tbody className="divide-y divide-gray-200">
+//           {data.length === 0 ? (
+//             <tr>
+//               <td
+//                 colSpan={columns.length + 1}
+//                 className="text-center py-12 text-gray-400"
+//               >
+//                 No data found
+//               </td>
+//             </tr>
+//           ) : (
+//             data.map((row, index) => (
+//               <tr
+//                 key={index}
+//                 className="hover:bg-blue-50 transition group"
+//               >
+//                 {columns.map((col) => (
+//                   <td key={col.key} className="px-6 py-4">
+//                     {/* 🔥 custom render support */}
+//                     {col.render ? col.render(row) : row[col.key]}
+//                   </td>
+//                 ))}
+
+//                 {renderActions && (
+//                   <td className="px-6 py-4 text-right">
+//                     {renderActions(row)}
+//                   </td>
+//                 )}
+//               </tr>
+//             ))
+//           )}
+//         </tbody>
+//       </table>
 //     </div>
 //   );
 // }

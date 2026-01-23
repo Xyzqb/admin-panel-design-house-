@@ -1,44 +1,6 @@
-// import Table from "../../components/table/Table";
-// import { Edit, Trash } from "lucide-react";
-
-// function FacilitiesList() {
-//   const columns = [
-//     { key: "name", label: "Facility Name" },
-//     { key: "location", label: "Location" },
-//     { key: "status", label: "Status" },
-//   ];
-
-//   const data = [
-//     { name: "Warehouse", location: "Noida", status: "Active" },
-//     { name: "Plant", location: "Delhi", status: "Inactive" },
-//   ];
-
-//   return (
-//     <div className="p-4">
-//       <h1 className="text-xl font-semibold mb-4">Facilities</h1>
-
-//       <Table
-//         columns={columns}
-//         data={data}
-//         renderActions={(row) => (
-//           <div className="flex justify-end gap-2">
-//             <button className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-//               <Edit size={16} />
-//             </button>
-//             <button className="p-2 bg-red-50 text-red-600 rounded-lg">
-//               <Trash size={16} />
-//             </button>
-//           </div>
-//         )}
-//       />
-//     </div>
-//   );
-// }
-// export default FacilitiesList;
-
-
-import React, { useState, useEffect } from 'react';
-import { Edit2, Trash2, Plus, MoreVertical } from 'lucide-react';
+import Table from "../../components/table/Table";
+import { useState, useEffect } from 'react';
+import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { SearchBar } from '../../components/SearchBar';
 import Pagination from '../../components/Pagination';
@@ -47,21 +9,10 @@ import { toast } from "react-toastify";
 
 const FacilitiesList = () => {
   const navigate = useNavigate();
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [facilities, setFacilities] = useState([
-    { id: 23, name: 'Laser Cutting', status: 'Active' },
-    { id: 22, name: 'Hip & Abs Thermoforming', status: 'Active' },
-    { id: 21, name: 'Post Forming Machinery', status: 'Active' },
-    { id: 20, name: 'Corian Sheet Fabrication', status: 'Active' },
-    { id: 19, name: 'Acrylic Fabrication', status: 'Active' },
-    { id: 18, name: 'All Types Of Metal Fabrication', status: 'Active' },
-    { id: 17, name: 'Solid Wood Furniture Fabrication', status: 'Active' },
-    { id: 16, name: 'Modular Furniture Fabrication', status: 'Active' },
-    { id: 15, name: 'Acp And Metal Signage Fabrication', status: 'Active' },
-    { id: 14, name: 'Chair And Sofa Fabrication', status: 'Active' },
-  ]);
+  const [facilities, setFacilities] = useState([]);
 
   // Load from localStorage on component mount
   useEffect(() => {
@@ -91,14 +42,10 @@ const FacilitiesList = () => {
   const startIndex = (currentPage - 1) * rowsPerPage;
   const paginatedFacilities = filteredFacilities.slice(startIndex, startIndex + rowsPerPage);
 
-  const handleAddFacility = () => {
-    navigate('/add-facility');
-  };
-
   const handleEdit = (facility) => {
     localStorage.setItem("editFacility", JSON.stringify(facility));
     toast.info("Edit mode enabled");
-    navigate("/add-facility");
+    navigate("/add-facilities");
   };
 
   const handleDelete = (id) => {
@@ -109,31 +56,29 @@ const FacilitiesList = () => {
     toast.success("Facility deleted successfully");
   };
 
-  const handleToggleStatus = (id) => {
-    setFacilities(prev =>
-      prev.map(facility =>
-        facility.id === id
-          ? { ...facility, status: facility.status === 'Active' ? 'Inactive' : 'Active' }
-          : facility
-      )
-    );
-  };
-
-  const handleAddNewFacility = () => {
-    const newId = facilities.length > 0 ? Math.max(...facilities.map(f => f.id)) + 1 : 1;
-    const newFacility = {
-      id: newId,
-      name: `New Facility ${newId}`,
-      status: 'Active'
-    };
-    setFacilities(prev => [newFacility, ...prev]);
-    alert('New facility added!');
-  };
-
   const handleRowsPerPageChange = (value) => {
     setRowsPerPage(parseInt(value));
     setCurrentPage(1);
   };
+
+  const columns = [
+    {
+      label: "ID",
+      key: "id",
+      render: (row) => (
+        <span className="font-semibold text-gray-900">#{row.id}</span>
+      ),
+    },
+    {
+      label: "Name",
+      key: "name",
+    },
+    {
+      label: "Status",
+      key: "status",
+      render: (row) => <StatusBadge status={row.status} />,
+    },
+  ];
 
   return (
     <div className="bg-white shadow-md mt-6 p-4 md:p-6">
@@ -146,19 +91,20 @@ const FacilitiesList = () => {
               <h1 className="text-3xl font-bold text-amber-600 mb-2">Facilities List</h1>
               <p className="text-gray-600 text-lg">Manage and view all your facilities</p>
             </div>
-            {/* <button
-              onClick={handleAddFacility}
+            <button
+              onClick={() => navigate("/add-facilities")}
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors border border-blue-700"
             >
               <Plus className="w-5 h-5" />
               Add Facility
-            </button> */}
+            </button>
           </div>
         </div>
 
         {/* Controls */}
         <SearchBar
           rowsPerPage={rowsPerPage}
+          totalItems={filteredFacilities.length}
           onRowsPerPageChange={(value) => {
             setRowsPerPage(value);
             setCurrentPage(1);
@@ -172,112 +118,12 @@ const FacilitiesList = () => {
         />
 
         <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
-          {/* Desktop Table */}
-          <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-blue-50 border-b border-blue-100">
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Id</th>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Name</th>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Status</th>
-                  <th className="py-4 px-6 text-left text-sm font-semibold text-blue-700 uppercase tracking-wider">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedFacilities.map((facility, index) => (
-                  <tr
-                    key={facility.id}
-                    className={`hover:bg-gray-50 transition-colors ${index !== paginatedFacilities.length - 1 ? 'border-b border-gray-200' : ''}`}
-                  >
-                    <td className="py-4 px-6 whitespace-nowrap border-r border-gray-100">
-                      <span className="text-sm font-semibold text-gray-900">#{facility.id}</span>
-                    </td>
-                    <td className="py-4 px-6 border-r border-gray-100">
-                      <div className="text-sm text-gray-900">{facility.name}</div>
-                    </td>
-                    <td className="py-4 px-6 border-r border-gray-100">
-                      <StatusBadge status={facility.status} />
-                    </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => handleToggleStatus(facility.id)}
-                          className={`p-2 rounded-lg transition-colors border ${facility.status === 'Active'
-                            ? 'bg-green-50 text-green-600 hover:bg-green-100 border-green-100'
-                            : 'bg-red-50 text-red-600 hover:bg-red-100 border-red-100'
-                            }`}
-                          title={facility.status === 'Active' ? 'Deactivate' : 'Activate'}
-                        >
-                          {facility.status === 'Active' ? '✅' : '❌'}
-                        </button>
-                        <button
-                          onClick={() => navigate("/add-facilities")}
-                          className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100"
-                          title="Edit"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(facility.id)}
-                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors border border-red-100"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Mobile Cards */}
-          <div className="lg:hidden space-y-4 p-4">
-            {paginatedFacilities.map((facility) => (
-              <div key={facility.id} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <span className="text-sm font-semibold text-gray-900">#{facility.id}</span>
-                    <h3 className="text-lg font-semibold text-gray-900 mt-1">{facility.name}</h3>
-                  </div>
-                  <StatusBadge status={facility.status} />
-                </div>
-
-                <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => handleToggleStatus(facility.id)}
-                      className={`p-2 rounded-lg ${facility.status === 'Active'
-                        ? 'bg-green-50 text-green-600 border border-green-100'
-                        : 'bg-red-50 text-red-600 border border-red-100'
-                        }`}
-                      title={facility.status === 'Active' ? 'Deactivate' : 'Activate'}
-                    >
-                      {facility.status === 'Active' ? '✅' : '❌'}
-                    </button>
-                    <button
-                      onClick={() => navigate("/add-facilities")}
-                      className="p-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100"
-                      title="Edit"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(facility.id)}
-                      className="p-2 bg-red-50 text-red-600 rounded-lg border border-red-100"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <button className="p-2 text-gray-400 hover:text-gray-600">
-                    <MoreVertical className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <Table
+            columns={columns}
+            data={paginatedFacilities}
+            onEdit={(row) => handleEdit(row)}
+            onDelete={(row) => handleDelete(row.id)}
+          />
 
           {/* Table Footer */}
           <div className="px-6 py-4 border-t border-gray-200 bg-blue-50">

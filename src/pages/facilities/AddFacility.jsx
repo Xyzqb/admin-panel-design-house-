@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { List } from "lucide-react";
 import PageHeader from "../../components/PageHeader";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddFacilities = () => {
+  
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     status: "Inactive",
@@ -18,8 +22,34 @@ const AddFacilities = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    alert("Facility Added Successfully");
+
+    // 1️⃣ Get existing facilities
+    const existingFacilities =
+      JSON.parse(localStorage.getItem("facilities")) || [];
+
+    // 2️⃣ Create new facility with ID
+    const newFacility = {
+      id:
+        existingFacilities.length > 0
+          ? Math.max(...existingFacilities.map(f => f.id)) + 1
+          : 1,
+      name: formData.name,
+      status: formData.status,
+    };
+
+    // 3️⃣ Add new facility to list
+    const updatedFacilities = [newFacility, ...existingFacilities];
+
+    // 4️⃣ Save back to localStorage
+    localStorage.setItem(
+      "facilities",
+      JSON.stringify(updatedFacilities)
+    );
+
+    toast.success("Facility added successfully");
+
+    // 5️⃣ Navigate back to list
+    navigate("/facilities-list");
   };
 
   return (

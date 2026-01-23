@@ -45,6 +45,11 @@ import FacilityList from "../pages/facilities/FacilityList";
 import AddCorporateClients from "../pages/corporate-clients/AddCorporateClients";
 import CorporateList from "../pages/corporate-clients/CorporateClientsList";
 
+// individual clients
+import AddIndividualClients from "../pages/individuals/AddIndividualClients";
+import IndividualClientList from "../pages/individuals/IndividualClientList";
+import IndividualProfile from "../pages/individuals/IndividualProfile";
+
 // settings
 import Settings from "../pages/Settings";
 
@@ -110,6 +115,11 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         {/* corporate */}
         <Route path="/add-corporate-clients" element={<AddCorporateClients/>} />
         <Route path="/corporate-clients-list" element={<CorporateList/>}/>
+
+        {/* individual */}
+        <Route path="/add-individual-clients" element={<AddIndividualClients/>}/>
+        <Route path="/individual-clients-list" element={<IndividualClientList/>}/>
+        <Route path="/profiles" element={<IndividualProfile/>}/>
 
         {/* SETTINGS */}
         <Route path="/change-password" element={<ChangePassword/>} />

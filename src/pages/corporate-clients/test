@@ -996,6 +996,7 @@ const AddCorporateClients = () => {
             </div> */}
 
           {/* Action Buttons */}
+          <div className="pt-6 border-t border-gray-200">
             <div className="flex flex-col md:flex-row justify-end gap-4">
               <button
                 type="button"
@@ -1025,6 +1026,7 @@ const AddCorporateClients = () => {
               </button>
             </div>
           </div>
+        </div>
       </form>
     </div>
     // </div>
