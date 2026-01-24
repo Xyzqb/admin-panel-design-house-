@@ -377,7 +377,7 @@ const AddCorporateClients = () => {
         <div className="space-y-4">
           {/* Company Information - Updated */}
           <div>
-            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6">
+            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-2">
               Company Information
             </h2>
 
@@ -588,7 +588,7 @@ const AddCorporateClients = () => {
           </div>
 
             {/* Contact Person 1 (Primary) */}
-            <div className="mb-8">
+            <div className="mb-4">
               <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
                 <User className="h-5 w-5 mr-2 text-blue-500" />
                 Primary Contact (Required)
@@ -697,7 +697,7 @@ const AddCorporateClients = () => {
             </div>
 
             {/* Contact Person 2 (Optional) */}
-            <div className="mb-8">
+            <div className="mb-4">
               <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
                 <Users className="h-5 w-5 mr-2 text-gray-500" />
                 Additional Contact 1 (Optional)
@@ -872,7 +872,7 @@ const AddCorporateClients = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Data Source

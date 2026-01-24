@@ -8,8 +8,8 @@ import {
   HelpCircle,
 } from "lucide-react";
 import { useState } from "react";
-import { FaUserAstronaut } from "react-icons/fa";
-import { FaUserTie } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { FaUserTie, FaUserAstronaut } from "react-icons/fa";
 
 export default function Navbar({
   mobileMenuOpen,
@@ -18,6 +18,7 @@ export default function Navbar({
 }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const [activeTitle, setActiveTitle] = useState(null);
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 right-0 h-22 bg-[#F8FAFC] border-b border-slate-200 z-50">
@@ -103,21 +104,48 @@ export default function Navbar({
               setProfileOpen(!profileOpen);
               setActiveTitle(null);
             }}
-            className="flex items-center gap-2 p-1.5 rounded-full hover:bg-slate-100 transition"
+            className="relative flex items-center gap-2 p-1.5 rounded-full hover:bg-slate-100 transition"
           >
-            <FaUserTie size={22} className="text-slate-700" />
-            {/* <FaUserAstronaut size={22} className="text-slate-700" /> */}
-            {/* <FaCircleUser size={20} /> */}
+            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-slate-500 flex-shrink-0">
+              <img
+                src="/images/logoo.jpg"
+                alt="Admin"
+                className="w-full h-full object-cover"
+              />
+            </div>
           </button>
-
+          
           {/* PROFILE DROPDOWN */}
           {profileOpen && (
-            <div className="whitespace-nowrap absolute right-0 top-16 w-44 bg-white border border-slate-200 shadow-xl overflow-hidden">
-              <button className="flex items-center gap-2 w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100">
+            <div className="whitespace-nowrap absolute right-0 top-16 w-52 bg-white border border-slate-200 shadow-xl rounded-lg overflow-hidden">
+
+              {/* Manage Admin Users */}
+              <button
+                onClick={() => {
+                  navigate("/admin-users");
+                  setProfileOpen(false);
+                }}
+                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+              >
+                <FaUserAstronaut size={16} />
+                Manage Admin Users
+              </button>
+
+              {/* Change Password */}
+              <button
+                onClick={() => {
+                  navigate("/change-password");
+                  setProfileOpen(false);
+                }}
+                className="flex items-center gap-2 w-full px-4 py-2 text-sm text-slate-700 hover:bg-slate-100"
+              >
                 <Key size={16} />
                 Change Password
               </button>
 
+              <div className="border-t border-slate-200" />
+
+              {/* Logout */}
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"

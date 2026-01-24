@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Table from "../../components/table/Table";
 import Pagination from '../../components/Pagination';
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   Filter,
@@ -32,7 +33,16 @@ const IndividualClientList = () => {
       key: "name",
       render: (row) => (
         <div>
-          <div className="font-medium text-gray-900">{row.name}</div>
+          <div
+            onClick={() => {
+              localStorage.setItem("selectedIndividual", JSON.stringify(row));
+              navigate(`/individual-profile/${row.id}`);
+            }}
+            className="font-medium text-blue-600 cursor-pointer hover:underline"
+          >
+            {row.name}
+          </div>
+
           <div className="text-sm text-gray-500 flex items-center">
             <Phone className="h-3 w-3 mr-1" />
             {row.phone}
@@ -40,6 +50,7 @@ const IndividualClientList = () => {
         </div>
       ),
     },
+
     {
       label: "City",
       key: "city",
@@ -101,6 +112,7 @@ const IndividualClientList = () => {
   const [selectedClient, setSelectedClient] = useState(null);
   const [editFormData, setEditFormData] = useState({});
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Status options
   const statusOptions = ['All', 'Active', 'Pending', 'Completed', 'Inactive'];

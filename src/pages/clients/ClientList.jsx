@@ -98,7 +98,7 @@ const ClientList = () => {
 
   return (
     <div className="bg-white shadow-sm mt-6 p-4 md:p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-amber-600">Clients List</h1>

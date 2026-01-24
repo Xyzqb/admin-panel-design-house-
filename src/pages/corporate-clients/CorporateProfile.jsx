@@ -18,22 +18,23 @@ import {
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 
-const IndividualProfile = () => {
+const CorporateProfile = () => {
+
   const { id } = useParams();
 
   useEffect(() => {
+    const storedClient = JSON.parse(localStorage.getItem("selectedClient"));
 
-    const storedClient = JSON.parse(localStorage.getItem("selectedIndividual"));
-    if (storedClient && String(storedClient.id) === id) {
+    if (storedClient && storedClient.id === id) {
       setFormData({
-        FullName: storedClient.name || "",
-        profession: storedClient.profession || "",
-        mobileNumber: storedClient.phone || "",
-        emailAddress: storedClient.email || "",
-        city: storedClient.city || "",
+        FullName: storedClient.contactName || "",
+        profession: storedClient.nature || "",
+        mobileNumber: storedClient.contactPhone || "",
+        emailAddress: storedClient.contactEmail || "",
+        address: `${storedClient.city}, ${storedClient.state}` || "",
         dataSource: storedClient.source || "",
         enquiryFor: storedClient.enquiryFor || "",
-        notes: storedClient.notes || "",
+        notes: storedClient.updatedDetails || "",
       });
     }
   }, [id]);
@@ -211,7 +212,7 @@ const IndividualProfile = () => {
 
   const addContact = () => {
     if (!currentContact.name.trim() || !currentContact.phone.trim()) {
-      toast.error("Please enter name and phone number");
+      alert('Please enter at least name and phone number for the contact');
       return;
     }
 
@@ -298,7 +299,7 @@ const IndividualProfile = () => {
       <div className="w-full">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-amber-600 mb-2 flex items-center">
-            Client Profile Form
+            Corporate Profile
           </h1>
           <p className="text-gray-600 text-lg">
             Fill in the details below to add a new client profile to the system.
@@ -689,4 +690,4 @@ const IndividualProfile = () => {
     </div>
   );
 };
-export default IndividualProfile;
+export default CorporateProfile;

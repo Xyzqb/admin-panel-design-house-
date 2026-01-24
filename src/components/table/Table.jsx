@@ -12,7 +12,7 @@ export default function Table({
     <div className="overflow-x-auto bg-white rounded-sm shadow-md border border-gray-100">
       <table className="w-full text-sm">
         {/* HEADER */}
-        <thead className="bg-gradient-to-r from-blue-600 to-blue-700">
+        <thead className="bg-black">
           <tr>
             {columns.map((col) => (
               <th
@@ -84,70 +84,3 @@ export default function Table({
     </div>
   );
 }
-
-
-
-// export default function Table({
-//   columns = [],
-//   data = [],
-//   renderActions,
-// }) {
-//   return (
-//     <div className="overflow-x-auto bg-white rounded-2xl shadow-xl border border-gray-100">
-//       <table className="w-full text-sm">
-//         {/* HEADER */}
-//         <thead className="bg-gradient-to-r from-blue-600 to-blue-700">
-//           <tr>
-//             {columns.map((col) => (
-//               <th
-//                 key={col.key}
-//                 className="px-6 py-4 text-left font-bold text-white uppercase text-xs"
-//               >
-//                 {col.label}
-//               </th>
-//             ))}
-//             {renderActions && (
-//               <th className="px-6 py-4 text-right font-bold text-white uppercase text-xs">
-//                 Actions
-//               </th>
-//             )}
-//           </tr>
-//         </thead>
-
-//         {/* BODY */}
-//         <tbody className="divide-y divide-gray-200">
-//           {data.length === 0 ? (
-//             <tr>
-//               <td
-//                 colSpan={columns.length + 1}
-//                 className="text-center py-12 text-gray-400"
-//               >
-//                 No data found
-//               </td>
-//             </tr>
-//           ) : (
-//             data.map((row, index) => (
-//               <tr
-//                 key={index}
-//                 className="hover:bg-blue-50 transition group"
-//               >
-//                 {columns.map((col) => (
-//                   <td key={col.key} className="px-6 py-4">
-//                     {/* 🔥 custom render support */}
-//                     {col.render ? col.render(row) : row[col.key]}
-//                   </td>
-//                 ))}
-
-//                 {renderActions && (
-//                   <td className="px-6 py-4 text-right">
-//                     {renderActions(row)}
-//                   </td>
-//                 )}
-//               </tr>
-//             ))
-//           )}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// }

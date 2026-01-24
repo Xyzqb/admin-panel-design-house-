@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import Pagination from "../components/Pagination";
 import EmptyState from "../components/EmptyState";
 import DeleteConfirmToast from "../components/DeleteConfirmToast";
+import Table from '../components/table/Table';
 
 const EnquiryList = () => {
   /* ---------------- STATE ---------------- */
@@ -26,6 +27,8 @@ const EnquiryList = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editData, setEditData] = useState(null);
 
   /* ---------------- INITIAL DATA ---------------- */
   const initialQueries = [
@@ -49,6 +52,78 @@ const EnquiryList = () => {
       date: "Jan 8, 2026",
       status: "pending"
     }
+  ];
+
+  const columns = [
+    {
+      label: "User",
+      key: "userName",
+      render: (row) => (
+        <div>
+          <div className="font-medium text-gray-900">{row.userName}</div>
+          {row.status === "new" && (
+            <span className="inline-block mt-1 px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full">
+              New
+            </span>
+          )}
+        </div>
+      ),
+    },
+    {
+      label: "Contact",
+      key: "email",
+      render: (row) => (
+        <div className="space-y-1 text-sm">
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4 text-gray-400" />
+            {row.email}
+          </div>
+          <div className="flex items-center gap-2">
+            <Phone className="w-4 h-4 text-gray-400" />
+            {row.phone}
+          </div>
+        </div>
+      ),
+    },
+    {
+      label: "Issue Type",
+      key: "issueType",
+      render: (row) => (
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-medium ${row.issueType === "Payment Problem"
+            ? "bg-red-100 text-red-700"
+            : "bg-yellow-100 text-yellow-700"
+            }`}
+        >
+          {row.issueType}
+        </span>
+      ),
+    },
+    {
+      label: "Message",
+      key: "message",
+      render: (row) => (
+        <div className="max-w-xs">
+          <p className="truncate text-sm">{row.message}</p>
+          <button
+            onClick={() => handleViewMessage(row)}
+            className="text-blue-600 text-xs mt-1 hover:underline"
+          >
+            View full
+          </button>
+        </div>
+      ),
+    },
+    {
+      label: "Date",
+      key: "date",
+      render: (row) => (
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <Calendar className="w-4 h-4" />
+          {row.date}
+        </div>
+      ),
+    },
   ];
 
   /* ---------------- LOAD DATA ---------------- */
@@ -150,19 +225,13 @@ const EnquiryList = () => {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Support Queries");
     XLSX.writeFile(wb, `support-queries-${new Date().toISOString().split('T')[0]}.xlsx`);
-    
+
     toast.success(`Exported ${exportData.length} query(s) successfully`);
   };
 
-  const handleViewMessage = (query) => {
-    // You can implement a modal or expandable view for the message
-    toast.info(
-      <div className="p-2">
-        <h3 className="font-semibold mb-2">Message from {query.userName}</h3>
-        <p className="text-sm text-gray-700">{query.message}</p>
-      </div>,
-      { autoClose: 5000 }
-    );
+  const handleEditQuery = (query) => {
+    setEditData({ ...query });
+    setShowEditModal(true);
   };
 
   const handleMarkAsResolved = (id) => {
@@ -178,7 +247,7 @@ const EnquiryList = () => {
     <div className="bg-white rounded-xl shadow-md mt-6 p-4 md:p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-amber-600">
+        <h1 className="text-2xl md:text-3xl font-bold text-blue-600">
           Support Queries
         </h1>
         <p className="text-gray-600 mt-1 md:mt-2 text-sm md:text-lg">
@@ -214,7 +283,7 @@ const EnquiryList = () => {
             <span className="hidden sm:inline">Filters</span>
             <ChevronDown className={`w-4 h-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
           </button>
-          
+
           <div className="text-sm text-gray-600">
             <span className="font-medium">Total: {totalQueries}</span>
             <span className="mx-2">•</span>
@@ -230,7 +299,7 @@ const EnquiryList = () => {
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline">Export All</span>
           </button>
-          
+
           <button
             onClick={() => exportToExcel(true)}
             className="flex items-center gap-2 px-3 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-sm"
@@ -271,8 +340,8 @@ const EnquiryList = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Date From
               </label>
-              <input 
-                type="date" 
+              <input
+                type="date"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
               />
             </div>
@@ -280,8 +349,8 @@ const EnquiryList = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Date To
               </label>
-              <input 
-                type="date" 
+              <input
+                type="date"
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
               />
             </div>
@@ -316,162 +385,19 @@ const EnquiryList = () => {
       <div className="border border-gray-200 rounded-lg overflow-hidden">
         {/* Desktop Table */}
         <div className="hidden lg:block overflow-x-auto">
-          <table className="w-full min-w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-4 w-12">
-                  <input
-                    type="checkbox"
-                    checked={selectedRows.length === currentQueries.length && currentQueries.length > 0}
-                    onChange={() => {
-                      if (selectedRows.length === currentQueries.length) {
-                        setSelectedRows([]);
-                      } else {
-                        setSelectedRows(currentQueries.map(q => q.id));
-                      }
-                    }}
-                    className="rounded border-gray-300"
-                  />
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  CONTACT
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Company Name
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  MESSAGE
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  DATE
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  ACTIONS
-                </th>
-              </tr>
-            </thead>
-
-            <tbody className="divide-y divide-gray-200">
-              {currentQueries.map((query) => (
-                <tr 
-                  key={query.id} 
-                  className={`hover:bg-gray-50 transition-colors ${query.status === 'new' ? 'bg-blue-50' : ''}`}
-                >
-                  <td className="px-6 py-4">
-                    <input
-                      type="checkbox"
-                      checked={selectedRows.includes(query.id)}
-                      onChange={() =>
-                        setSelectedRows((prev) =>
-                          prev.includes(query.id)
-                            ? prev.filter((id) => id !== query.id)
-                            : [...prev, query.id]
-                        )
-                      }
-                      className="rounded border-gray-300"
-                    />
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div>
-                        <div className="font-medium text-gray-900">
-                          {query.userName}
-                        </div>
-                        {query.status === 'new' && (
-                          <span className="inline-block px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
-                            New
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Mail className="w-3.5 h-3.5 text-gray-400" />
-                        <span className="text-sm text-gray-900">{query.email}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Phone className="w-3.5 h-3.5 text-gray-400" />
-                        <span className="text-sm text-gray-900">{query.phone}</span>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      query.issueType === 'Payment Problem' 
-                        ? 'bg-red-100 text-red-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {query.issueType}
-                    </span>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="max-w-xs">
-                      <p className="text-sm text-gray-700 truncate">
-                        {query.message}
-                      </p>
-                      <button
-                        onClick={() => handleViewMessage(query)}
-                        className="text-sm text-blue-600 hover:text-blue-800 mt-1"
-                      >
-                        View full message
-                      </button>
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <Calendar className="w-4 h-4" />
-                      {query.date}
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => handleViewMessage(query)}
-                        className="p-2 hover:bg-blue-50 rounded-md text-blue-600 hover:text-blue-700 transition-colors"
-                        title="View Details"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      
-                      <button
-                        onClick={() => handleMarkAsResolved(query.id)}
-                        className="p-2 hover:bg-green-50 rounded-md text-green-600 hover:text-green-700 transition-colors"
-                        title="Mark as Resolved"
-                      >
-                        <span className="text-sm">✓</span>
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(query.id)}
-                        className="p-2 hover:bg-red-50 rounded-md text-red-600 hover:text-red-700 transition-colors"
-                        title="Delete"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table
+            columns={columns}
+            data={currentQueries}
+            onEdit={(row) => handleEditQuery(row)}
+            onDelete={(row) => handleDelete(row.id)}
+          />
         </div>
 
         {/* Mobile Cards */}
         <div className="lg:hidden space-y-4 p-4">
           {currentQueries.map((query) => (
-            <div 
-              key={query.id} 
+            <div
+              key={query.id}
               className={`border border-gray-200 rounded-lg p-4 ${query.status === 'new' ? 'bg-blue-50 border-blue-200' : ''}`}
             >
               <div className="flex justify-between items-start mb-3">
@@ -515,11 +441,10 @@ const EnquiryList = () => {
                 </div>
 
                 <div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    query.issueType === 'Payment Problem' 
-                      ? 'bg-red-100 text-red-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${query.issueType === 'Payment Problem'
+                    ? 'bg-red-100 text-red-800'
+                    : 'bg-yellow-100 text-yellow-800'
+                    }`}>
                     {query.issueType}
                   </span>
                 </div>
@@ -549,7 +474,7 @@ const EnquiryList = () => {
                 >
                   <Eye className="w-4 h-4" />
                 </button>
-                
+
                 <button
                   onClick={() => handleMarkAsResolved(query.id)}
                   className="p-2 hover:bg-green-50 rounded-md text-green-600"
@@ -575,7 +500,7 @@ const EnquiryList = () => {
           <div className="py-12">
             <EmptyState
               title="No support queries found"
-              description={searchTerm 
+              description={searchTerm
                 ? "No queries match your search. Try a different search term."
                 : "No support queries have been submitted yet."
               }
@@ -587,7 +512,7 @@ const EnquiryList = () => {
       </div>
 
       {/* Pagination & Footer */}
-       <div className="mt-6">
+      <div className="mt-6">
         <Pagination
           currentPage={currentPage}
           totalItems={filteredQueries.length}
@@ -595,6 +520,139 @@ const EnquiryList = () => {
           onPageChange={setCurrentPage}
         />
       </div>
+
+      {showEditModal && editData && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white shadow-xl max-w-4xl w-full overflow-hidden">
+
+            {/* Header */}
+            <div className="flex justify-between items-center px-6 py-4 border-b">
+              <h2 className="text-xl font-semibold text-gray-800">
+                Update Enquiry
+              </h2>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Body */}
+            <div className="p-6 space-y-4 text-sm">
+
+              {/* User Name */}
+              <div>
+                <label className="text-gray-500">User Name</label>
+                <input
+                  type="text"
+                  value={editData.userName}
+                  onChange={(e) =>
+                    setEditData({ ...editData, userName: e.target.value })
+                  }
+                  className="w-full mt-1 border rounded-lg px-3 py-2"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="text-gray-500">Email</label>
+                <input
+                  type="email"
+                  value={editData.email}
+                  onChange={(e) =>
+                    setEditData({ ...editData, email: e.target.value })
+                  }
+                  className="w-full mt-1 border rounded-lg px-3 py-2"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="text-gray-500">Phone</label>
+                <input
+                  type="text"
+                  value={editData.phone}
+                  onChange={(e) =>
+                    setEditData({ ...editData, phone: e.target.value })
+                  }
+                  className="w-full mt-1 border rounded-lg px-3 py-2"
+                />
+              </div>
+
+              {/* Issue Type */}
+              <div>
+                <label className="text-gray-500">Issue Type</label>
+                <select
+                  value={editData.issueType}
+                  onChange={(e) =>
+                    setEditData({ ...editData, issueType: e.target.value })
+                  }
+                  className="w-full mt-1 border rounded-lg px-3 py-2"
+                >
+                  <option>App Problem</option>
+                  <option>Payment Problem</option>
+                  <option>Technical Issue</option>
+                </select>
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="text-gray-500">Message</label>
+                <textarea
+                  rows={4}
+                  value={editData.message}
+                  onChange={(e) =>
+                    setEditData({ ...editData, message: e.target.value })
+                  }
+                  className="w-full mt-1 border rounded-lg px-3 py-2"
+                />
+              </div>
+
+              {/* Status */}
+              <div>
+                <label className="text-gray-500">Status</label>
+                <select
+                  value={editData.status}
+                  onChange={(e) =>
+                    setEditData({ ...editData, status: e.target.value })
+                  }
+                  className="w-full mt-1 border rounded-lg px-3 py-2"
+                >
+                  <option value="new">New</option>
+                  <option value="pending">Pending</option>
+                  <option value="resolved">Resolved</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex justify-end gap-3 px-6 py-4 border-t">
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="px-4 py-2 border rounded-lg"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => {
+                  const updated = queries.map(q =>
+                    q.id === editData.id ? editData : q
+                  );
+                  saveQueries(updated);
+                  toast.success("Query updated successfully");
+                  setShowEditModal(false);
+                }}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Save Changes
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };

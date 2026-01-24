@@ -17,6 +17,7 @@ import DeleteConfirmToast from "../components/DeleteConfirmToast";
 import Pagination from "../components/Pagination";
 import { useNavigate } from "react-router-dom";
 import EmptyState from "../components/EmptyState";
+import Table from '../components/table/Table';
 
 const PostList = () => {
 
@@ -100,12 +101,55 @@ const PostList = () => {
         return colors[category || ''] || 'bg-gray-100 text-gray-800';
     };
 
+    const columns = [
+        {
+            label: "Post Title",
+            key: "title",
+            render: (row) => (
+                <p className="font-medium text-gray-800 truncate">
+                    {row.title}
+                </p>
+            ),
+        },
+        {
+            label: "Post Date",
+            key: "date",
+            render: (row) => (
+                <div className="flex items-center gap-2 text-gray-700">
+                    <Calendar className="w-4 h-4 text-gray-400" />
+                    {row.date}
+                </div>
+            ),
+        },
+        {
+            label: "Status",
+            key: "status",
+            render: (row) => (
+                <button
+                    onClick={() => togglePostStatus(row.id)}
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(row.status)}`}
+                >
+                    {row.status === "active" ? (
+                        <>
+                            <CheckCircle className="w-3 h-3 mr-1" /> Active
+                        </>
+                    ) : (
+                        <>
+                            <XCircle className="w-3 h-3 mr-1" /> Inactive
+                        </>
+                    )}
+                </button>
+            ),
+        },
+    ];
+
+
     return (
         <div className="bg-white shadow-md mt-6 p-6">
             <div className="w-full">
                 {/* Header */}
                 <div className="mb-6 mx-2">
-                    <h1 className="text-3xl md:text-3xl font-bold text-amber-600">Blog Post List</h1>
+                    <h1 className="text-3xl md:text-3xl font-bold text-blue-600">Blog Post List</h1>
                     <p className="text-gray-600 mt-2 text-lg">Manage and monitor all your blog posts</p>
                 </div>
 
@@ -212,116 +256,25 @@ const PostList = () => {
 
                     {/* Table - Desktop */}
                     <div className="hidden lg:block overflow-x-auto">
-                        <table className="w-full table-fixed">
-                            <thead className="bg-gradient-to-r from-blue-50 to-cyan-50">
-                                <tr>
-                                    <th className="px-6 py-4 w-[40%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
-                                        Post Title
-                                    </th>
+                        <Table
+                            columns={columns}
+                            data={currentPosts}
+                            onEdit={(row) =>
+                                navigate("/create-a-post", { state: { editId: row.id } })
+                            }
+                            onDelete={(row) =>
+                                toast(
+                                    <DeleteConfirmToast
+                                        onDelete={() => {
+                                            setPosts((prev) => prev.filter((p) => p.id !== row.id));
+                                            showDeleted();
+                                        }}
+                                    />,
+                                    { autoClose: false }
+                                )
+                            }
+                        />
 
-                                    <th className="px-6 py-4 w-[20%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
-                                        <div className="flex items-center gap-1">
-                                            <Calendar className="w-4 h-4" />
-                                            Post Date
-                                        </div>
-                                    </th>
-
-                                    <th className="px-6 py-4 w-[20%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
-                                        Status
-                                    </th>
-
-                                    <th className="px-6 py-4 w-[20%] text-left text-sm font-semibold text-gray-700 uppercase border-b">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody className="divide-y divide-gray-200">
-                                {currentPosts.map((post) => (
-                                    <tr key={post.id} className="hover:bg-gray-50">
-                                        {/* Title */}
-                                        <td className="px-6 py-4">
-                                            <p className="text-gray-800 font-medium truncate">
-                                                {post.title}
-                                            </p>
-                                        </td>
-
-                                        {/* Date */}
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2 text-gray-700">
-                                                <Calendar className="w-4 h-4 text-gray-400" />
-                                                {post.date}
-                                            </div>
-                                        </td>
-
-                                        {/* Status */}
-                                        <td className="px-6 py-4">
-                                            <button
-                                                onClick={() => togglePostStatus(post.id)}
-                                                className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(post.status)}`}
-                                            >
-                                                {post.status === "active" ? (
-                                                    <>
-                                                        <CheckCircle className="w-3 h-3 mr-1" />
-                                                        Active
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <XCircle className="w-3 h-3 mr-1" />
-                                                        Inactive
-                                                    </>
-                                                )}
-                                            </button>
-                                        </td>
-
-                                        {/* Actions */}
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2">
-                                                <button
-                                                    onClick={() => togglePostStatus(post.id)}
-                                                    className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg"
-                                                    title={post.status === "active" ? "Deactivate" : "Activate"}
-                                                >
-                                                    {post.status === "active" ? (
-                                                        <EyeOff className="w-4 h-4" />
-                                                    ) : (
-                                                        <Eye className="w-4 h-4" />
-                                                    )}
-                                                </button>
-
-                                                <button
-                                                    onClick={() =>
-                                                        navigate("/create-a-post", { state: { editId: post.id } })
-                                                    }
-                                                    className="p-2 text-gray-400 hover:text-green-500 hover:bg-green-50 rounded-lg"
-                                                    title="Edit"
-                                                >
-                                                    <Edit className="w-4 h-4" />
-                                                </button>
-
-                                                <button
-                                                    onClick={() =>
-                                                        toast(
-                                                            <DeleteConfirmToast
-                                                                onDelete={() => {
-                                                                    setPosts(prev => prev.filter(p => p.id !== post.id));
-                                                                    showDeleted();
-                                                                }}
-                                                            />,
-                                                            { autoClose: false }
-                                                        )
-                                                    }
-                                                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg"
-                                                    title="Delete"
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
                     </div>
                     {/* Mobile View */}
                     <div className="lg:hidden divide-y divide-gray-200">

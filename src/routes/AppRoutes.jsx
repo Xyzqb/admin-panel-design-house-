@@ -5,8 +5,9 @@ import AdminLayout from "../layout/AdminLayout";
 import ChangePassword from "../pages/ChangePassword";
 import Crosual from "../pages/HomeSlider";
 import FestivalCarousel from "../pages/FestivalCarousel";
-import EnquiryList from "../pages/EnquiryList";
+import EnquiryList from "../pages/BookMeeting";
 import Remainder from "../pages/Remainder";
+import AdminUser from "../layout/AdminUser";
 
 // page
 import CreatePage from "../pages/CreatePage";
@@ -31,7 +32,7 @@ import VacancyList from "../pages/vacancy/VacancyList";
 
 // our clients
 import AddClients from "../pages/clients/AddClients";
-import ClientsList  from "../pages/clients/ClientList";
+import ClientsList from "../pages/clients/ClientList";
 
 // our projects
 import AddProject from "../pages/project/AddProject";
@@ -42,6 +43,7 @@ import AddFacility from "../pages/facilities/AddFacility";
 import FacilityList from "../pages/facilities/FacilityList";
 
 // corporate
+import CorporateProfile from "../pages/corporate-clients/CorporateProfile";
 import AddCorporateClients from "../pages/corporate-clients/AddCorporateClients";
 import CorporateList from "../pages/corporate-clients/CorporateClientsList";
 
@@ -49,6 +51,10 @@ import CorporateList from "../pages/corporate-clients/CorporateClientsList";
 import AddIndividualClients from "../pages/individuals/AddIndividualClients";
 import IndividualClientList from "../pages/individuals/IndividualClientList";
 import IndividualProfile from "../pages/individuals/IndividualProfile";
+
+// blogs
+import AddBlogs from "../pages/Blogs/AddBlogs";
+import BlogsList from "../pages/Blogs/BlogsList";
 
 // settings
 import Settings from "../pages/Settings";
@@ -84,50 +90,56 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="post-list" element={<PostList />} />
 
         {/* Create page */}
-        <Route path="/create-a-page" element={<CreatePage/>}/>
-        <Route path="/page-list" element={<PageList/>}/>
+        <Route path="/create-a-page" element={<CreatePage />} />
+        <Route path="/page-list" element={<PageList />} />
 
         {/* gallery */}
-        <Route path="/gallery-category" element={<GalleryCategory/>} />
-        <Route path="/gallery-image-list"element={<GalleryImagesList/>}/>
-        <Route path="/add-gallery-images" element={<AddGalleryImages/>}/>
+        <Route path="/gallery-category" element={<GalleryCategory />} />
+        <Route path="/gallery-image-list" element={<GalleryImagesList />} />
+        <Route path="/add-gallery-images" element={<AddGalleryImages />} />
 
         {/* testmonial */}
-        <Route path="/add-testimonials" element={<AddTestimonial/>} />
-        <Route path="/testimonials-list" element={<TestimonialsList/>}/>
+        <Route path="/add-testimonials" element={<AddTestimonial />} />
+        <Route path="/testimonials-list" element={<TestimonialsList />} />
 
         {/* Vacancy */}
-        <Route path="/add-vacancy" element={<AddVacancy/>} />
-        <Route path="/vacancy-list" element={<VacancyList/>} />
+        <Route path="/add-vacancy" element={<AddVacancy />} />
+        <Route path="/vacancy-list" element={<VacancyList />} />
 
         {/* clients */}
-        <Route path="/add-clients" element={<AddClients/>} />
-        <Route path="/clients-list" element={<ClientsList/>} />
+        <Route path="/add-clients" element={<AddClients />} />
+        <Route path="/clients-list" element={<ClientsList />} />
 
         {/* projects */}
-        <Route path="/add-projects" element={<AddProject/>} />
-        <Route path="/projects-list" element={<ProjectList/>} />
+        <Route path="/add-projects" element={<AddProject />} />
+        <Route path="/projects-list" element={<ProjectList />} />
 
-         {/* facility */}
-        <Route path="/add-facilities" element={<AddFacility/>} />
-        <Route path="/facilities-list" element={<FacilityList/>} />
+        {/* facility */}
+        <Route path="/add-facilities" element={<AddFacility />} />
+        <Route path="/facilities-list" element={<FacilityList />} />
 
         {/* corporate */}
-        <Route path="/add-corporate-clients" element={<AddCorporateClients/>} />
-        <Route path="/corporate-clients-list" element={<CorporateList/>}/>
+        <Route path="/corporate-profile/:id" element={<CorporateProfile />} />
+        <Route path="/add-corporate-clients" element={<AddCorporateClients />} />
+        <Route path="/corporate-clients-list" element={<CorporateList />} />
 
         {/* individual */}
-        <Route path="/add-individual-clients" element={<AddIndividualClients/>}/>
-        <Route path="/individual-clients-list" element={<IndividualClientList/>}/>
-        <Route path="/profiles" element={<IndividualProfile/>}/>
+        <Route path="/add-individual-clients" element={<AddIndividualClients />} />
+        <Route path="/individual-clients-list" element={<IndividualClientList />} />
+        <Route path="/individual-profile/:id" element={<IndividualProfile />} />
+
+        {/* blogs */}
+        <Route path="/add-blogs" element={<AddBlogs />} />
+        <Route path="/blogs-list" element={<BlogsList />} />
 
         {/* SETTINGS */}
-        <Route path="/change-password" element={<ChangePassword/>} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/festival-carousels" element={<FestivalCarousel />} />
-        <Route path="/carousel" element={<Crosual/>} />
-        <Route path="/enquiry-list" element={<EnquiryList/>}/>
+        <Route path="/carousel" element={<Crosual />} />
+        <Route path="/enquiry-list" element={<EnquiryList />} />
         <Route path="settings" element={<Settings />} />
-        <Route path="/remainder-list" element={<Remainder/>} />
+        <Route path="/remainder-list" element={<Remainder />} />
+        <Route path="/admin-users" element={<AdminUser />} />
       </Route>
     </Routes>
   );

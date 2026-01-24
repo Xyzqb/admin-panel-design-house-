@@ -9,10 +9,8 @@ const AddTestimonial = () => {
     name: "",
     position: "",
     organisation: "",
-    image: null,
     status: "Inactive",
   });
-
 
   const [editId, setEditId] = useState(null);
 
@@ -23,16 +21,6 @@ const AddTestimonial = () => {
       ...prev,
       [name]: value,
     }));
-  };
-
-  // ================= IMAGE HANDLER =================
-  const handleImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setGalleryData((prev) => ({
-        ...prev,
-        image: URL.createObjectURL(e.target.files[0]),
-      }));
-    }
   };
 
   // ================= SUBMIT =================
@@ -94,126 +82,88 @@ const AddTestimonial = () => {
             buttonIcon={List}
             buttonPath="/testimonials-list"
           />
-           </header>
+        </header>
 
-          {/* FORM */}
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white rounded-sm shadow-sm border border-gray-200 p-6 md:p-8 space-y-6"
-          >
-            {/* ROW 1 */}
-            <div className="grid md:grid-cols-3 gap-5">
-              {/* NAME */}
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={galleryData.name}
-                  onChange={handleInputChange}
-                  placeholder="Enter name"
-                  className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
-                  required
-                />
-              </div>
-
-              {/* POSITION */}
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Position <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="position"
-                  value={galleryData.position}
-                  onChange={handleInputChange}
-                  placeholder="Enter position"
-                  className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
-                  required
-                />
-              </div>
-
-              {/* ORGANISATION */}
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Organisation
-                </label>
-                <input
-                  type="text"
-                  name="organisation"
-                  value={galleryData.organisation}
-                  onChange={handleInputChange}
-                  placeholder="Enter name"
-                  className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* IMAGE */}
+        {/* FORM */}
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-sm shadow-sm border border-gray-200 p-6 md:p-8 space-y-6"
+        >
+          {/* ROW 1 */}
+          <div className="grid md:grid-cols-3 gap-5">
+            {/* NAME */}
             <div>
               <label className="text-sm font-medium text-gray-700">
-                Image <span className="text-red-500">*</span>
+                Name <span className="text-red-500">*</span>
               </label>
-
-              <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
-                {galleryData.image ? (
-                  <div className="relative">
-                    <img
-                      src={galleryData.image}
-                      alt="preview"
-                      className="w-full h-40 object-cover rounded-md"
-                    />
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setGalleryData((prev) => ({ ...prev, image: null }))
-                      }
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full px-2"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ) : (
-                  <label className="cursor-pointer text-blue-600 font-semibold">
-                    Upload Image
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className="hidden"
-                    />
-                  </label>
-                )}
-              </div>
-            </div>
-
-            {/* STATUS */}
-            <div>
-              <label className="text-sm font-medium text-gray-700">
-                Status
-              </label>
-              <select
-                name="status"
-                value={galleryData.status}
+              <input
+                type="text"
+                name="name"
+                value={galleryData.name}
                 onChange={handleInputChange}
+                placeholder="Enter name"
                 className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
-              >
-                <option value="Inactive">Inactive</option>
-                <option value="Active">Active</option>
-              </select>
+                required
+              />
             </div>
 
-            {/* SUBMIT */}
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700"
+            {/* POSITION */}
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Position <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="position"
+                value={galleryData.position}
+                onChange={handleInputChange}
+                placeholder="Enter position"
+                className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
+                required
+              />
+            </div>
+
+            {/* ORGANISATION */}
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Organisation
+              </label>
+              <input
+                type="text"
+                name="organisation"
+                value={galleryData.organisation}
+                onChange={handleInputChange}
+                placeholder="Enter name"
+                className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
+                required
+              />
+            </div>
+          </div>
+
+          {/* STATUS */}
+          <div>
+            <label className="text-sm font-medium text-gray-700">
+              Status
+            </label>
+            <select
+              name="status"
+              value={galleryData.status}
+              onChange={handleInputChange}
+              className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
             >
-              {editId ? "Update Testimonial" : "Add Testimonial"}
-            </button>
-          </form>
+              <option value="Inactive">Inactive</option>
+              <option value="Active">Active</option>
+            </select>
+          </div>
+
+          {/* SUBMIT */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700"
+          >
+            {editId ? "Update Testimonial" : "Add Testimonial"}
+          </button>
+        </form>
       </div>
     </div>
   );
