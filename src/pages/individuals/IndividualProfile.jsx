@@ -293,14 +293,14 @@ const IndividualProfile = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Personal Information */}
           <div>
-            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6 border-b-2 border-blue-100">
+            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-2">
               Profile Details
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Full Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -579,17 +579,8 @@ const IndividualProfile = () => {
                     </p>
                   )}
                 </div>
-            </div>
-          </div>
 
-          {/* Data Source & Enquiry */}
-          <div>
-            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6 border-b-2 border-blue-100">
-              Remainder
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div>
+                  <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Data Source
                 </label>
@@ -640,33 +631,10 @@ const IndividualProfile = () => {
                   placeholder="Add any additional notes or comments about this client..."
                 />
               </div>
-
             </div>
           </div>
 
-          {/* Additional Notes */}
-          {/* <div>
-            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6 border-b-2 border-blue-100">
-              Additional Information
-            </h2>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Notes
-              </label>
-              <textarea
-                name="notes"
-                value={formData.notes}
-                onChange={handleChange}
-                rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                placeholder="Add any additional notes or comments about this client..."
-              />
-            </div>
-          </div> */}
-
           {/* Action Buttons */}
-         
             <div className="flex flex-col md:flex-row justify-end gap-4">
               <button
                 type="button"

@@ -353,9 +353,9 @@ const AddCorporateClients = () => {
   };
 
   return (
-    <div className="bg-white shadow-md mt-6 px-4 py-6">
+    <div className="bg-white shadow-md mt-6 px-4 py-4">
       {/* <div className="bg-white rounded-xl shadow-lg p-8 mt-6"> */}
-      <div className="mb-8">
+      <div className="mb-4">
         <h1 className="text-3xl font-bold text-amber-600 mb-2 flex items-center">
           Add Corporate Client
         </h1>
@@ -374,14 +374,14 @@ const AddCorporateClients = () => {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="space-y-8">
+        <div className="space-y-4">
           {/* Company Information - Updated */}
           <div>
-            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6 border-b-2 border-blue-100">
+            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6">
               Company Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <div className="flex items-center">
@@ -560,7 +560,7 @@ const AddCorporateClients = () => {
                 />
               </div>
 
-              <div className="md:col-span-2">
+              <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-2 text-gray-500" />
@@ -586,12 +586,6 @@ const AddCorporateClients = () => {
 
             </div>
           </div>
-
-          {/* Contact Person Details - New Section */}
-          <div>
-            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6 border-b-2 border-blue-100">
-              Contact Person Details
-            </h2>
 
             {/* Contact Person 1 (Primary) */}
             <div className="mb-8">
@@ -877,15 +871,8 @@ const AddCorporateClients = () => {
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Data Source & Enquiry Information - New Section */}
-          <div>
-            <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6 border-b-2 border-blue-100">
-              Data Source & Enquiry Information
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Data Source
@@ -938,62 +925,8 @@ const AddCorporateClients = () => {
                     placeholder="Add any additional notes or comments about this client..."
                   />
                 </div>
-
-                {/* <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="sendWelcomeEmail"
-                    name="sendWelcomeEmail"
-                    checked={formData.sendWelcomeEmail}
-                    onChange={handleChange}
-                    className="h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
-                  />
-                  <label htmlFor="sendWelcomeEmail" className="ml-3 text-sm text-gray-700">
-                    Send welcome email to client
-                  </label>
-                </div> */}
               </div>
-
             </div>
-
-          </div>
-
-          {/* Additional Information */}
-          {/* <div>
-              <h2 className="text-xl font-semibold text-blue-600 pb-2 mb-6 border-b-2 border-blue-100">
-                Additional Information
-              </h2>
-
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Notes
-                  </label>
-                  <textarea
-                    name="notes"
-                    value={formData.notes}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    placeholder="Add any additional notes or comments about this client..."
-                  />
-                </div>
-
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="sendWelcomeEmail"
-                    name="sendWelcomeEmail"
-                    checked={formData.sendWelcomeEmail}
-                    onChange={handleChange}
-                    className="h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
-                  />
-                  <label htmlFor="sendWelcomeEmail" className="ml-3 text-sm text-gray-700">
-                    Send welcome email to client
-                  </label>
-                </div>
-              </div>
-            </div> */}
 
           {/* Action Buttons */}
             <div className="flex flex-col md:flex-row justify-end gap-4">
@@ -1027,7 +960,6 @@ const AddCorporateClients = () => {
           </div>
       </form>
     </div>
-    // </div>
   );
 };
 export default AddCorporateClients;
