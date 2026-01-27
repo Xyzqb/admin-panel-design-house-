@@ -14,6 +14,7 @@ import { SearchBar } from "../../components/SearchBar";
 import Pagination from "../../components/Pagination";
 import EmptyState from "../../components/EmptyState";
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
+import Table from "../../components/Table";
 
 const VacancyList = () => {
   const navigate = useNavigate();
@@ -31,6 +32,12 @@ const VacancyList = () => {
     const saved = JSON.parse(localStorage.getItem("vacancies")) || [];
     setVacancies(saved);
   }, []);
+
+  const handleEdit = (row) => {
+    localStorage.setItem("editVacancy", JSON.stringify(row));
+    navigate("/add-vacancy");
+  };
+
 
   /* ---------------- FILTER ---------------- */
   const filteredVacancies = vacancies.filter((v) => {
@@ -93,6 +100,56 @@ const VacancyList = () => {
     );
   };
 
+  const columns = [
+    {
+      key: "id",
+      label: "ID",
+    },
+    {
+      key: "name",
+      label: "Name",
+    },
+    {
+      key: "vacancyCount",
+      label: "No. of Vacancy",
+      render: (row) => (
+        <div className="flex items-center gap-2">
+          <Users className="h-4 w-4 text-gray-400" />
+          {row.vacancyCount}
+        </div>
+      ),
+    },
+    {
+      key: "responsibilities",
+      label: "Responsibilities",
+      render: (row) => (
+        <div
+          className="max-w-xs truncate"
+          dangerouslySetInnerHTML={{ __html: row.responsibilities }}
+        />
+      ),
+    },
+    {
+      key: "experience",
+      label: "Experience",
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <button
+          onClick={() => toggleStatus(row.id)}
+          className={`px-3 py-1 rounded-full text-xs font-medium ${row.status === "Active"
+            ? "bg-green-100 text-green-800"
+            : "bg-red-100 text-red-800"
+            }`}
+        >
+          {row.status}
+        </button>
+      ),
+    },
+  ];
+
   /* ---------------- RENDER ---------------- */
   return (
     <div className="bg-white shadow-md mt-6 p-6">
@@ -133,85 +190,12 @@ const VacancyList = () => {
 
       {/* Table */}
       <div className="border rounded-md overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-blue-50">
-            <tr>
-              <th className="px-4 py-3"></th>
-              <th className="px-4 py-3 text-left">ID</th>
-              <th className="px-4 py-3 text-left">Name</th>
-              <th className="px-4 py-3">Vacancies</th>
-              <th className="px-4 py-3">Experience</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {currentVacancies.map((v) => (
-              <tr key={v.id} className="border-t hover:bg-gray-50">
-                <td className="px-4 py-3">
-                  <input
-                    type="checkbox"
-                    checked={selectedRows.includes(v.id)}
-                    onChange={() =>
-                      setSelectedRows((prev) =>
-                        prev.includes(v.id)
-                          ? prev.filter((id) => id !== v.id)
-                          : [...prev, v.id]
-                      )
-                    }
-                  />
-                </td>
-
-                <td className="px-4 py-3">{v.id}</td>
-                <td className="px-4 py-3 font-medium">{v.name}</td>
-
-                <td className="px-4 py-3 text-center">
-                  <Users className="inline w-4 h-4 mr-1" />
-                  {v.vacancyCount}
-                </td>
-
-                <td className="px-4 py-3">{v.experience}</td>
-
-                <td className="px-4 py-3">
-                  <button
-                    onClick={() => toggleStatus(v.id)}
-                    className={`px-3 py-1 rounded-full text-xs ${
-                      v.status === "Active"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {v.status === "Active" ? (
-                      <CheckCircle className="inline w-3 h-3 mr-1" />
-                    ) : (
-                      <XCircle className="inline w-3 h-3 mr-1" />
-                    )}
-                    {v.status}
-                  </button>
-                </td>
-
-                <td className="px-4 py-3 flex justify-end gap-2">
-                  <button
-                    onClick={() => navigate("/add-vacancy", { state: v })}
-                    className="p-2 hover:bg-green-50 rounded"
-                    title="Edit"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={() => handleDelete(v.id)}
-                    className="p-2 hover:bg-red-50 rounded"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table
+          columns={columns}
+          data={currentVacancies}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
 
         {filteredVacancies.length === 0 && (
           <EmptyState

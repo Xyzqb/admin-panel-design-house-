@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import Pagination from "../components/Pagination";
 import EmptyState from "../components/EmptyState";
 import DeleteConfirmToast from "../components/DeleteConfirmToast";
-import Table from '../components/table/Table';
+import Table from '../components/Table';
 
 const EnquiryList = () => {
   /* ---------------- STATE ---------------- */

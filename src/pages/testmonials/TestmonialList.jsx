@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-    Edit,
-    Trash2,
     CheckCircle,
     XCircle,
 } from 'lucide-react';
@@ -12,6 +10,7 @@ import { toast } from "react-toastify";
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
 import { useNavigate } from "react-router-dom";
 import { SearchBar } from '../../components/SearchBar';
+import Table from "../../components/Table";
 
 const TestimonialsList = () => {
 
@@ -35,6 +34,64 @@ const TestimonialsList = () => {
             state: { testimonial }
         });
     };
+
+    const columns = [
+        {
+            key: "id",
+            label: "ID",
+            render: (row) => (
+                <span className="font-semibold text-gray-900">#{row.id}</span>
+            ),
+        },
+        {
+            key: "name",
+            label: "Name",
+            render: (row) => row.name || "No Name",
+        },
+        {
+            key: "position",
+            label: "Position",
+            render: (row) => row.position || "-",
+        },
+        {
+            key: "organisation",
+            label: "Organisation",
+            render: (row) => row.organisation || "-",
+        },
+        {
+            key: "image",
+            label: "Photo",
+            render: (row) =>
+                row.image ? (
+                    <img
+                        src={row.image}
+                        alt="testimonial"
+                        className="h-10 w-10 rounded-full object-cover border"
+                    />
+                ) : (
+                    <span className="text-gray-400 text-sm">No Image</span>
+                ),
+        },
+        {
+            key: "status",
+            label: "Status",
+            render: (row) => (
+                <span
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${row.status === "Active"
+                        ? "bg-green-100 text-green-800 border border-green-200"
+                        : "bg-red-100 text-red-800 border border-red-200"
+                        }`}
+                >
+                    {row.status === "Active" ? (
+                        <CheckCircle className="h-3 w-3 mr-1" />
+                    ) : (
+                        <XCircle className="h-3 w-3 mr-1" />
+                    )}
+                    {row.status}
+                </span>
+            ),
+        },
+    ];
 
     // Handle delete testimonial
     const handleDeleteClick = (id) => {
@@ -125,120 +182,26 @@ const TestimonialsList = () => {
 
                 {/* Table Container */}
                 <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
-                    {/* Table */}
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-4 border-b border-r border-gray-300">
-                                        <input
-                                            type="checkbox"
-                                            className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                                            checked={selectedRows.length === testimonials.length && testimonials.length > 0}
-                                            onChange={toggleSelectAll}
-                                        />
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-r border-gray-300">
-                                        Id
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-r border-gray-300">
-                                        Name
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-r border-gray-300">
-                                        Position
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-r border-gray-300">
-                                        Organisation
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-r border-gray-300">
-                                        Photo
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-r border-gray-300">
-                                        Status
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b border-gray-300">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white">
-                                {currentItems.map((testimonial) => (
-                                    <tr
-                                        key={testimonial.id}
-                                        className={`hover:bg-gray-50 transition-colors ${selectedRows.includes(testimonial.id) ? 'bg-blue-50' : ''} border-b border-gray-200`}
-                                    >
-                                        <td className="px-6 py-4 border-r border-gray-200">
-                                            <input
-                                                type="checkbox"
-                                                className="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
-                                                checked={selectedRows.includes(testimonial.id)}
-                                                onChange={() => toggleRowSelection(testimonial.id)}
-                                            />
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r border-gray-200">
-                                            #{testimonial.id}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r border-gray-200">
-                                            {testimonial.name || "No Name"}
-                                        </td>
-
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 border-r border-gray-200">
-                                            {testimonial.position || "-"}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 border-r border-gray-200">
-                                            {testimonial.organisation || "-"}
-                                        </td>
-                                        <td className="px-6 py-4 border-r border-gray-200">
-                                            {testimonial.image ? (
-                                                <img
-                                                    src={testimonial.image}
-                                                    alt="testimonial"
-                                                    className="h-10 w-10 rounded-full object-cover border border-gray-200"
-                                                />
-                                            ) : (
-                                                <span className="text-gray-400 text-sm">No Image</span>
-                                            )}
-                                        </td>
-
-                                        <td className="px-6 py-4 whitespace-nowrap border-r border-gray-200">
-                                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${testimonial.status === 'Active'
-                                                ? 'bg-green-100 text-green-800 border border-green-200'
-                                                : 'bg-red-100 text-red-800 border border-red-200'
-                                                }`}>
-                                                {testimonial.status === 'Active' ? (
-                                                    <CheckCircle className="h-3 w-3 mr-1" />
-                                                ) : (
-                                                    <XCircle className="h-3 w-3 mr-1" />
-                                                )}
-                                                {testimonial.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <div className="flex items-center space-x-3">
-                                                <button
-                                                    onClick={() => handleEdit(testimonial)}
-                                                    className="text-blue-600 hover:text-blue-900 p-1.5 rounded-lg hover:bg-blue-50 transition-colors border border-blue-200"
-                                                    title="Edit"
-                                                >
-                                                    <Edit className="h-4 w-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDeleteClick(testimonial.id)}
-                                                    className="text-red-600 hover:text-red-900 p-1.5 rounded-lg hover:bg-red-50 transition-colors border border-red-200"
-                                                    title="Delete"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {/* Empty state */}
-                    {filteredTestimonials.length === 0 && (
+                    {filteredTestimonials.length > 0 ? (
+                        <Table
+                            columns={columns}
+                            data={currentItems}
+                            onEdit={(row) => handleEdit(row)}
+                            onDelete={(row) =>
+                                toast(
+                                    <DeleteConfirmToast
+                                        onDelete={() => {
+                                            const updated = testimonials.filter(t => t.id !== row.id);
+                                            setTestimonials(updated);
+                                            localStorage.setItem("testimonials", JSON.stringify(updated));
+                                            showDeleted();
+                                        }}
+                                    />,
+                                    { autoClose: false }
+                                )
+                            }
+                        />
+                    ) : (
                         <EmptyState
                             title="No testimonials found"
                             description="You haven't added any testimonial yet."

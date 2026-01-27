@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Table from "../components/table/Table";
+import Table from "../components/Table";
 import { toast } from 'react-toastify';
 import { Plus, X } from 'lucide-react';
 import DeleteConfirmToast from "../components/DeleteConfirmToast";

@@ -8,6 +8,7 @@ import FestivalCarousel from "../pages/FestivalCarousel";
 import EnquiryList from "../pages/BookMeeting";
 import Remainder from "../pages/Remainder";
 import AdminUser from "../layout/AdminUser";
+import About from "../pages/About";
 
 // page
 import CreatePage from "../pages/CreatePage";
@@ -133,6 +134,7 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="/blogs-list" element={<BlogsList />} />
 
         {/* SETTINGS */}
+        <Route path="/about-us" element={<About/>}/>
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/festival-carousels" element={<FestivalCarousel />} />
         <Route path="/carousel" element={<Crosual />} />

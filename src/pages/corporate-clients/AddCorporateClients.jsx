@@ -381,9 +381,9 @@ const AddCorporateClients = () => {
               Company Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   <div className="flex items-center">
                     <Building2 className="h-4 w-4 mr-2 text-gray-500" />
                     Company Name *
@@ -395,7 +395,7 @@ const AddCorporateClients = () => {
                     name="companyName"
                     value={formData.companyName}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 pl-11 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.companyName ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 pl-11 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.companyName ? 'border-red-500' : 'border-gray-300'
                       }`}
                     placeholder="Enter company name"
                   />
@@ -410,14 +410,14 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Category *
                 </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 >
                   <option value="">Select Category</option>
                   {categories.map((category) => (
@@ -429,7 +429,7 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   <div className="flex items-center">
                     <Briefcase className="h-4 w-4 mr-2 text-gray-500" />
                     Nature of Business
@@ -439,7 +439,7 @@ const AddCorporateClients = () => {
                   name="natureOfBusiness"
                   value={formData.natureOfBusiness}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 >
                   <option value="">Select Nature of Business</option>
                   {natureOfBusinessOptions.map((option) => (
@@ -451,7 +451,7 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   <div className="flex items-center">
                     <Package className="h-4 w-4 mr-2 text-gray-500" />
                     Product Line
@@ -461,7 +461,7 @@ const AddCorporateClients = () => {
                   name="productLine"
                   value={formData.productLine}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 >
                   <option value="">Select Product Line</option>
                   {productLineOptions.map((option) => (
@@ -473,7 +473,7 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   <div className="flex items-center">
                     <CalendarDays className="h-4 w-4 mr-2 text-gray-500" />
                     Events
@@ -483,7 +483,7 @@ const AddCorporateClients = () => {
                   name="events"
                   value={formData.events}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 >
                   <option value="">Select Event</option>
                   {eventsOptions.map((event) => (
@@ -495,14 +495,14 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   Country
                 </label>
                 <select
                   name="country"
                   value={formData.country}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 >
                   <option value="">Select Country</option>
                   {countries.map((country) => (
@@ -514,14 +514,14 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   State
                 </label>
                 <select
                   name="state"
                   value={formData.state}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 >
                   <option value="">Select State</option>
                   {indianStates.map((state) => (
@@ -533,7 +533,7 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   City
                 </label>
                 <input
@@ -541,13 +541,13 @@ const AddCorporateClients = () => {
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                   placeholder="Enter city"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   Pincode
                 </label>
                 <input
@@ -555,13 +555,13 @@ const AddCorporateClients = () => {
                   name="pincode"
                   value={formData.pincode}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                   placeholder="Enter pincode"
                 />
               </div>
 
               <div className="md:col-span-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   <div className="flex items-center">
                     <MapPin className="h-4 w-4 mr-2 text-gray-500" />
                     Address *
@@ -572,7 +572,7 @@ const AddCorporateClients = () => {
                   value={formData.address}
                   onChange={handleChange}
                   rows={1}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.address ? 'border-red-500' : 'border-gray-300'
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.address ? 'border-red-500' : 'border-gray-300'
                     }`}
                   placeholder="Enter full address"
                 />
@@ -589,13 +589,13 @@ const AddCorporateClients = () => {
 
             {/* Contact Person 1 (Primary) */}
             <div className="mb-4">
-              <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
+              <h3 className="text-lg font-medium text-gray-800 mb-2 flex items-center">
                 <User className="h-5 w-5 mr-2 text-blue-500" />
                 Primary Contact (Required)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Name *
                   </label>
                   <input
@@ -603,7 +603,7 @@ const AddCorporateClients = () => {
                     name="contactName1"
                     value={formData.contactName1}
                     onChange={handleChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.contactName1 ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.contactName1 ? 'border-red-500' : 'border-gray-300'
                       }`}
                     placeholder="Enter full name"
                   />
@@ -616,7 +616,7 @@ const AddCorporateClients = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Designation
                   </label>
                   <input
@@ -624,13 +624,13 @@ const AddCorporateClients = () => {
                     name="designation1"
                     value={formData.designation1}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                     placeholder="e.g., Manager, Director"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Email *
                   </label>
                   <div className="relative">
@@ -639,7 +639,7 @@ const AddCorporateClients = () => {
                       name="email1"
                       value={formData.email1}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 pl-11 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.email1 ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 pl-11 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.email1 ? 'border-red-500' : 'border-gray-300'
                         }`}
                       placeholder="Enter email address"
                     />
@@ -654,7 +654,7 @@ const AddCorporateClients = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Mobile No. *
                   </label>
                   <div className="relative">
@@ -663,7 +663,7 @@ const AddCorporateClients = () => {
                       name="mobile1"
                       value={formData.mobile1}
                       onChange={handleChange}
-                      className={`w-full px-4 py-3 pl-11 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.mobile1 ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 pl-11 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all ${errors.mobile1 ? 'border-red-500' : 'border-gray-300'
                         }`}
                       placeholder="Enter mobile number"
                     />
@@ -678,7 +678,7 @@ const AddCorporateClients = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Landline No.
                   </label>
                   <div className="relative">
@@ -687,7 +687,7 @@ const AddCorporateClients = () => {
                       name="landline1"
                       value={formData.landline1}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full px-3 py-2 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                       placeholder="Enter landline number"
                     />
                     <PhoneCall className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -698,13 +698,13 @@ const AddCorporateClients = () => {
 
             {/* Contact Person 2 (Optional) */}
             <div className="mb-4">
-              <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
+              <h3 className="text-lg font-medium text-gray-800 mb-2 flex items-center">
                 <Users className="h-5 w-5 mr-2 text-gray-500" />
                 Additional Contact 1 (Optional)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Name
                   </label>
                   <input
@@ -712,13 +712,13 @@ const AddCorporateClients = () => {
                     name="contactName2"
                     value={formData.contactName2}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                     placeholder="Enter full name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Designation
                   </label>
                   <input
@@ -726,13 +726,13 @@ const AddCorporateClients = () => {
                     name="designation2"
                     value={formData.designation2}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                     placeholder="e.g., Manager, Director"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Email
                   </label>
                   <div className="relative">
@@ -741,7 +741,7 @@ const AddCorporateClients = () => {
                       name="email2"
                       value={formData.email2}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full px-3 py-2 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                       placeholder="Enter email address"
                     />
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -749,7 +749,7 @@ const AddCorporateClients = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Mobile No.
                   </label>
                   <div className="relative">
@@ -758,7 +758,7 @@ const AddCorporateClients = () => {
                       name="mobile2"
                       value={formData.mobile2}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full px-3 py-2 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                       placeholder="Enter mobile number"
                     />
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -766,7 +766,7 @@ const AddCorporateClients = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Landline No.
                   </label>
                   <div className="relative">
@@ -775,7 +775,7 @@ const AddCorporateClients = () => {
                       name="landline2"
                       value={formData.landline2}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full px-3 py-2 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                       placeholder="Enter landline number"
                     />
                     <PhoneCall className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -786,13 +786,13 @@ const AddCorporateClients = () => {
 
             {/* Contact Person 3 (Optional) */}
             <div>
-              <h3 className="text-lg font-medium text-gray-800 mb-4 flex items-center">
+              <h3 className="text-lg font-medium text-gray-800 mb-2 flex items-center">
                 <Users className="h-5 w-5 mr-2 text-gray-500" />
                 Additional Contact 2 (Optional)
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Name
                   </label>
                   <input
@@ -800,13 +800,13 @@ const AddCorporateClients = () => {
                     name="contactName3"
                     value={formData.contactName3}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                     placeholder="Enter full name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Designation
                   </label>
                   <input
@@ -814,13 +814,13 @@ const AddCorporateClients = () => {
                     name="designation3"
                     value={formData.designation3}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                     placeholder="e.g., Manager, Director"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Email
                   </label>
                   <div className="relative">
@@ -829,7 +829,7 @@ const AddCorporateClients = () => {
                       name="email3"
                       value={formData.email3}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full px-3 py-2 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                       placeholder="Enter email address"
                     />
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -837,7 +837,7 @@ const AddCorporateClients = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Mobile No.
                   </label>
                   <div className="relative">
@@ -846,7 +846,7 @@ const AddCorporateClients = () => {
                       name="mobile3"
                       value={formData.mobile3}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                      className="w-full px-3 py-2 pl-11 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                       placeholder="Enter mobile number"
                     />
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -854,7 +854,7 @@ const AddCorporateClients = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Landline No.
                   </label>
                   <div className="relative">
@@ -874,7 +874,7 @@ const AddCorporateClients = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   Data Source
                 </label>
                 <select
@@ -893,7 +893,7 @@ const AddCorporateClients = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
                   Enquiry For
                 </label>
                 <select
@@ -913,7 +913,7 @@ const AddCorporateClients = () => {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
                     Notes
                   </label>
                   <textarea

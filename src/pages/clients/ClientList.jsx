@@ -10,6 +10,7 @@ import {
 import { showDeleted } from "../../data/toast";
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
 import { SearchBar } from "../../components/SearchBar";
+import Table from '../../components/Table';
 
 const ClientList = () => {
 
@@ -17,6 +18,65 @@ const ClientList = () => {
     const stored = JSON.parse(localStorage.getItem("testimonials")) || [];
     setTestimonials(stored);
   }, []);
+
+  const columns = [
+    {
+      key: "id",
+      label: "ID",
+    },
+    {
+      key: "name",
+      label: "Name",
+      render: (row) => row.name || "No Name",
+    },
+    {
+      key: "url",
+      label: "URL",
+      render: (row) => (
+        <a
+          href={row.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 underline"
+        >
+          {row.url}
+        </a>
+      ),
+    },
+    {
+      key: "image",
+      label: "Photo",
+      render: (row) =>
+        row.image ? (
+          <img
+            src={row.image}
+            alt="client"
+            className="h-10 w-10 rounded-full object-cover"
+          />
+        ) : (
+          <span className="text-gray-400">No Image</span>
+        ),
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <span
+          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${row.status === "Active"
+            ? "bg-green-100 text-green-800"
+            : "bg-red-100 text-red-800"
+            }`}
+        >
+          {row.status === "Active" ? (
+            <CheckCircle className="h-3 w-3 mr-1" />
+          ) : (
+            <XCircle className="h-3 w-3 mr-1" />
+          )}
+          {row.status}
+        </span>
+      ),
+    },
+  ];
 
   // State for testimonials
   const [testimonials, setTestimonials] = useState([]);
@@ -123,7 +183,36 @@ const ClientList = () => {
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           {/* Table */}
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <Table
+              columns={columns}
+              data={filteredTestimonials.slice(0, rowsPerPage)}
+              onEdit={(row) => {
+                localStorage.setItem("editClient", JSON.stringify(row));
+                window.location.href = "/add-clients";
+              }}
+              onDelete={(row) =>
+                toast(
+                  <DeleteConfirmToast
+                    onDelete={() => {
+                      const updated = testimonials.filter(
+                        (t) => t.id !== row.id
+                      );
+
+                      setTestimonials(updated);
+                      localStorage.setItem(
+                        "testimonials",
+                        JSON.stringify(updated)
+                      );
+
+                      showDeleted();
+                    }}
+                  />,
+                  { autoClose: false }
+                )
+              }
+            />
+
+            {/* <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gradient-to-r from-blue-50 to-indigo-50">
                 <tr>
                   <th className="px-6 py-4">
@@ -254,7 +343,7 @@ const ClientList = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table> */}
           </div>
 
           {/* Empty state */}

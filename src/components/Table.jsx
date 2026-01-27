@@ -4,10 +4,9 @@ export default function Table({
   columns = [],
   data = [],
   onEdit,
-  onDelete,
+  onDelete
 }) {
-  const showActions = onEdit || onDelete;
-
+  const showActions = onEdit || onDelete
   return (
     <div className="overflow-x-auto bg-white rounded-sm shadow-md border border-gray-100">
       <table className="w-full text-sm">

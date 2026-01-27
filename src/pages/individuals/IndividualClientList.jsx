@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Table from "../../components/table/Table";
+import Table from "../../components/Table";
 import Pagination from '../../components/Pagination';
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
 import { useNavigate } from "react-router-dom";

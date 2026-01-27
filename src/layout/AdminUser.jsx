@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import Pagination from "../components/Pagination";
-import Table from '../components/table/Table';
+import Table from '../components/Table';
 
 const AdminUser = () => {
   const [admins, setAdmins] = useState([

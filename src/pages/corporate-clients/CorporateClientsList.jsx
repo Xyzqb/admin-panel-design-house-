@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Table from '../../components/table/Table';
+import Table from '../../components/Table';
 import { User, Search } from 'lucide-react';
 import Pagination from '../../components/Pagination';
 import { useNavigate } from "react-router-dom";

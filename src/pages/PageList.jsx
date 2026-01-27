@@ -20,6 +20,7 @@ import DeleteConfirmToast from "../components/DeleteConfirmToast";
 import EmptyState from "../components/EmptyState";
 import { showDeleted, showStatusUpdated } from "../data/toast";
 import { SearchBar } from "../components/SearchBar";
+import Table from "../components/Table";
 
 const PageList = () => {
   const navigate = useNavigate();
@@ -82,6 +83,47 @@ const PageList = () => {
     );
   };
 
+  const columns = [
+    {
+      key: "title",
+      label: "Title",
+    },
+    {
+      key: "date",
+      label: "Date",
+      render: (row) => (
+        <div className="flex gap-2">
+          <Calendar className="w-4 h-4 text-gray-400" />
+          {row.date}
+        </div>
+      ),
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <button
+          onClick={() => togglePageStatus(row.id)}
+          className={`px-3 py-1 rounded-full border text-xs font-medium ${getStatusColor(
+            row.status
+          )}`}
+        >
+          {row.status === "active" ? (
+            <>
+              <CheckCircle className="inline w-3 h-3 mr-1" />
+              Active
+            </>
+          ) : (
+            <>
+              <XCircle className="inline w-3 h-3 mr-1" />
+              Inactive
+            </>
+          )}
+        </button>
+      ),
+    },
+  ];
+
   const getStatusColor = (status) =>
     status === "active"
       ? "bg-green-100 text-green-800 border-green-200"
@@ -98,80 +140,20 @@ const PageList = () => {
         </p>
       </div>
 
-      <SearchBar/>
+      <SearchBar />
 
       {/* Table */}
       <div className="border bg-white shadow-sm rounded-md overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-blue-50">
-            <tr>
-              <th className="px-6 py-4 text-left">Title</th>
-              <th className="px-6 py-4">Date</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4 text-right">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {currentPages.map((page) => (
-              <tr key={page.id} className="border-t hover:bg-gray-50">
-                <td className="px-6 py-4 font-medium">{page.title}</td>
-
-                <td className="px-6 py-4 text-center">
-                  <div className="flex justify-center items-center gap-2">
-                    <Calendar className="w-4 h-4 text-gray-400" />
-                    {page.date}
-                  </div>
-                </td>
-
-                <td className="px-6 py-4 text-center">
-                  <button
-                    onClick={() => togglePageStatus(page.id)}
-                    className={`px-3 py-1 rounded-full border text-xs font-medium ${getStatusColor(
-                      page.status
-                    )}`}
-                  >
-                    {page.status === "active" ? (
-                      <>
-                        <CheckCircle className="inline w-3 h-3 mr-1" />
-                        Active
-                      </>
-                    ) : (
-                      <>
-                        <XCircle className="inline w-3 h-3 mr-1" />
-                        Inactive
-                      </>
-                    )}
-                  </button>
-                </td>
-
-                <td className="px-6 py-4 flex justify-end gap-2">
-                  <button
-                    onClick={() =>
-                      navigate("/create-a-page", {
-                        state: { pageId: page.id },
-                      })
-                    }
-                    className="p-2 hover:bg-green-50 rounded-lg"
-                    title="Edit"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={() => handleDeletePage(page.id)}
-                    className="p-2 hover:bg-red-50 rounded-lg"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-
-                  <MoreVertical className="w-4 h-4 text-gray-400 mt-2" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table
+          columns={columns}
+          data={currentPages}
+          onEdit={(row) =>
+            navigate("/create-a-page", {
+              state: { pageId: row.id },
+            })
+          }
+          onDelete={(row) => handleDeletePage(row.id)}
+        />
 
         {currentPages.length === 0 && (
           <EmptyState

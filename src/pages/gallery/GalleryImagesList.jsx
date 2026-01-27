@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
 import Pagination from '../../components/Pagination';
-import {SearchBar} from "../../components/SearchBar";
+import { SearchBar } from "../../components/SearchBar";
+import Table from "../../components/Table";
 
 const GalleryImagesList = () => {
     // State for UI
@@ -24,6 +25,75 @@ const GalleryImagesList = () => {
         { id: 6, title: 'Nescafe', project: 'Nescafe', event: 'Retail Merchandising', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=600&fit=crop', status: 'active' },
         { id: 7, title: 'Maybelline', project: 'Maybelline', event: 'Retail Merchandising', image: 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&h=600&fit=crop', status: 'active' },
         { id: 8, title: 'Maybelline', project: 'Maybelline', event: 'Retail Merchandising', image: 'https://images.unsplash.com/photo-1575936123452-b67c3203c357?w=800&h=600&fit=crop', status: 'active' },
+    ];
+
+    const columns = [
+        {
+            key: "title",
+            label: "Title",
+            render: (row) => (
+                <div>
+                    <p className="font-medium text-gray-900">{row.title}</p>
+                    <p className="text-xs text-gray-500">ID: {row.id}</p>
+                </div>
+            ),
+        },
+        {
+            key: "project",
+            label: "Project",
+            render: (row) => (
+                <span className="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                    {row.project}
+                </span>
+            ),
+        },
+        {
+            key: "event",
+            label: "Event",
+            render: (row) => (
+                <span className="text-sm text-gray-800">{row.event}</span>
+            ),
+        },
+        {
+            key: "image",
+            label: "Image",
+            render: (row) => (
+                <div className="flex items-center gap-3">
+                    <img
+                        src={row.image}
+                        alt={row.title}
+                        className="h-14 w-14 rounded-lg object-cover border"
+                        onError={(e) => {
+                            e.target.src =
+                                "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&h=600&fit=crop";
+                        }}
+                    />
+                    <a
+                        href={row.image}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-indigo-600 text-sm underline"
+                    >
+                        View
+                    </a>
+                </div>
+            ),
+        },
+        {
+            key: "status",
+            label: "Status",
+            render: (row) => (
+                <button
+                    onClick={() => handleToggleStatus(row.id)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${row.status === "active"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                        }`}
+                >
+                    {row.status === "active" ? "Active" : "Inactive"}
+                </button>
+            ),
+        },
     ];
 
     // For API - Filter would be done on backend
@@ -135,117 +205,13 @@ const GalleryImagesList = () => {
                 {/* Main Table */}
                 <div className="bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden">
                     {/* Desktop Table */}
-                    <div className="hidden lg:block overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr className="border-b border-gray-200">
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Title
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Project
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Event
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Image
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Status
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {paginatedImages.map((image) => (
-                                    <tr key={image.id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-4">
-                                                    <svg className="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                </div>
-                                                <div>
-                                                    <div className="text-sm font-medium text-gray-900">
-                                                        {image.title}
-                                                    </div>
-                                                    <div className="text-sm text-gray-500">
-                                                        ID: {image.id}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="px-3 py-1.5 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                {image.project}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm text-gray-900">{image.event}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center space-x-3">
-                                                <div className="h-16 w-16 rounded-lg overflow-hidden border border-gray-200">
-                                                    <img
-                                                        src={image.image}
-                                                        alt={image.title}
-                                                        className="h-full w-full object-cover"
-                                                        onError={(e) => {
-                                                            e.target.src = 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&h=600&fit=crop';
-                                                        }}
-                                                    />
-                                                </div>
-                                                <a
-                                                    href={image.image}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-sm text-indigo-600 hover:text-indigo-800 hover:underline font-medium"
-                                                >
-                                                    View
-                                                </a>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <button
-                                                onClick={() => handleToggleStatus(image.id)}
-                                                className={`px-3 py-1 rounded-full text-xs font-medium ${image.status === 'active'
-                                                    ? 'bg-green-100 text-green-800 hover:bg-green-200'
-                                                    : 'bg-red-100 text-red-800 hover:bg-red-200'
-                                                    } transition-colors`}
-                                            >
-                                                {image.status === 'active' ? 'Active' : 'Inactive'}
-                                            </button>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center space-x-2">
-                                                <button
-                                                    onClick={() => handleEdit(image.id)}
-                                                    className="p-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                                                    title="Edit"
-                                                >
-                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                    </svg>
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(image.id)}
-                                                    className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                                    title="Delete"
-                                                >
-                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="hidden lg:block">
+                        <Table
+                            columns={columns}
+                            data={paginatedImages}
+                            onEdit={(row) => handleEdit(row.id)}
+                            onDelete={(row) => handleDelete(row.id)}
+                        />
                     </div>
 
                     {/* Mobile Cards */}
@@ -331,12 +297,12 @@ const GalleryImagesList = () => {
 
                     {/* Footer with Pagination */}
                     <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
-                            <Pagination
-                                currentPage={currentPage}
-                                totalItems={totalItems}
-                                itemsPerPage={rowsPerPage === "All" ? totalItems : rowsPerPage}
-                                onPageChange={setCurrentPage}
-                            />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalItems={totalItems}
+                            itemsPerPage={rowsPerPage === "All" ? totalItems : rowsPerPage}
+                            onPageChange={setCurrentPage}
+                        />
                     </div>
                 </div>
             </div>

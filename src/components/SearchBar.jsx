@@ -7,12 +7,12 @@ export const SearchBar = ({
   searchPlaceholder = "Search...",
 }) => {
   return (
-    <div className="bg-white rounded-md shadow-sm border border-gray-200 p-4 mb-6">
+    <div className="bg-gradient-to-r from-[#6F3BFF] to-[#4A23B5] rounded-md shadow-sm border border-gray-200 p-4 mb-6">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
 
         {/* Rows Selector */}
         <div className="flex items-center space-x-3">
-          <span className="text-gray-700 font-medium">Show</span>
+          <span className="text-white font-medium">Show</span>
 
           <div className="relative">
             <select
@@ -49,7 +49,7 @@ export const SearchBar = ({
             </div>
           </div>
 
-          <span className="text-gray-700 font-medium">entries</span>
+          <span className="text-white font-medium">entries</span>
         </div>
 
         {/* Search */}

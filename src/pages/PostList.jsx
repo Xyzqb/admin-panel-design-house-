@@ -17,7 +17,7 @@ import DeleteConfirmToast from "../components/DeleteConfirmToast";
 import Pagination from "../components/Pagination";
 import { useNavigate } from "react-router-dom";
 import EmptyState from "../components/EmptyState";
-import Table from '../components/table/Table';
+import Table from '../components/Table';
 
 const PostList = () => {
 

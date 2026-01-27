@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Table from "../../components/table/Table";
+import Table from "../../components/Table";
 import { Plus } from "lucide-react";
 import { SearchBar } from "../../components/SearchBar";
 import Pagination from "../../components/Pagination";
+import { toast } from "react-toastify";
+import DeleteConfirmToast from "../../components/DeleteConfirmToast";
+
 
 const BlogsList = () => {
   const navigate = useNavigate();
@@ -20,10 +23,24 @@ const BlogsList = () => {
   }, []);
 
   // DELETE (NO ALERT / NO TOAST)
-  const handleDelete = (row) => {
-    const updated = blogs.filter((blog) => blog.id !== row.id);
+  // ACTUAL DELETE
+  const confirmDelete = (id) => {
+    const updated = blogs.filter((blog) => blog.id !== id);
     localStorage.setItem("blogs", JSON.stringify(updated));
     setBlogs(updated);
+    toast.success("Blog deleted successfully");
+  };
+
+  // OPEN CONFIRM TOAST
+  const handleDelete = (row) => {
+    toast(
+      <DeleteConfirmToast onDelete={() => confirmDelete(row.id)} />,
+      {
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+      }
+    );
   };
 
   // EDIT
@@ -64,6 +81,21 @@ const BlogsList = () => {
       ),
     },
     {
+      key: "content",
+      label: "Content",
+      render: (row) => (
+        <div
+          className="text-gray-600 text-sm max-w-xs truncate"
+          title="Click edit to view full content"
+          dangerouslySetInnerHTML={{
+            __html: row.content
+              ? row.content.replace(/<[^>]+>/g, "").slice(0, 80) + "..."
+              : "-"
+          }}
+        />
+      )
+    },
+    {
       key: "image",
       label: "Image",
       render: (row) =>
@@ -83,8 +115,8 @@ const BlogsList = () => {
       render: (row) => (
         <span
           className={`px-2 py-1 rounded-full text-xs font-semibold ${row.status === "Active"
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
             }`}
         >
           {row.status}

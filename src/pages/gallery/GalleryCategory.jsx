@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Plus, List, Pencil, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
+import Table from "../../components/Table";
 
 
 const GalleryCategory = () => {
@@ -14,6 +15,48 @@ const GalleryCategory = () => {
     image: null,
     status: 'Inactive'
   });
+
+  const columns = [
+    {
+      key: "title",
+      label: "Event Title",
+    },
+    {
+      key: "image",
+      label: "Event Image",
+      render: (row) => (
+        <div className="w-12 h-12 rounded-lg overflow-hidden border">
+          <img
+            src={row.image}
+            alt={row.title}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.src =
+                "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800";
+            }}
+          />
+        </div>
+      ),
+    },
+    {
+      key: "date",
+      label: "Event Date",
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <span
+          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${row.status === "Active"
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+            }`}
+        >
+          {row.status}
+        </span>
+      ),
+    },
+  ];
 
   const [events, setEvents] = useState([
     { id: 1, title: '123', image: 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=800&h=600&fit=crop', date: '13123', status: 'Active' },
@@ -284,96 +327,13 @@ const GalleryCategory = () => {
 
         {/* Table Section */}
         <div className="bg-gradient-to-br from-white to-indigo-50 rounded-lg shadow-sm overflow-hidden border border-indigo-100">
-          <div className="px-6 py-6 border-b border-gray-200 bg-gradient-to-r from-indigo-600 to-purple-600">
-            <h2 className="text-2xl font-bold text-white">Portfolio Event Gallery List</h2>
-          </div>
-
           <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="py-4 px-4 text-left text-xs font-bold text-gray-700 uppercase">Event Title</th>
-                  <th className="py-4 px-4 text-left text-xs font-bold text-gray-700 uppercase">Event Image</th>
-                  <th className="py-4 px-4 text-left text-xs font-bold text-gray-700 uppercase">Event Date</th>
-                  <th className="py-4 px-4 text-left text-xs font-bold text-gray-700 uppercase">Status</th>
-                  <th className="py-4 px-4 text-center text-xs font-bold text-gray-700 uppercase">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {events.map((event) => (
-                  <tr
-                    key={event.id}
-                    className="hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 transition-all duration-200"
-                  >
-                    <td className="py-3 px-4">
-                      <span className="font-semibold text-gray-800 text-sm">{event.title}</span>
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <div className="w-12 h-12 rounded-lg overflow-hidden border-2 border-purple-200 shadow-sm">
-                        <img
-                          src={event.image}
-                          alt={event.title}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.src = 'https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&h=600&fit=crop';
-                          }}
-                        />
-                      </div>
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <span className="text-sm text-gray-700">
-                        {event.date || 'No Date'}
-                      </span>
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${event.status === 'Active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                        }`}>
-                        <span className={`w-2 h-2 rounded-full mr-2 ${event.status === 'Active' ? 'bg-green-500' : 'bg-red-500'
-                          }`}></span>
-                        {event.status}
-                      </span>
-                    </td>
-
-                    <td className="py-3 px-4">
-                      <div className="flex items-center justify-center space-x-2">
-                        <button
-                          onClick={() => toggleStatus(event.id)}
-                          className="p-2 rounded-lg bg-purple-100 text-purple-600 hover:bg-purple-200 transition-all duration-200"
-                          title="Toggle Status"
-                        >
-                          {event.status === 'Active' ? (
-                            <ToggleRight className="w-4 h-4" />
-                          ) : (
-                            <ToggleLeft className="w-4 h-4" />
-                          )}
-                        </button>
-
-                        <button
-                          onClick={() => editEvent(event)}
-                          className="p-2 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200 transition-all duration-200"
-                          title="Edit"
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-
-                        <button
-                          onClick={() => deleteEvent(event.id)}
-                          className="p-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-all duration-200"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Table
+              columns={columns}
+              data={events}
+              onEdit={(row) => editEvent(row)}
+              onDelete={(row) => deleteEvent(row.id)}
+            />
           </div>
 
           {/* Mobile View */}

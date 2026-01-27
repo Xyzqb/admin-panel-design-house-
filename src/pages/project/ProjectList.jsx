@@ -6,6 +6,7 @@ import Pagination from "../../components/Pagination";
 import EmptyState from '../../components/EmptyState';
 import { toast } from "react-toastify";
 import DeleteConfirmToast from '../../components/DeleteConfirmToast';
+import Table from "../../components/Table";
 
 const ProjectList = () => {
   const navigate = useNavigate();
@@ -30,6 +31,63 @@ const ProjectList = () => {
     localStorage.setItem("projects", JSON.stringify(updatedProjects));
     toast.success("Project deleted successfully");
   };
+
+  const columns = [
+    {
+      key: "id",
+      label: "ID",
+      render: (row) => (
+        <span className="font-semibold text-gray-900">#{row.id}</span>
+      ),
+    },
+    {
+      key: "client",
+      label: "Client",
+      render: (row) => (
+        <span className="text-sm font-medium text-gray-900">
+          {row.client}
+        </span>
+      ),
+    },
+    {
+      key: "projectName",
+      label: "Project Name",
+      render: (row) => row.projectName || "-",
+    },
+    {
+      key: "projectCategory",
+      label: "Category",
+      render: (row) => row.projectCategory,
+    },
+    {
+      key: "photo",
+      label: "Photo",
+      render: (row) =>
+        row.photo ? (
+          <img
+            src={row.photo}
+            alt="Project"
+            className="w-10 h-10 rounded-md object-cover border"
+          />
+        ) : (
+          <span className="text-gray-400 text-sm">No Photo</span>
+        ),
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-semibold ${row.status === "Active"
+            ? "bg-green-100 text-green-800"
+            : "bg-red-100 text-red-800"
+            }`}
+        >
+          {row.status}
+        </span>
+      ),
+    },
+  ];
 
   // Status badge component
   const StatusBadge = ({ status }) => (
@@ -82,81 +140,20 @@ const ProjectList = () => {
         {/* Table Container */}
         <div className="bg-white rounded-md shadow-sm overflow-hidden border border-gray-200">
           {/* Desktop Table */}
-          <div className="hidden lg:block overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="bg-blue-50 border-b border-blue-100">
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Id</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Client</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Project Name</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Project Category</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Photo</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider border-r border-blue-100">Status</th>
-                  <th className="py-4 px-6 text-left text-xs font-semibold text-blue-700 uppercase tracking-wider">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {paginatedProjects.map((project, index) => (
-                  <tr
-                    key={project.id}
-                    className={`hover:bg-gray-50 transition-colors ${index !== paginatedProjects.length - 1 ? 'border-b border-gray-200' : ''}`}
-                  >
-                    <td className="py-4 px-6 whitespace-nowrap border-r border-gray-100">
-                      <span className="text-sm font-semibold text-gray-900">#{project.id}</span>
-                    </td>
-                    <td className="py-4 px-6 border-r border-gray-100">
-                      <div className="text-sm font-medium text-gray-900">{project.client}</div>
-                    </td>
-                    <td className="py-4 px-6 border-r border-gray-100">
-                      <div className="text-sm text-gray-900">{project.projectName || '-'}</div>
-                    </td>
-                    <td className="py-4 px-6 border-r border-gray-100">
-                      <div className="text-sm text-gray-900">{project.projectCategory}</div>
-                    </td>
-                    <td className="py-4 px-6 border-r border-gray-100">
-                      {project.photo && (
-                        <div>
-                          <span className="text-xs font-medium text-gray-500">Photo</span>
-                          <img
-                            src={project.photo}
-                            alt="Project"
-                            className="mt-1 w-10 h-10 object-cover rounded-md border"
-                          />
-                        </div>
-                      )}
-                    </td>
-                    <td className="py-4 px-6 border-r border-gray-100">
-                      <StatusBadge status={project.status} />
-                    </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleEdit(project)}
-                          className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors border border-blue-100"
-                          title="Edit"
-                        >
-                          <Edit2 className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() =>
-                            toast(
-                              <DeleteConfirmToast
-                                onDelete={() => handleDelete(project.id)}
-                              />,
-                              { autoClose: false }
-                            )
-                          }
-                          className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 border border-red-100"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="hidden lg:block">
+            <Table
+              columns={columns}
+              data={paginatedProjects}
+              onEdit={(row) => handleEdit(row)}
+              onDelete={(row) =>
+                toast(
+                  <DeleteConfirmToast
+                    onDelete={() => handleDelete(row.id)}
+                  />,
+                  { autoClose: false }
+                )
+              }
+            />
           </div>
 
           {/* Mobile Cards */}

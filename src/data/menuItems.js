@@ -14,6 +14,7 @@ import {
   CalendarCheck,
   Building2,
   ShieldCheck,
+  Info ,
 } from "lucide-react";
 
 export const menuItems = [
@@ -36,6 +37,12 @@ export const menuItems = [
     label: "Home Slider",
     icon: Images,
     path: "/carousel",
+  },
+   {
+    type: "item",
+    label: "About Us",
+    icon: Info,
+    path: "/about-us",
   },
 
   {

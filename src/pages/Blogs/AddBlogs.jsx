@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { addSuccessfully } from "../../data/toast";
 
 const AddBlogs = () => {
   const navigate = useNavigate();
+  const editorRef = useRef(null);
 
   const [blogData, setBlogData] = useState({
     title: "",
@@ -11,6 +13,7 @@ const AddBlogs = () => {
     subtitle: "",
     image: null,
     status: "Inactive",
+    content: "",
   });
 
   const [editId, setEditId] = useState(null);
@@ -34,6 +37,19 @@ const AddBlogs = () => {
     }
   };
 
+  // ================= TEXT EDITOR COMMANDS =================
+  const execCommand = (command, value = null) => {
+    document.execCommand(command, false, value);
+    editorRef.current?.focus();
+  };
+
+  const handleEditorInput = () => {
+    setBlogData((prev) => ({
+      ...prev,
+      content: editorRef.current?.innerHTML || "",
+    }));
+  };
+
   // ================= SUBMIT =================
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,15 +61,16 @@ const AddBlogs = () => {
         item.id === editId ? { ...blogData, id: editId } : item
       );
       localStorage.setItem("blogs", JSON.stringify(updated));
+
+      showSuccess("Blog updated successfully ✨");
     } else {
       const newBlog = {
         ...blogData,
         id: Date.now(),
       };
-      localStorage.setItem(
-        "blogs",
-        JSON.stringify([newBlog, ...existing])
-      );
+      localStorage.setItem("blogs", JSON.stringify([newBlog, ...existing]));
+
+      addSuccessfully(); // ✅ using your custom toast
     }
 
     setBlogData({
@@ -62,10 +79,15 @@ const AddBlogs = () => {
       subtitle: "",
       image: null,
       status: "Inactive",
+      content: "",
     });
 
+    if (editorRef.current) {
+      editorRef.current.innerHTML = "";
+    }
+
     setEditId(null);
-    alert(editId ? "Blog updated successfully!" : "Blog added successfully!");
+
     navigate("/blogs-list");
   };
 
@@ -76,6 +98,9 @@ const AddBlogs = () => {
     if (editBlog) {
       setBlogData(editBlog);
       setEditId(editBlog.id);
+      if (editorRef.current && editBlog.content) {
+        editorRef.current.innerHTML = editBlog.content;
+      }
       localStorage.removeItem("editBlog");
     }
   }, []);
@@ -89,9 +114,7 @@ const AddBlogs = () => {
             <h1 className="text-3xl font-bold text-amber-600 mb-2">
               {editId ? "Update Blog" : "Add Blog"}
             </h1>
-            <p className="text-gray-600 text-lg">
-              Manage your blog details
-            </p>
+            <p className="text-gray-600 text-lg">Manage your blog details</p>
           </div>
 
           <button
@@ -158,58 +181,172 @@ const AddBlogs = () => {
             </div>
           </div>
 
-          {/* IMAGE */}
-          <div>
-            <label className="text-sm font-medium text-gray-700">
-              Blog Image <span className="text-red-500">*</span>
-            </label>
+          {/* ROW 2: IMAGE AND STATUS */}
+          {/* ROW 2: IMAGE AND STATUS */}
+          <div className="grid md:grid-cols-2 gap-5">
 
-            <div className="mt-2 border border-dashed border-gray-300 rounded-lg p-4 bg-gray-50">
-              {blogData.image ? (
-                <div className="relative">
-                  <img
-                    src={blogData.image}
-                    alt="preview"
-                    className="w-full h-40 object-cover rounded-md"
-                  />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setBlogData((prev) => ({ ...prev, image: null }))
-                    }
-                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full px-2"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ) : (
-                <label className="cursor-pointer text-blue-600 font-semibold">
-                  Upload Image
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                </label>
-              )}
+            {/* IMAGE */}
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Blog Image <span className="text-red-500">*</span>
+              </label>
+
+              <div className="mt-1 h-[42px] flex items-center justify-center border border-dashed border-gray-300 rounded-md bg-gray-50">
+                {blogData.image ? (
+                  <div className="relative w-full h-full">
+                    <img
+                      src={blogData.image}
+                      alt="preview"
+                      className="w-full h-full object-cover rounded-md"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setBlogData((prev) => ({ ...prev, image: null }))
+                      }
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 text-xs flex items-center justify-center"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <label className="cursor-pointer text-blue-600 font-medium text-sm">
+                    Upload Image
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
+                )}
+              </div>
+            </div>
+
+            {/* STATUS */}
+            <div>
+              <label className="text-sm font-medium text-gray-700">
+                Status
+              </label>
+              <select
+                name="status"
+                value={blogData.status}
+                onChange={handleInputChange}
+                className="mt-1 w-full h-[42px] px-3 rounded-md border border-gray-300 bg-white"
+              >
+                <option value="Inactive">Inactive</option>
+                <option value="Active">Active</option>
+              </select>
             </div>
           </div>
 
-          {/* STATUS */}
+          {/* TEXT EDITOR */}
           <div>
-            <label className="text-sm font-medium text-gray-700">
-              Status
+            <label className="text-sm font-medium text-gray-700 mb-2 block">
+              Blog Content <span className="text-red-500">*</span>
             </label>
-            <select
-              name="status"
-              value={blogData.status}
-              onChange={handleInputChange}
-              className="mt-1 w-full px-3 py-2 rounded-md border border-gray-300"
-            >
-              <option value="Inactive">Inactive</option>
-              <option value="Active">Active</option>
-            </select>
+
+            {/* EDITOR TOOLBAR */}
+            <div className="border border-gray-300 rounded-t-md bg-gray-50 p-2 flex flex-wrap gap-1">
+              <button
+                type="button"
+                onClick={() => execCommand("bold")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100 font-bold"
+                title="Bold"
+              >
+                B
+              </button>
+              <button
+                type="button"
+                onClick={() => execCommand("italic")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100 italic"
+                title="Italic"
+              >
+                I
+              </button>
+              <button
+                type="button"
+                onClick={() => execCommand("underline")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100 underline"
+                title="Underline"
+              >
+                U
+              </button>
+              <div className="w-px bg-gray-300 mx-1"></div>
+              <button
+                type="button"
+                onClick={() => execCommand("justifyLeft")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100"
+                title="Align Left"
+              >
+                ≡
+              </button>
+              <button
+                type="button"
+                onClick={() => execCommand("justifyCenter")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100"
+                title="Align Center"
+              >
+                ≡
+              </button>
+              <button
+                type="button"
+                onClick={() => execCommand("justifyRight")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100"
+                title="Align Right"
+              >
+                ≡
+              </button>
+              <div className="w-px bg-gray-300 mx-1"></div>
+              <button
+                type="button"
+                onClick={() => execCommand("insertUnorderedList")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100"
+                title="Bullet List"
+              >
+                • List
+              </button>
+              <button
+                type="button"
+                onClick={() => execCommand("insertOrderedList")}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100"
+                title="Numbered List"
+              >
+                1. List
+              </button>
+              <div className="w-px bg-gray-300 mx-1"></div>
+              <select
+                onChange={(e) => execCommand("formatBlock", e.target.value)}
+                className="px-2 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100"
+                defaultValue=""
+              >
+                <option value="">Normal</option>
+                <option value="h1">Heading 1</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="h4">Heading 4</option>
+              </select>
+              <button
+                type="button"
+                onClick={() => {
+                  const url = prompt("Enter URL:");
+                  if (url) execCommand("createLink", url);
+                }}
+                className="px-3 py-1 border border-gray-300 bg-white rounded hover:bg-gray-100"
+                title="Insert Link"
+              >
+                🔗
+              </button>
+            </div>
+
+            {/* EDITOR CONTENT AREA */}
+            <div
+              ref={editorRef}
+              contentEditable
+              onInput={handleEditorInput}
+              className="min-h-[300px] p-4 border border-t-0 border-gray-300 rounded-b-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              style={{ whiteSpace: "pre-wrap" }}
+            ></div>
           </div>
 
           {/* SUBMIT */}

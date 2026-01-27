@@ -1,4 +1,4 @@
-import Table from "../../components/table/Table";
+import Table from "../../components/Table";
 import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
