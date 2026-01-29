@@ -9,6 +9,7 @@ import EnquiryList from "../pages/BookMeeting";
 import Remainder from "../pages/Remainder";
 import AdminUser from "../layout/AdminUser";
 import About from "../pages/About";
+import Chatbot from "../pages/Chatbot";
 
 // page
 import CreatePage from "../pages/CreatePage";
@@ -134,6 +135,7 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="/blogs-list" element={<BlogsList />} />
 
         {/* SETTINGS */}
+        <Route path="/chatbot" element={<Chatbot/>}/>
         <Route path="/about-us" element={<About/>}/>
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/festival-carousels" element={<FestivalCarousel />} />

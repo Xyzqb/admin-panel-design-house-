@@ -20,7 +20,7 @@ export default function AdminLayout({ onLogout }) {
       />
 
       {/* PAGE BODY */}
-      <div className="flex pt-14 overflow-x-hidden">
+      <div className="flex pt-14 overflow-hidden">
         {/* SIDEBAR (fixed position) */}
         <Sidebar
           sidebarOpen={sidebarOpen}
@@ -32,12 +32,12 @@ export default function AdminLayout({ onLogout }) {
         {/* MAIN CONTENT + FOOTER */}
         <div
           className={`
-            flex flex-col flex-1 transition-all duration-300 
+            flex flex-col flex-1 transition-all duration-300 overflow-hidden
             ${sidebarOpen ? "lg:ml-74" : "lg:ml-20"}
           `}
         >
           {/* MAIN CONTENT - Reduced and consistent padding */}
-          <main className="flex-1 p-3 sm:p-4 lg:p-4 max-w-full">
+          <main className="flex-1 p-3 sm:p-4 lg:p-4 overflow-hidden">
             <div className="w-full">
               <Outlet />
             </div>

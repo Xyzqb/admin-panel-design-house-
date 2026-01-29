@@ -11,28 +11,6 @@ function LoginPage({ onLogin }) {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // const showAlert = (type, title, text) => {
-  //   const Swal = window.Swal;
-  //   if (type === 'success') {
-  //     Swal.fire({
-  //       icon: 'success',
-  //       title: title,
-  //       text: text,
-  //       confirmButtonColor: '#059669',
-  //       confirmButtonText: 'Great!',
-  //       timer: 2000
-  //     });
-  //   } else if (type === 'error') {
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: title,
-  //       text: text,
-  //       confirmButtonColor: '#dc2626',
-  //       confirmButtonText: 'Try Again'
-  //     });
-  //   }
-  // };
-
   const handleSubmit = () => {
     setIsLoading(true);
     setError('');

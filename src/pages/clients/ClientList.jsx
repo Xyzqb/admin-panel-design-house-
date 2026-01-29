@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { toast } from "react-toastify";
 import {
-  Edit,
-  Trash2,
   CheckCircle,
   XCircle,
-  Search,
 } from 'lucide-react';
 import { showDeleted } from "../../data/toast";
 import DeleteConfirmToast from "../../components/DeleteConfirmToast";
@@ -211,139 +208,6 @@ const ClientList = () => {
                 )
               }
             />
-
-            {/* <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gradient-to-r from-blue-50 to-indigo-50">
-                <tr>
-                  <th className="px-6 py-4">
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                      checked={selectedRows.length === testimonials.length && testimonials.length > 0}
-                      onChange={toggleSelectAll}
-                    />
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Id
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Url
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Photo
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredTestimonials.slice(0, rowsPerPage).map((testimonial) => (
-                  <tr
-                    key={testimonial.id}
-                    className={`hover:bg-gray-50 transition-colors ${selectedRows.includes(testimonial.id) ? 'bg-blue-50' : ''}`}
-                  >
-                    <td className="px-6 py-4">
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                        checked={selectedRows.includes(testimonial.id)}
-                        onChange={() => toggleRowSelection(testimonial.id)}
-                      />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {testimonial.id}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {testimonial.name || "No Name"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                      <a
-                        href={testimonial.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 underline"
-                      >
-                        {testimonial.url}
-                      </a>
-
-                    </td>
-                    <td className="px-6 py-4">
-                      {testimonial.image ? (
-                        <img
-                          src={testimonial.image}
-                          alt="testimonial"
-                          className="h-10 w-10 rounded-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-gray-400">No Image</span>
-                      )}
-                    </td>
-
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${testimonial.status === 'Active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                        }`}>
-                        {testimonial.status === 'Active' ? (
-                          <CheckCircle className="h-3 w-3 mr-1" />
-                        ) : (
-                          <XCircle className="h-3 w-3 mr-1" />
-                        )}
-                        {testimonial.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex items-center space-x-3">
-                        <button
-                          onClick={() => {
-                            localStorage.setItem("editClient", JSON.stringify(testimonial));
-                            window.location.href = "/add-clients";
-                          }}
-                          className="text-blue-600 hover:text-blue-900 p-1.5 rounded-lg hover:bg-blue-50"
-                          title="Edit"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() =>
-                            toast(
-                              <DeleteConfirmToast
-                                onDelete={() => {
-                                  const updated = testimonials.filter(
-                                    t => t.id !== testimonial.id
-                                  );
-
-                                  setTestimonials(updated);
-                                  localStorage.setItem(
-                                    "testimonials",
-                                    JSON.stringify(updated)
-                                  );
-
-                                  showDeleted();
-                                }}
-                              />,
-                              { autoClose: false }
-                            )
-                          }
-                          className="text-red-600 hover:text-red-900 p-1.5 rounded-lg hover:bg-red-50"
-                          title="Delete"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table> */}
           </div>
 
           {/* Empty state */}

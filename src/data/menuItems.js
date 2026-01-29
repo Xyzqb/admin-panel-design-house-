@@ -14,7 +14,8 @@ import {
   CalendarCheck,
   Building2,
   ShieldCheck,
-  Info ,
+  MessageSquare,
+  Info,
 } from "lucide-react";
 
 export const menuItems = [
@@ -38,7 +39,7 @@ export const menuItems = [
     icon: Images,
     path: "/carousel",
   },
-   {
+  {
     type: "item",
     label: "About Us",
     icon: Info,
@@ -50,6 +51,14 @@ export const menuItems = [
     label: "Book Meeting",
     icon: CalendarCheck,
     path: "/enquiry-list",
+  },
+
+  /* ================= CHATBOT SECTION ================= */
+  {
+    type: "item",
+    label: "Chatbot",
+    icon: MessageSquare,
+    path: "/chatbot",
   },
 
   /* ================= CONTENT SECTION ================= */
@@ -122,10 +131,10 @@ export const menuItems = [
       { label: "Projects List", path: "/projects-list" },
     ],
   },
- {
+  {
     type: "dropdown",
     label: "Blogs",
-    icon: FileText ,
+    icon: FileText,
     children: [
       { label: "Add Blogs", path: "/add-blogs" },
       { label: "Blogs List", path: "/blogs-list" },
@@ -211,7 +220,7 @@ export const menuItems = [
     type: "heading",
     label: "Account Section",
   },
-   {
+  {
     type: "item",
     label: "Manage Admin Users",
     icon: ShieldCheck,
