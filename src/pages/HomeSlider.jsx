@@ -279,7 +279,7 @@ const HomeSlider = () => {
   return (
     <div className="w-full bg-white shadow-md mt-6 p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-amber-600">Home Slider</h1>
+        <h1 className="text-3xl font-bold text-amber-600 uppercase">Home Slider</h1>
 
         {/* Add Slider Button */}
         <button

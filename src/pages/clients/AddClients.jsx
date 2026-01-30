@@ -89,7 +89,7 @@ const AddClients = () => {
           {/* HEADER */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-amber-600 mb-2">
+              <h1 className="text-3xl font-bold text-amber-600 mb-2 uppercase">
                 {editId ? "Update Clients" : "Add Clients"}
               </h1>
               <p className="text-gray-600 text-lg">

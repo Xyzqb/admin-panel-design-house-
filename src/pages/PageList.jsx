@@ -134,7 +134,7 @@ const PageList = () => {
     <div className="bg-white shadow-md mt-6 p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-amber-600">Page List</h1>
+        <h1 className="text-3xl font-bold text-amber-600 uppercase">Page List</h1>
         <p className="text-gray-600 mt-2 text-lg">
           Manage and monitor all your pages
         </p>

@@ -120,7 +120,7 @@ const ProjectList = () => {
       <div className="w-full">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-amber-600 mb-2">Project List</h1>
+          <h1 className="text-3xl font-bold text-amber-600 mb-2 uppercase">Project List</h1>
           <p className="text-gray-600 text-lg">Manage and view all your projects</p>
         </div>
 

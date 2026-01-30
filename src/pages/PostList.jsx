@@ -149,7 +149,7 @@ const PostList = () => {
             <div className="w-full">
                 {/* Header */}
                 <div className="mb-6 mx-2">
-                    <h1 className="text-3xl md:text-3xl font-bold text-blue-600">Blog Post List</h1>
+                    <h1 className="text-3xl md:text-3xl font-bold text-blue-600 uppercase">Blog Post List</h1>
                     <p className="text-gray-600 mt-2 text-lg">Manage and monitor all your blog posts</p>
                 </div>
 

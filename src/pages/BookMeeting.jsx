@@ -247,7 +247,7 @@ const EnquiryList = () => {
     <div className="bg-white rounded-xl shadow-md mt-6 p-4 md:p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-blue-600">
+        <h1 className="text-2xl md:text-3xl font-bold text-blue-600 uppercase">
           Support Queries
         </h1>
         <p className="text-gray-600 mt-1 md:mt-2 text-sm md:text-lg">

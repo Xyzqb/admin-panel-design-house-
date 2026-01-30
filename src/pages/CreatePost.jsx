@@ -140,12 +140,6 @@ const Post = () => {
     // navigate("/post-list");
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log('Form submitted:', formData);
-  //   addSuccessfully();
-  // };
-
   // Format permalink
   const formatPermalink = (text) => {
     return text
@@ -161,7 +155,7 @@ const Post = () => {
       <div className="w-full">
         {/* Header */}
         <div className="mb-6 mx-2">
-          <h1 className="text-3xl md:text-3xl font-bold text-amber-600">Create A Post</h1>
+          <h1 className="text-3xl md:text-3xl font-bold text-amber-600 uppercase">Create A Post</h1>
           <p className="text-gray-600 mt-2 text-lg">Add a new project to your portfolio</p>
         </div>
 

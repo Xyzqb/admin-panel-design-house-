@@ -444,7 +444,7 @@ const About = () => {
         <div className="mb-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-purple-900">About Page</h1>
+              <h1 className="text-3xl font-bold text-purple-900 uppercase">About Page</h1>
               <p className="text-gray-600 mt-2 text-lg">Manage your company's about page content</p>
             </div>
             <div className="flex space-x-3">

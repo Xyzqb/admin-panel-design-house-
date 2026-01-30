@@ -9,7 +9,7 @@ export default function AdminLayout({ onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* NAVBAR (fixed height = 64px / 4rem) */}
       <Navbar
         sidebarOpen={sidebarOpen}
@@ -20,7 +20,7 @@ export default function AdminLayout({ onLogout }) {
       />
 
       {/* PAGE BODY */}
-      <div className="flex pt-14 overflow-hidden">
+      <div className="flex pt-14 flex-1 ">
         {/* SIDEBAR (fixed position) */}
         <Sidebar
           sidebarOpen={sidebarOpen}

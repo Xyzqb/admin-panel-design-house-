@@ -129,7 +129,7 @@ const BlogsList = () => {
     <div className="bg-white shadow-md p-6 mt-6">
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold text-amber-600">
+        <h1 className="text-3xl font-bold text-amber-600 uppercase">
           Blogs List
         </h1>
 
