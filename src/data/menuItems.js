@@ -220,6 +220,12 @@ export const menuItems = [
     type: "heading",
     label: "Account Section",
   },
+   {
+    type: "item",
+    label: "BG Images",
+    icon: Image,
+    path: "/bg-images",
+  },
   {
     type: "item",
     label: "Manage Admin Users",

@@ -218,7 +218,7 @@ const Settings = () => {
                     <div className="flex items-center gap-4 mb-3">
                         <div>
                             {/* <h1 className="text-3xl font-bold text-amber-600">Settings</h1> */}
-                            <h1 className="text-3xl font-bold text-amber-600">System Configuration</h1>
+                            <h1 className="text-3xl font-bold text-amber-600 uppercase">System Configuration</h1>
                             <p className="text-gray-600 mt-1 text-lg">
                                 Manage your interior design studio's branding and contact information
                             </p>

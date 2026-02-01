@@ -60,6 +60,7 @@ import BlogsList from "../pages/Blogs/BlogsList";
 
 // settings
 import Settings from "../pages/Settings";
+import BgImages from "../pages/BgImages";
 
 export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
   return (
@@ -135,6 +136,7 @@ export default function AppRoutes({ isLoggedIn, setIsLoggedIn, onLogout }) {
         <Route path="/blogs-list" element={<BlogsList />} />
 
         {/* SETTINGS */}
+        <Route path="/bg-images" element={<BgImages/>} />
         <Route path="/chatbot" element={<Chatbot/>}/>
         <Route path="/about-us" element={<About/>}/>
         <Route path="/change-password" element={<ChangePassword />} />
